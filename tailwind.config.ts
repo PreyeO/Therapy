@@ -16,6 +16,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      CabinetGrotesk: ["cabinetGrotesk", "sans-serif"],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -55,6 +58,12 @@ module.exports = {
         heading_black_text: "#2A2A2A",
         army_green: "#6D7C43",
         home_border_gradient: "rgba(117,89,229,1),rgba(102,205,237,1)",
+      },
+
+      backgroundImage: {
+        "main-background": "url('./assets/image/Background.svg')",
+        "hero-glow": "url(./assets/heroGlow.svg)",
+        "sub-hero": "url(./assets/curveRectangle.svg)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -77,4 +77,30 @@
     }
   }
 
+  @font-face {
+    font-family: 'CabinetGrotesk';
+    src: url('../fonts/CabinetGrotesk') format('truetype');
+         
+  }
+
+ 
+
+
+/* Tailwind CSS Custom Class Example */
+.eclipse-wrapper {
+  background-image: url('./assets/image/Ellipse.svg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  width: 443.85px; /* Set to the width of the parent div */
+  height: 251.72px; /* Set to the height of the parent div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+  
+  
   

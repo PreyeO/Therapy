@@ -2,7 +2,7 @@ import WelcomeScreen from "@/components/screens/WelcomeScreen";
 
 const Landing = () => {
   return (
-    <main className="h-screen">
+    <main className=" ">
       <WelcomeScreen />
     </main>
   );

@@ -1,5 +1,11 @@
+import SignupScreen from "@/components/screens/SignupScreen";
+
 const Signup = () => {
-  return <div>Signup</div>;
+  return (
+    <main>
+      <SignupScreen />
+    </main>
+  );
 };
 
 export default Signup;
