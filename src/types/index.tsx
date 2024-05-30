@@ -18,7 +18,7 @@ export const contactFormSchema = z.object({
   }),
 });
 
-export const loginFromSchema = z.object({
+export const loginFormSchema = z.object({
   email: z.string().email({
     message: "Please provide a valid email",
   }),

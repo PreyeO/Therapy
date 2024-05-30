@@ -7,6 +7,7 @@ import String from "@/assets/image/String.png";
 import { Button } from "../ui/button";
 import WelcomeAnimation from "@/components/ui/animation/WelcomeAnimate";
 import HeroImage from "../images/HeroImage";
+import { Link } from "react-router-dom";
 
 const WelcomeScreen = () => {
   const [animationComplete, setAnimationComplete] = useState(false);
@@ -61,12 +62,14 @@ const WelcomeScreen = () => {
               <Button size="lg" className="h-16 w-[556px] text-xl font-medium">
                 Get Started
               </Button>
-              <Button
-                size="lg"
-                className="h-16 w-[556px] text-xl font-medium bg-transparent text-army_green border border-army_green"
-              >
-                Login
-              </Button>
+              <Link to="/signin">
+                <Button
+                  size="lg"
+                  className="h-16 w-[556px] text-xl font-medium bg-transparent text-army_green border border-army_green"
+                >
+                  Login
+                </Button>
+              </Link>
             </motion.div>
           </Card>
         </div>

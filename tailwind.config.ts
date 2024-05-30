@@ -55,6 +55,7 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         primary_black_text: "#041827",
+        placeholder_text: "#A3A3A3",
         heading_black_text: "#2A2A2A",
         army_green: "#6D7C43",
         home_border_gradient: "rgba(117,89,229,1),rgba(102,205,237,1)",
@@ -62,8 +63,6 @@ module.exports = {
 
       backgroundImage: {
         "main-background": "url('./assets/image/Background.svg')",
-        "hero-glow": "url(./assets/heroGlow.svg)",
-        "sub-hero": "url(./assets/curveRectangle.svg)",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,10 +1,10 @@
-import HeroImage from "@/components/images/HeroImage";
+import SigninScreen from "@/components/screens/SigninScreen";
 
 const Signin = () => {
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <HeroImage />
-    </div>
+    <main className="">
+      <SigninScreen />
+    </main>
   );
 };
 

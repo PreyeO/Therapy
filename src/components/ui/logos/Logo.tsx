@@ -1,6 +1,6 @@
 import Logo1 from "@/assets/image/Logo2.svg";
 
-const FullLogo = () => {
+const Logo = () => {
   return (
     <img
       src={Logo1}
@@ -11,4 +11,4 @@ const FullLogo = () => {
   );
 };
 
-export default FullLogo;
+export default Logo;
