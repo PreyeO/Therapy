@@ -1,11 +1,7 @@
-import NewPassword from "@/components/auth/NewPassword";
+// import NewPassword from "@/components/auth/NewPassword";
 
 const ChangePassword = () => {
-  return (
-    <div>
-      <NewPassword />
-    </div>
-  );
+  return <div>{/* <NewPassword /> */}</div>;
 };
 
 export default ChangePassword;

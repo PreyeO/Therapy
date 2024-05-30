@@ -1,4 +1,6 @@
-import { loginFormSchema } from "@/types";
+import { FC } from "react";
+import { handleNextProps, resetPasswordSchema } from "@/types";
+// import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,18 +24,25 @@ import {
 } from "@/components/ui/card";
 // Import the PasswordToggle component
 
-const ResetForm = () => {
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
+export const ResetForm: FC<handleNextProps> = ({ handleNext }) => {
+  const schema = resetPasswordSchema.pick({
+    email: true,
   });
 
-  function onSubmit(data: z.infer<typeof loginFormSchema>) {
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+
+  function onSubmit(data: z.infer<typeof schema>) {
     console.log(data);
+    handleNext();
   }
 
+  // const navigate = useNavigate();
+
   return (
-    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10 h-screen ">
-      <Card className="px-[3%] rounded-lg h-[454px]">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10 ">
+      <Card className="px-[3%] rounded-lg h-[454px] mt-16">
         <CardHeader className="flex flex-col  gap-5">
           <div className="flex flex-col gap-3 ">
             <CardTitle className=" font-medium text-3xl text-primary_black_text font">
@@ -47,8 +56,8 @@ const ResetForm = () => {
         <CardContent className="mt-6">
           <Form {...form}>
             <form
-              autoComplete="off"
               onSubmit={form.handleSubmit(onSubmit)}
+              autoComplete="off"
               className="flex flex-col gap-[30px]"
             >
               <FormField
@@ -86,5 +95,3 @@ const ResetForm = () => {
     </div>
   );
 };
-
-export default ResetForm;

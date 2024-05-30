@@ -100,6 +100,15 @@
 
 }
 
+.input-cursor-style {
+  caret-color: #6D7C43; /* Change the input cursor color */
+}
+.input-cursor-style::placeholder {
+  color: #0D001E; 
+  font-weight: 500;
+  font-size: 20.99px;
+}
+
 
   
   

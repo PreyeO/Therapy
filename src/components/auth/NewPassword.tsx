@@ -1,4 +1,5 @@
-import { userDetailsRegisterSchema } from "@/types";
+import { FC } from "react";
+import { handleNextProps, resetPasswordSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,20 +18,25 @@ import {
 import PasswordValidation from "@/components/functions/PasswordValidation";
 import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
 
-const NewPassword = () => {
-  const form = useForm<z.infer<typeof userDetailsRegisterSchema>>({
-    resolver: zodResolver(userDetailsRegisterSchema),
+export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
+  const schema = resetPasswordSchema.pick({
+    newPassword: true,
+    confirmPassword: true,
+  });
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
 
-  const password = form.watch("password", "");
+  const password = form.watch("newPassword", "");
 
-  function onSubmit(data: z.infer<typeof userDetailsRegisterSchema>) {
+  function onSubmit(data: z.infer<typeof schema>) {
     console.log(data);
+    handleNext();
   }
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10 h-screen">
-      <Card className="px-[3%] rounded-lg">
+    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10">
+      <Card className="px-[3%] rounded-lg h-[454px] mt-2 ">
         <CardHeader className="flex flex-col gap-5">
           <div className="flex flex-col gap-3 ">
             <CardTitle className="font-medium text-3xl text-primary_black_text font">
@@ -50,7 +56,7 @@ const NewPassword = () => {
             >
               <FormField
                 control={form.control}
-                name="password"
+                name="newPassword"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium text-primary_black_text">
@@ -68,7 +74,7 @@ const NewPassword = () => {
 
               <FormField
                 control={form.control}
-                name="password_confirmation"
+                name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-base font-medium text-primary_black_text">
@@ -98,5 +104,3 @@ const NewPassword = () => {
     </div>
   );
 };
-
-export default NewPassword;

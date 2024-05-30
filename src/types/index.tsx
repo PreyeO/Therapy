@@ -1,22 +1,22 @@
 import { z } from "zod";
 
-export const contactFormSchema = z.object({
-  firstName: z.string().min(3, {
-    message: "Provide a valid first name",
-  }),
-  lastName: z.string().min(3, {
-    message: "Provide a valid last name",
-  }),
-  email: z.string().email({
-    message: "Provide a valid email",
-  }),
-  message: z.string().min(10, {
-    message: "Provide a valid message",
-  }),
-  terms: z.boolean().refine((value) => value === true, {
-    message: "You must agree to the terms and conditions",
-  }),
-});
+// export const contactFormSchema = z.object({
+//   firstName: z.string().min(3, {
+//     message: "Provide a valid first name",
+//   }),
+//   lastName: z.string().min(3, {
+//     message: "Provide a valid last name",
+//   }),
+//   email: z.string().email({
+//     message: "Provide a valid email",
+//   }),
+//   message: z.string().min(10, {
+//     message: "Provide a valid message",
+//   }),
+//   terms: z.boolean().refine((value) => value === true, {
+//     message: "You must agree to the terms and conditions",
+//   }),
+// });
 
 export const loginFormSchema = z.object({
   email: z.string().email({
@@ -111,18 +111,6 @@ export const resetPasswordSchema = z.object({
   otp: z.array(z.string()).nonempty(),
   newPassword: z.string(),
   confirmPassword: z.string(),
-  // newPassword:z.string().refine(value =>
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
-  //   {
-  //     message: "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long",
-  //   }
-  // ),
-  // confirmPassword: z.string().refine(value =>
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value),
-  //   {
-  //     message: "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long",
-  //   }
-  // ),
 });
 
 export interface handleNextProps {
