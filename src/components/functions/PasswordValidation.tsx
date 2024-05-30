@@ -39,7 +39,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         }`}
       >
         <span className="font-normal text-base pb-4">6+</span>
-        <span className="font-normal text-sm text-[#B7B7B7]">Characters</span>
+        <span className="font-normal text-sm text-[#B7B7B7]">Character</span>
       </div>
       <div
         className={`flex items-center justify-center flex-col ${

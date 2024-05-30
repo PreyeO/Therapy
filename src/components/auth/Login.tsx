@@ -26,7 +26,7 @@ import { Link } from "react-router-dom";
 
 import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
 
-const SigninScreen = () => {
+const Login = () => {
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
   });
@@ -36,7 +36,7 @@ const SigninScreen = () => {
   }
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10">
+    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10 h-screen">
       <Card className="px-[3%] rounded-lg">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
@@ -124,4 +124,4 @@ const SigninScreen = () => {
   );
 };
 
-export default SigninScreen;
+export default Login;

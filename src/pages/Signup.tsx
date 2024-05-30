@@ -1,9 +1,9 @@
-import SignupScreen from "@/components/screens/SignupScreen";
+import Register from "@/components/auth/Register";
 
 const Signup = () => {
   return (
     <main>
-      <SignupScreen />
+      <Register />
     </main>
   );
 };

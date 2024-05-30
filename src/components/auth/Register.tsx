@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
 import PasswordValidation from "@/components/functions/PasswordValidation";
 import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
 
-const SignupScreen = () => {
+const Register = () => {
   const form = useForm<z.infer<typeof userDetailsRegisterSchema>>({
     resolver: zodResolver(userDetailsRegisterSchema),
   });
@@ -184,4 +184,4 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
+export default Register;

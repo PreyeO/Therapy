@@ -1,9 +1,9 @@
-import SigninScreen from "@/components/screens/SigninScreen";
+import Login from "@/components/auth/Login";
 
 const Signin = () => {
   return (
     <main className="">
-      <SigninScreen />
+      <Login />
     </main>
   );
 };

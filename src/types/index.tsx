@@ -129,3 +129,9 @@ export interface handleNextProps {
   handleNext: () => void;
   type?: RegisterDataType["userType"] | undefined;
 }
+
+export const OTPFormSchema = z.object({
+  pin: z.string().min(4, {
+    message: "Your one-time password must be 4 characters.",
+  }),
+});

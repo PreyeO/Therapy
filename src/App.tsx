@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "@/pages/Landing";
 import Signin from "@/pages/Signin";
 import Signup from "@/pages/Signup";
-import ForgotPassword from "@/pages/ForgotPassword";
+
+import ChangePassword from "./pages/ChangePassword";
+import PasswordReset from "@/pages/PasswordReset";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/passwordReset" element={<PasswordReset />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
           </Routes>
         </BrowserRouter>
       </div>
