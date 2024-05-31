@@ -94,9 +94,11 @@ const Login = () => {
                     </FormControl>
                     <FormMessage />
 
-                    <FormDescription className=" font-bold text-army_green cursor-pointer text-base text-right">
-                      Forget password?
-                    </FormDescription>
+                    <Link to="/passwordreset">
+                      <FormDescription className=" font-bold text-army_green cursor-pointer text-base text-right">
+                        Forget password?
+                      </FormDescription>
+                    </Link>
                   </FormItem>
                 )}
               />

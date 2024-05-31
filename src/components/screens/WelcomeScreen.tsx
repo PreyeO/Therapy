@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import FullLogo from "@/components/ui/logos/FullLogo";
-
 import String from "@/assets/image/String.png";
 import { Button } from "../ui/button";
 import WelcomeAnimation from "@/components/ui/animation/WelcomeAnimate";
@@ -59,9 +58,14 @@ const WelcomeScreen = () => {
               transition={{ duration: 0.5, delay: 1.5 }}
               className="flex flex-col gap-5"
             >
-              <Button size="lg" className="h-16 w-[556px] text-xl font-medium">
-                Get Started
-              </Button>
+              <Link to="/category">
+                <Button
+                  size="lg"
+                  className="h-16 w-[556px] text-xl font-medium"
+                >
+                  Get Started
+                </Button>
+              </Link>
               <Link to="/signin">
                 <Button
                   size="lg"

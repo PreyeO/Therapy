@@ -156,7 +156,6 @@ const Register = () => {
                         Terms & Conditions
                       </span>
                     </FormLabel>
-                    <FormMessage className="text-[#E75F51] text-[13px] font-light" />
                   </FormItem>
                 )}
               />

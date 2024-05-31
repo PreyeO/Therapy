@@ -31,19 +31,6 @@ export interface RegisterDataType {
   userType: "patient" | "therapist";
 }
 
-// export const jobProfileRegisterSchema = z.object({
-//   discipline: z.string({
-//     required_error: "Please select a discipline to continue",
-//   }),
-//   experience: z.enum(["junior", "mid", "senior"], {
-//     required_error: "Select an experience level to continue",
-//   }),
-//   roleType: z.enum(["contractor", "full-time", "any"], {
-//     required_error: "Select an option to continue",
-//   }),
-//   // skills: z.array(z.string()).nonempty(),
-// });
-
 export const userDetailsRegisterSchema = z.object({
   firstName: z.string({
     required_error: "Provide your full name to continue",
@@ -123,3 +110,8 @@ export const OTPFormSchema = z.object({
     message: "Your one-time password must be 4 characters.",
   }),
 });
+
+export interface UserState {
+  userType: RegisterDataType["userType"];
+  setUserType: (value: RegisterDataType["userType"]) => void;
+}

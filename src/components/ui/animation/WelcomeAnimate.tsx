@@ -79,11 +79,11 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
           animate={{
             width: "100%", // Expand to fill the screen horizontally
             height: "100%", // Expand to fill the screen vertically
-            borderRadius: "0%", // Remove border radius for a square shape
+            borderRadius: "10%", // Remove border radius for a square shape
             backgroundColor: "#ffffff", // Change background color to white
             zIndex: 1, // Ensure it's above other elements
           }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 1 }}
           className="flex justify-center items-center w-full h-full bg-main-background"
         >
           <div className="logo w-full h-full flex justify-center items-center">
