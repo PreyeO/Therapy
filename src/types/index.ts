@@ -1,23 +1,5 @@
 import { z } from "zod";
 
-// export const contactFormSchema = z.object({
-//   firstName: z.string().min(3, {
-//     message: "Provide a valid first name",
-//   }),
-//   lastName: z.string().min(3, {
-//     message: "Provide a valid last name",
-//   }),
-//   email: z.string().email({
-//     message: "Provide a valid email",
-//   }),
-//   message: z.string().min(10, {
-//     message: "Provide a valid message",
-//   }),
-//   terms: z.boolean().refine((value) => value === true, {
-//     message: "You must agree to the terms and conditions",
-//   }),
-// });
-
 export const loginFormSchema = z.object({
   email: z.string().email({
     message: "Please provide a valid email",
@@ -30,6 +12,13 @@ export const loginFormSchema = z.object({
 export interface RegisterDataType {
   userType: "patient" | "therapist";
 }
+
+const passwordRegex = {
+  hasUpperCase: /[A-Z]/,
+  hasLowerCase: /[a-z]/,
+  hasNumber: /[0-9]/,
+  hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/,
+};
 
 export const userDetailsRegisterSchema = z.object({
   firstName: z.string({
@@ -59,6 +48,18 @@ export const userDetailsRegisterSchema = z.object({
     .trim()
     .min(6, {
       message: "Password does not meet requirements",
+    })
+    .refine((value) => passwordRegex.hasUpperCase.test(value), {
+      message: "Password must have at least one uppercase letter",
+    })
+    .refine((value) => passwordRegex.hasLowerCase.test(value), {
+      message: "Password must have at least one lowercase letter",
+    })
+    .refine((value) => passwordRegex.hasNumber.test(value), {
+      message: "Password must have at least one number",
+    })
+    .refine((value) => passwordRegex.hasSpecialChar.test(value), {
+      message: "Password must have at least one special character",
     }),
 
   terms: z
@@ -96,8 +97,28 @@ export const resetPasswordSchema = z.object({
     required_error: "Please provide a valid email",
   }),
   otp: z.array(z.string()).nonempty(),
-  newPassword: z.string(),
-  confirmPassword: z.string(),
+  newPassword: z
+    .string({
+      required_error: "New password is required",
+    })
+    .min(6, {
+      message: "Password must be at least 6 characters",
+    })
+    .refine((value) => passwordRegex.hasUpperCase.test(value), {
+      message: "Password must have at least one uppercase letter",
+    })
+    .refine((value) => passwordRegex.hasLowerCase.test(value), {
+      message: "Password must have at least one lowercase letter",
+    })
+    .refine((value) => passwordRegex.hasNumber.test(value), {
+      message: "Password must have at least one number",
+    })
+    .refine((value) => passwordRegex.hasSpecialChar.test(value), {
+      message: "Password must have at least one special character",
+    }),
+  confirmPassword: z.string({
+    required_error: "Confirm password is required",
+  }),
 });
 
 export interface handleNextProps {
@@ -115,3 +136,11 @@ export interface UserState {
   userType: RegisterDataType["userType"];
   setUserType: (value: RegisterDataType["userType"]) => void;
 }
+
+export interface VerificationProps extends handleNextProps {
+  handleSubmit: (data: z.infer<typeof verifyEmailSchema>) => void;
+}
+// export interface MultiStepProps {
+//   handleNext: () => void;
+//   handlePrev: () => void;
+// }

@@ -1,7 +1,8 @@
 import { NewPassword } from "@/components/auth/NewPassword";
-import { ResetDone } from "@/components/auth/ResetDone";
+// import { ResetDone } from "@/components/auth/ResetDone";
 import { ResetForm } from "@/components/auth/ResetForm";
 import { ResetOTP } from "@/components/auth/ResetOTP";
+import Success from "@/components/ui/notifications/Success";
 
 import { useMultiStepForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
@@ -12,28 +13,35 @@ const PasswordReset: FC = () => {
     next();
   }
 
-  const { step, prev, next, isFirstStep, completed } = useMultiStepForm([
+  const steps = [
     <ResetForm handleNext={handleNext} />,
     <ResetOTP handleNext={handleNext} />,
     <NewPassword handleNext={handleNext} />,
-    <ResetDone />,
-  ]);
+    <Success
+      title="Account Verification Successful"
+      subtitle="You can now procced to your dashboard"
+    />,
+  ];
+
+  const { step, prev, next, isFirstStep, completed } = useMultiStepForm(steps);
 
   return (
-    <main className="py-5 px-8 overflow-clip h-screen">
-      <div className="flex">
-        <ArrowLeft
-          className={`cursor-pointer ${
-            isFirstStep || completed ? "cursor-not-allowed" : "cursor-pointer"
-          }`}
-          onClick={() => {
-            !isFirstStep && !completed && prev();
-          }}
-          size={25.82}
-          color="#0D001E"
-        />
-        <span className="text-[#333333] font-normal text-xl">Back</span>
-      </div>
+    <main className="overflow-clip h-screen">
+      {steps.indexOf(step) !== steps.length - 1 && (
+        <div className="flex py-4">
+          <ArrowLeft
+            className={`cursor-pointer ${
+              isFirstStep || completed ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
+            onClick={() => {
+              !isFirstStep && !completed && prev();
+            }}
+            size={25.82}
+            color="#0D001E"
+          />
+          <span className="text-[#333333] font-normal text-xl">Back</span>
+        </div>
+      )}
       <div className="w-full">{step}</div>
     </main>
   );

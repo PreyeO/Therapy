@@ -30,8 +30,8 @@ export const ResetOTP: FC<handleNextProps> = ({ handleNext }) => {
     }
   });
   return (
-    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10">
-      <Card className="px-[3%] rounded-lg h-[454px] mt-16">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
+      <Card className="px-[3%] rounded-lg h-[454px] mt-[-20px]">
         <CardHeader>
           <Mail size={20} fill="white" className="" color="#041827" />
           <CardTitle className="font-medium text-3xl pt-6">

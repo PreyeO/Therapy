@@ -1,0 +1,40 @@
+<svg width="175" height="175" viewBox="0 0 175 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_134_927)">
+<mask id="mask0_134_927" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="175" height="175">
+<path d="M174.593 0H0.406494V174.187H174.593V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_134_927)">
+<path d="M89.1303 33.47C119.249 33.47 143.703 57.9241 143.703 88.0429C143.703 118.162 119.249 142.616 89.1303 142.616C59.0115 142.616 34.5574 118.162 34.5574 88.0429C34.5574 57.9241 59.0115 33.47 89.1303 33.47Z" fill="#8BA05F"/>
+<path d="M61.2461 93.338L82.1943 111.349L119.586 68.0923" stroke="white" stroke-width="8.2863" stroke-linecap="round"/>
+<mask id="mask1_134_927" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="98" y="14" width="75" height="75">
+<path d="M98.4849 51.8136L134.977 14.4098L172.381 50.9017L135.889 88.3055L98.4849 51.8136Z" fill="white"/>
+</mask>
+<g mask="url(#mask1_134_927)">
+<g opacity="0.839275">
+<path d="M135.106 44.7915C136.751 43.1062 139.454 43.0728 141.139 44.717C142.824 46.3612 142.858 49.0645 141.214 50.7498C139.569 52.4351 136.866 52.4685 135.181 50.8243C133.496 49.1801 133.462 46.4768 135.106 44.7915Z" fill="white"/>
+</g>
+</g>
+<mask id="mask2_134_927" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="100" y="29" width="45" height="45">
+<path d="M100.825 62.7047L111.318 29.485L144.538 39.9776L134.045 73.1973L100.825 62.7047Z" fill="white"/>
+</mask>
+<g mask="url(#mask2_134_927)">
+<g opacity="0.839275">
+<path d="M120.516 47.5306C120.989 46.0339 122.588 45.2025 124.085 45.6752C125.582 46.148 126.413 47.7471 125.94 49.2439C125.468 50.7406 123.868 51.572 122.372 51.0993C120.875 50.6265 120.044 49.0274 120.516 47.5306Z" fill="white"/>
+</g>
+</g>
+<mask id="mask3_134_927" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="114" y="42" width="45" height="45">
+<path d="M114.738 53.3938L147.852 42.5724L158.674 75.6864L125.559 86.5079L114.738 53.3938Z" fill="white"/>
+</mask>
+<g mask="url(#mask3_134_927)">
+<g opacity="0.839275">
+<path d="M138.541 60.5605C140.033 60.0729 141.641 60.8885 142.128 62.3805C142.616 63.8725 141.8 65.4798 140.308 65.9673C138.816 66.4549 137.209 65.6394 136.721 64.1474C136.234 62.6554 137.049 61.0481 138.541 60.5605Z" fill="white"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_134_927">
+<rect width="174.187" height="174.187" fill="white" transform="translate(0.406494)"/>
+</clipPath>
+</defs>
+</svg>

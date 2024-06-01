@@ -1,4 +1,5 @@
-import { userDetailsRegisterSchema } from "@/types";
+import { FC, useState } from "react";
+import { handleNextProps, userDetailsRegisterSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +26,12 @@ import { Link } from "react-router-dom";
 import PasswordValidation from "@/components/functions/PasswordValidation";
 import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
 
-const Register = () => {
+interface RegisterProps extends handleNextProps {}
+
+const Register: FC<RegisterProps> = ({ handleNext }) => {
+  const [passwordMatchError, setPasswordMatchError] = useState<string>("");
+  const [isPasswordTouched, setIsPasswordTouched] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof userDetailsRegisterSchema>>({
     resolver: zodResolver(userDetailsRegisterSchema),
   });
@@ -33,11 +39,16 @@ const Register = () => {
   const password = form.watch("password", "");
 
   function onSubmit(data: z.infer<typeof userDetailsRegisterSchema>) {
-    console.log(data);
+    if (data.password !== data.password_confirmation) {
+      setPasswordMatchError("Passwords do not match");
+      return;
+    }
+    setPasswordMatchError("");
+    handleNext();
   }
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
       <Card className="px-[3%] rounded-lg">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
@@ -110,10 +121,19 @@ const Register = () => {
                     </FormLabel>
                     <FormControl>
                       <PasswordToggle
-                        field={field}
+                        field={{
+                          ...field,
+                          onChange: (e) => {
+                            field.onChange(e);
+                            if (!isPasswordTouched) {
+                              setIsPasswordTouched(true);
+                            }
+                          },
+                        }}
                         placeholder="Enter your password"
                       />
                     </FormControl>
+                    <FormMessage className="text-[#E75F51] text-[13px] font-light" />
                   </FormItem>
                 )}
               />
@@ -132,10 +152,15 @@ const Register = () => {
                         placeholder="Re-enter password"
                       />
                     </FormControl>
+                    {passwordMatchError && ( // Check if passwordMatchError exists
+                      <FormMessage className="text-[#E75F51] text-[13px] font-light">
+                        {passwordMatchError}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
-              <PasswordValidation password={password} />
+              {isPasswordTouched && <PasswordValidation password={password} />}
 
               <FormField
                 control={form.control}

@@ -1,10 +1,17 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { handleNextProps, resetPasswordSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Button } from "../ui/button";
 
 import {
@@ -19,10 +26,14 @@ import PasswordValidation from "@/components/functions/PasswordValidation";
 import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
 
 export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
+  const [passwordMatchError, setPasswordMatchError] = useState<string>("");
+  const [isPasswordTouched, setIsPasswordTouched] = useState<boolean>(false);
+
   const schema = resetPasswordSchema.pick({
     newPassword: true,
     confirmPassword: true,
   });
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -30,15 +41,19 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
   const password = form.watch("newPassword", "");
 
   function onSubmit(data: z.infer<typeof schema>) {
-    console.log(data);
+    if (data.newPassword !== data.confirmPassword) {
+      setPasswordMatchError("Passwords do not match");
+      return;
+    }
+    setPasswordMatchError("");
     handleNext();
   }
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10">
-      <Card className="px-[3%] rounded-lg h-[454px] mt-2 ">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10">
+      <Card className="px-[3%] rounded-lg h-[454px] mt-2">
         <CardHeader className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3 ">
+          <div className="flex flex-col gap-3">
             <CardTitle className="font-medium text-3xl text-primary_black_text font">
               Change Password
             </CardTitle>
@@ -64,10 +79,19 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
                     </FormLabel>
                     <FormControl>
                       <PasswordToggle
-                        field={field}
+                        field={{
+                          ...field,
+                          onChange: (e) => {
+                            field.onChange(e);
+                            if (!isPasswordTouched) {
+                              setIsPasswordTouched(true);
+                            }
+                          },
+                        }}
                         placeholder="Enter your password"
                       />
                     </FormControl>
+                    <FormMessage className="text-[#E75F51] text-[13px] font-light" />
                   </FormItem>
                 )}
               />
@@ -86,10 +110,15 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
                         placeholder="Re-enter password"
                       />
                     </FormControl>
+                    {passwordMatchError && (
+                      <FormMessage className="text-[#E75F51] text-[13px] font-light">
+                        {passwordMatchError}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
-              <PasswordValidation password={password} />
+              {isPasswordTouched && <PasswordValidation password={password} />}
 
               <Button
                 type="submit"

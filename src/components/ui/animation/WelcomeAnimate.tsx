@@ -17,15 +17,16 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
     const backgroundTimer = setTimeout(() => {
       setShowInitialBackground(false);
       setShowInitialLogo(true);
-    }, 2000); // delay for showing the initial background color
+    }, 2000);
 
     const logoTimer = setTimeout(() => {
       setExpandDiv(true);
-    }, 4000); // duration for the initial logo pop-up effect
+    }, 4000);
 
     const completeTimer = setTimeout(() => {
+      localStorage.setItem("animationComplete", "true");
       onAnimationComplete();
-    }, 5000); // delay for ending the animation
+    }, 5000);
 
     return () => {
       clearTimeout(backgroundTimer);
@@ -66,22 +67,22 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
       {expandDiv && (
         <motion.div
           initial={{
-            width: "40%", // Initial width of the logo div
-            height: "40%", // Initial height of the logo div
-            borderRadius: "50%", // Initial border radius to keep it circular
-            backgroundColor: "#6D7C43", // Initial background color (same as the background)
-            position: "absolute", // Position the logo div absolutely for expansion
-            top: "50%", // Align to the center vertically
-            left: "50%", // Align to the center horizontally
-            translateX: "-50%", // Adjust horizontal position to center
-            translateY: "-50%", // Adjust vertical position to center
+            width: "40%",
+            height: "40%",
+            borderRadius: "50%",
+            backgroundColor: "#6D7C43",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            translateX: "-50%",
+            translateY: "-50%",
           }}
           animate={{
-            width: "100%", // Expand to fill the screen horizontally
-            height: "100%", // Expand to fill the screen vertically
-            borderRadius: "10%", // Remove border radius for a square shape
-            backgroundColor: "#ffffff", // Change background color to white
-            zIndex: 1, // Ensure it's above other elements
+            width: "100%",
+            height: "100%",
+            borderRadius: "10%",
+            backgroundColor: "#ffffff",
+            zIndex: 1,
           }}
           transition={{ duration: 1 }}
           className="flex justify-center items-center w-full h-full bg-main-background"

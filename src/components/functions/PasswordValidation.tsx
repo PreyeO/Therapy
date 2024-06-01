@@ -35,13 +35,13 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
     <div className="flex justify-between mb-4">
       <div
         className={`flex items-center justify-center flex-col  ${
-          passwordRequirements.minLength ? "text-green-500 " : "text-gray-500 "
+          passwordRequirements.minLength ? "text-green-500 " : "text-red-500 "
         }`}
       >
         <span className="font-normal text-base pb-4">6+</span>
         <span
           className={`font-normal text-sm ${
-            passwordRequirements.minLength ? "text-green-500" : "text-gray-500"
+            passwordRequirements.minLength ? "text-green-500" : "text-red-500"
           }`}
         >
           Character
@@ -51,7 +51,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         className={`flex items-center justify-center flex-col ${
           passwordRequirements.hasUpperCase
             ? "text-green-500 "
-            : "text-gray-500 "
+            : "text-red-500 "
         }`}
       >
         <span className="font-normal text-base pb-4">AA</span>
@@ -59,7 +59,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
           className={`font-normal text-sm ${
             passwordRequirements.hasUpperCase
               ? "text-green-500"
-              : "text-gray-500"
+              : "text-red-500"
           }`}
         >
           Uppercase
@@ -67,9 +67,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       </div>
       <div
         className={`flex items-center justify-center flex-col ${
-          passwordRequirements.hasLowerCase
-            ? "text-green-500 "
-            : "text-gray-500 "
+          passwordRequirements.hasLowerCase ? "text-green-500 " : "text-red-500"
         }`}
       >
         <span className="font-normal text-base pb-4">Aa</span>
@@ -77,7 +75,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
           className={`font-normal text-sm ${
             passwordRequirements.hasLowerCase
               ? "text-green-500"
-              : "text-gray-500"
+              : "text-red-500"
           }`}
         >
           Lowercase
@@ -85,13 +83,13 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       </div>
       <div
         className={`flex items-center justify-center flex-col ${
-          passwordRequirements.hasNumber ? "text-green-500 " : "text-gray-500 "
+          passwordRequirements.hasNumber ? "text-green-500 " : "text-red-500"
         }`}
       >
         <span className="font-normal text-base pb-4">123</span>
         <span
           className={`font-normal text-sm ${
-            passwordRequirements.hasNumber ? "text-green-500" : "text-gray-500"
+            passwordRequirements.hasNumber ? "text-green-500" : "text-red-500"
           }`}
         >
           Numbers
@@ -101,7 +99,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         className={`flex items-center justify-center flex-col ${
           passwordRequirements.hasSpecialChar
             ? "text-green-500 "
-            : "text-gray-500 "
+            : "text-red-500 "
         }`}
       >
         <span className="font-normal text-base pb-4">#*+</span>
@@ -109,7 +107,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
           className={`font-normal text-sm ${
             passwordRequirements.hasSpecialChar
               ? "text-green-500"
-              : "text-gray-500"
+              : "text-red-500"
           }`}
         >
           Special Character

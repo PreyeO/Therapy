@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { handleNextProps, resetPasswordSchema } from "@/types";
-// import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,7 +21,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// Import the PasswordToggle component
 
 export const ResetForm: FC<handleNextProps> = ({ handleNext }) => {
   const schema = resetPasswordSchema.pick({
@@ -38,11 +36,9 @@ export const ResetForm: FC<handleNextProps> = ({ handleNext }) => {
     handleNext();
   }
 
-  // const navigate = useNavigate();
-
   return (
-    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10 ">
-      <Card className="px-[3%] rounded-lg h-[454px] mt-16">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
+      <Card className="px-[3%] rounded-lg h-[454px] ">
         <CardHeader className="flex flex-col  gap-5">
           <div className="flex flex-col gap-3 ">
             <CardTitle className=" font-medium text-3xl text-primary_black_text font">

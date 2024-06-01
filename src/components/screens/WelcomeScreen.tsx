@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import FullLogo from "@/components/ui/logos/FullLogo";
@@ -10,6 +10,14 @@ import { Link } from "react-router-dom";
 
 const WelcomeScreen = () => {
   const [animationComplete, setAnimationComplete] = useState(false);
+
+  useEffect(() => {
+    const isAnimationComplete =
+      localStorage.getItem("animationComplete") === "true";
+    if (isAnimationComplete) {
+      setAnimationComplete(true);
+    }
+  }, []);
 
   const handleAnimationComplete = () => {
     setAnimationComplete(true);
@@ -58,7 +66,7 @@ const WelcomeScreen = () => {
               transition={{ duration: 0.5, delay: 1.5 }}
               className="flex flex-col gap-5"
             >
-              <Link to="/category">
+              <Link to="/signup">
                 <Button
                   size="lg"
                   className="h-16 w-[556px] text-xl font-medium"

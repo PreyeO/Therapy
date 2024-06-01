@@ -1,3 +1,4 @@
+// UserCategory.tsx
 import { FC } from "react";
 import { User, Mail } from "lucide-react";
 import {
@@ -49,8 +50,8 @@ export const UserCategory: FC<CategoryProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-16">
-      <Card className="px-[3%] rounded-lg h-[454px]  flex flex-col justify-center gap-10 mt-16">
+    <div className="max-w-[821px]  flex flex-col justify-center mx-auto min-h-screen">
+      <Card className="px-[3%] rounded-lg h-[454px]  flex flex-col justify-center gap-10 ">
         <CardHeader>
           <CardTitle className="font-medium text-3xl text-primary_black_text">
             Get Started As
@@ -107,5 +108,3 @@ export const UserCategory: FC<CategoryProps> = ({
     </div>
   );
 };
-
-UserCategory;

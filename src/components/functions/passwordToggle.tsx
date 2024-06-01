@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-const PasswordToggle = ({ field, placeholder }) => {
+interface PasswordToggleProps {
+  field: {
+    value: string;
+    onChange: (value: string) => void;
+  };
+  placeholder: string;
+}
+
+const PasswordToggle: React.FC<PasswordToggleProps> = ({
+  field,
+  placeholder,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    field.onChange(e.target.value);
+    if (!showPassword) {
+      setShowPassword(true);
+    }
   };
 
   return (
@@ -16,7 +34,8 @@ const PasswordToggle = ({ field, placeholder }) => {
         autoComplete="false"
         type={showPassword ? "text" : "password"}
         placeholder={placeholder}
-        {...field}
+        value={field.value}
+        onChange={handlePasswordChange}
       />
       <span
         className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"

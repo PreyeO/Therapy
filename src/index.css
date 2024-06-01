@@ -82,6 +82,10 @@
     src: url('../fonts/CabinetGrotesk') format('truetype');
          
   }
+  *{
+    margin:0;
+    padding: 0;
+  }
 
  
 
