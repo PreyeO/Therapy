@@ -5,9 +5,9 @@ import Image3 from "@/assets/image/HeroImage3.svg";
 // import { UserRound, Mail } from "lucide-react";
 
 export const imageData = [
-  { src: Image1, alt: "This is an image of a therapist", id: 1 },
-  { src: Image2, alt: "This is an image of a therapist", id: 2 },
-  { src: Image3, alt: "This is an image of a therapist", id: 3 },
+  { src: Image1, alt: "This is an image of a therapist", id: 1, size: 174.13 },
+  { src: Image2, alt: "This is an image of a therapist", id: 2, size: 174.13 },
+  { src: Image3, alt: "This is an image of a therapist", id: 3, size: 174.13 },
 ];
 
 // export const registrationCategories: {

@@ -51,7 +51,7 @@ export const UserCategory: FC<CategoryProps> = ({
 
   return (
     <div className="max-w-[821px]  flex flex-col justify-center mx-auto min-h-screen">
-      <Card className="px-[3%] rounded-lg h-[454px]  flex flex-col justify-center gap-10 ">
+      <Card className="rounded-lg p-5 flex flex-col justify-center gap-10 ">
         <CardHeader>
           <CardTitle className="font-medium text-3xl text-primary_black_text">
             Get Started As

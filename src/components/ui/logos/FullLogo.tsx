@@ -1,12 +1,18 @@
 import Logo1 from "@/assets/image/Logo1.png";
+import { FC } from "react";
 
-const FullLogo = () => {
+interface LogoProps {
+  width: number;
+  height: number;
+}
+
+const FullLogo: FC<LogoProps> = ({ width, height }) => {
   return (
     <img
       src={Logo1}
       alt="This is R&R therapy full company logo"
-      width={220}
-      height={100}
+      width={width}
+      height={height}
     />
   );
 };

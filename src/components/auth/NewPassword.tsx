@@ -50,8 +50,8 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
   }
 
   return (
-    <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10">
-      <Card className="px-[3%] rounded-lg h-[454px] mt-2">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto max-h-screen my-8">
+      <Card className="px-[3%] rounded-lg p-5 flex flex-col justify-center">
         <CardHeader className="flex flex-col gap-5">
           <div className="flex flex-col gap-3">
             <CardTitle className="font-medium text-3xl text-primary_black_text font">

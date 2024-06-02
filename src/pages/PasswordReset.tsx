@@ -28,7 +28,7 @@ const PasswordReset: FC = () => {
   return (
     <main className="overflow-clip h-screen">
       {steps.indexOf(step) !== steps.length - 1 && (
-        <div className="flex py-4">
+        <div className="flex py-4 px-4 ">
           <ArrowLeft
             className={`cursor-pointer ${
               isFirstStep || completed ? "cursor-not-allowed" : "cursor-pointer"

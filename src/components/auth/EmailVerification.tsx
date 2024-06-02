@@ -33,7 +33,7 @@ export const EmailVerification: FC<VerificationProps> = ({
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
-      <Card className="px-[3%] rounded-lg h-[454px] ">
+      <Card className="px-[3%] rounded-lg">
         <CardHeader>
           <Mail size={20} fill="white" className="" color="#041827" />
           <CardTitle className="font-medium text-3xl pt-6">
@@ -88,11 +88,11 @@ export const EmailVerification: FC<VerificationProps> = ({
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-4">
+            <div className="flex justify-between my-4">
               <p className="text-xl font-medium text-[#041827]">
                 Didn’t receive code?
               </p>
-              <div className="h-[62px] w-[230px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center text-army_green">
+              <div className=" w-[230px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center text-army_green">
                 <RotateCcw size={16} fill="white" className="" />
                 <p className="text-base font-medium cursor-pointer">
                   Resend Code

@@ -48,8 +48,8 @@ const Register: FC<RegisterProps> = ({ handleNext }) => {
   }
 
   return (
-    <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
-      <Card className="px-[3%] rounded-lg">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto">
+      <Card className="rounded-lg p-5 flex flex-col justify-center my-10">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
           <div className="flex flex-col gap-1 text-center">

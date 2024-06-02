@@ -61,6 +61,9 @@ module.exports = {
         home_border_gradient: "rgba(117,89,229,1),rgba(102,205,237,1)",
       },
 
+      boxShadow: {
+        custom: "rgba(60, 60, 60, 0.15)", // #3C3C3C26 is equivalent to rgba(60, 60, 60, 0.15)
+      },
       backgroundImage: {
         "main-background": "url('./assets/image/Background.svg')",
       },
