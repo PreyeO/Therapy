@@ -35,9 +35,10 @@ const Signup = () => {
       handleNext={handleNext}
       handleSubmit={handleEmailVerification}
     />,
+
     <Success
-      title="Password Reset Successful"
-      subtitle="You can now login with your new password"
+      title="Account Creation Successful"
+      subtitle="You can now login with your details"
     />,
   ];
 

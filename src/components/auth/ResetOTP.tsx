@@ -14,14 +14,12 @@ export const ResetOTP: FC<handleNextProps> = ({ handleNext }) => {
   const [otp, setOtp] = useState<string>("");
   const [pinNew, setPinNew] = useState<string[]>(Array(6).fill(""));
   const refs = [
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
-    useRef(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
   ];
 
   useEffect(() => {
@@ -29,6 +27,7 @@ export const ResetOTP: FC<handleNextProps> = ({ handleNext }) => {
       handleNext();
     }
   });
+
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto max-h-screen my-11">
       <motion.div

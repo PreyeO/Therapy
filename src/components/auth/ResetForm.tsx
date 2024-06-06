@@ -41,10 +41,10 @@ export const ResetForm: FC<handleNextProps> = ({ handleNext }) => {
       <Card className="px-[3%] rounded-lg p-5 flex flex-col justify-center ">
         <CardHeader className="flex flex-col  gap-5">
           <div className="flex flex-col gap-3 ">
-            <CardTitle className=" font-medium text-3xl text-primary_black_text font">
+            <CardTitle className=" font-medium md:text-3xl text-xl text-primary_black_text font">
               Forgot Password
             </CardTitle>
-            <CardDescription className="text-lg font-normal text-[#BDBDBD]">
+            <CardDescription className="md:text-lg text-base font-normal text-[#BDBDBD]">
               Enter email attached to your account
             </CardDescription>
           </div>

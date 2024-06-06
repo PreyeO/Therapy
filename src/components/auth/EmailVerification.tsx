@@ -15,6 +15,7 @@ export const EmailVerification: FC<VerificationProps> = ({
 }) => {
   const [otp, setOtp] = useState<string>("");
   const [pinNew, setPinNew] = useState<string[]>(Array(6).fill(""));
+
   const refs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -33,14 +34,14 @@ export const EmailVerification: FC<VerificationProps> = ({
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
-      <Card className="px-[3%] rounded-lg">
+      <Card className="md:px-[3%] rounded-lg">
         <CardHeader>
           <Mail size={20} fill="white" className="" color="#041827" />
-          <CardTitle className="font-medium text-3xl pt-6">
+          <CardTitle className="font-medium md:text-3xl text-xl pt-6">
             You’ve got mail
           </CardTitle>
-          <CardDescription className="font-normal text-xl text-placeholder_text">
-            Please enter the 4-digit OTP code sent to your email
+          <CardDescription className="font-normal md:text-xl text-base text-placeholder_text">
+            Please enter the 6-digit OTP code sent to
             <span className="text-army_green font-bold">
               {" "}
               chrisnnaji443@gmail.com
@@ -49,14 +50,16 @@ export const EmailVerification: FC<VerificationProps> = ({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-10">
-            <div className="h-[62px] w-[230px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center">
+            <div className="md:h-[62px] md:w-[230px] h-[44.36px] w-[164.73px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center">
               <Mail size={20} fill="white" className="" color="#7e1616" />
-              <p className="font-medium text-lg text-army_green">Open Gmail</p>
+              <p className="font-medium md:text-lg text-[12px] text-army_green">
+                Open Gmail
+              </p>
             </div>
-            <div className="flex justify-center gap-[25.48px]">
+            <div className="flex justify-center md:gap-[25.48px] gap-2 ">
               {pinNew.map((digit, index) => (
                 <div
-                  className="h-[67.45px] w-[67.45px] flex border rounded-[17.99px] bg-transparent"
+                  className="md:h-[67.45px] md:w-[67.45px] h-[42.45px] w-[42.45px] flex border md:rounded-[17.99px] rounded-[11.32px] bg-transparent"
                   key={index}
                 >
                   <input
@@ -88,13 +91,13 @@ export const EmailVerification: FC<VerificationProps> = ({
                 </div>
               ))}
             </div>
-            <div className="flex justify-between my-4">
-              <p className="text-xl font-medium text-[#041827]">
+            <div className="flex justify-between my-4 items-center">
+              <p className="md:text-xl text-[12px] font-medium text-[#041827]">
                 Didn’t receive code?
               </p>
-              <div className=" w-[230px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center text-army_green">
+              <div className=" md:h-[52.px] h-[42.2px] md:w-[230px] w-[155px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center text-army_green">
                 <RotateCcw size={16} fill="white" className="" />
-                <p className="text-base font-medium cursor-pointer">
+                <p className="md:text-base text-[12px] font-medium cursor-pointer">
                   Resend Code
                 </p>
               </div>

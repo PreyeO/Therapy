@@ -2,7 +2,7 @@ import WelcomeScreen from "@/components/screens/WelcomeScreen";
 
 const Landing = () => {
   return (
-    <main className=" ">
+    <main className=" flex flex-col justify-center items-center w-full overflow-clip">
       <WelcomeScreen />
     </main>
   );

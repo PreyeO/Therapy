@@ -51,13 +51,13 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto max-h-screen my-8">
-      <Card className="px-[3%] rounded-lg p-5 flex flex-col justify-center">
+      <Card className="md:px-[3%] rounded-lg md:p-5 flex flex-col justify-center">
         <CardHeader className="flex flex-col gap-5">
           <div className="flex flex-col gap-3">
-            <CardTitle className="font-medium text-3xl text-primary_black_text font">
+            <CardTitle className="font-medium md:text-3xl text-xl text-primary_black_text font">
               Change Password
             </CardTitle>
-            <CardDescription className="text-lg font-normal text-[#BDBDBD]">
+            <CardDescription className="md:text-lg text-base font-normal text-[#BDBDBD]">
               Enter your new password
             </CardDescription>
           </div>

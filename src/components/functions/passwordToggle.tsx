@@ -42,14 +42,14 @@ const PasswordToggle: React.FC<PasswordToggleProps> = ({
         onClick={togglePasswordVisibility}
       >
         {showPassword ? (
+          <Eye size={20} fill="white" className="cursor-pointer" color="gray" />
+        ) : (
           <EyeOff
             size={20}
             fill="white"
             className="cursor-pointer"
             color="gray"
           />
-        ) : (
-          <Eye size={20} fill="white" className="cursor-pointer" color="gray" />
         )}
       </span>
     </div>

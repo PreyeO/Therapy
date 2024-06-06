@@ -1,7 +1,8 @@
+import { EmailVerification } from "@/components/auth/EmailVerification";
 import { NewPassword } from "@/components/auth/NewPassword";
 // import { ResetDone } from "@/components/auth/ResetDone";
 import { ResetForm } from "@/components/auth/ResetForm";
-import { ResetOTP } from "@/components/auth/ResetOTP";
+// import { ResetOTP } from "@/components/auth/ResetOTP";
 import Success from "@/components/ui/notifications/Success";
 
 import { useMultiStepForm } from "@/hooks";
@@ -12,10 +13,18 @@ const PasswordReset: FC = () => {
   function handleNext() {
     next();
   }
+  const handleEmailVerification = () => {
+    // Logic to handle email verification (e.g., API call)
+    console.log("Email verified");
+  };
 
   const steps = [
     <ResetForm handleNext={handleNext} />,
-    <ResetOTP handleNext={handleNext} />,
+    <EmailVerification
+      handleNext={handleNext}
+      handleSubmit={handleEmailVerification}
+    />,
+
     <NewPassword handleNext={handleNext} />,
     <Success
       title="Account Verification Successful"

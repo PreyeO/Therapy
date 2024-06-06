@@ -50,21 +50,21 @@ export const UserCategory: FC<CategoryProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-[821px]  flex flex-col justify-center mx-auto min-h-screen">
-      <Card className="rounded-lg p-5 flex flex-col justify-center gap-10 ">
+    <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
+      <Card className="rounded-lg md:p-5 flex flex-col justify-center gap-10 mx-[3%] lg:mx-0">
         <CardHeader>
-          <CardTitle className="font-medium text-3xl text-primary_black_text">
+          <CardTitle className="font-medium md:text-3xl text-primary_black_text text-xl">
             Get Started As
           </CardTitle>
-          <CardDescription className="text-lg font-normal text-[#BDBDBD]">
+          <CardDescription className=" text-base md:text-lg font-normal text-[#BDBDBD]">
             Select the specification that suits you?
           </CardDescription>
         </CardHeader>
-        <div className="flex justify-center gap-[21px]">
+        <div className="flex justify-center gap-[21px] flex-wrap">
           {registrationCategories.map((category, index) => (
             <Card
               key={index}
-              className={`h-[100px] cursor-pointer w-[44%] rounded-[20px] bg-[#FBFBFB] border flex flex-col ${
+              className={`h-[100px] cursor-pointer min-w-[44%] rounded-[20px] bg-[#FBFBFB] border flex flex-col ${
                 category.key === type
                   ? "border-army_green shadow-md shadow-army_green"
                   : ""
@@ -102,7 +102,7 @@ export const UserCategory: FC<CategoryProps> = ({
           }}
           className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full my-5"
         >
-          Next
+          Continue
         </Button>
       </Card>
     </div>

@@ -49,14 +49,14 @@ const Register: FC<RegisterProps> = ({ handleNext }) => {
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto">
-      <Card className="rounded-lg p-5 flex flex-col justify-center my-10">
+      <Card className="rounded-lg md:p-5 p-0 flex flex-col justify-center my-10">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
           <div className="flex flex-col gap-1 text-center">
-            <CardTitle className="font-bold text-2xl text-primary_black_text">
+            <CardTitle className="font-bold md:text-3xl text-xl text-primary_black_text">
               Get Started
             </CardTitle>
-            <CardDescription className="text-lg font-normal text-[#BDBDBD]">
+            <CardDescription className="md:text-lg text-base leading-5 font-normal text-[#BDBDBD]">
               Create an account to enjoy our services
             </CardDescription>
           </div>

@@ -37,14 +37,14 @@ const Login = () => {
 
   return (
     <div className="max-w-[821px]  flex flex-col justify-center mx-auto py-10 h-screen">
-      <Card className="px-[3%] rounded-lg">
+      <Card className="md:px-[3%] rounded-lg">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
           <div className="flex flex-col gap-1 text-center">
-            <CardTitle className="font-bold text-2xl text-primary_black_text">
+            <CardTitle className="font-bold md:text-3xl text-xl text-primary_black_text">
               Login Account
             </CardTitle>
-            <CardDescription className="text-lg font-normal text-[#BDBDBD]">
+            <CardDescription className="md:text-lg text-base font-normal text-[#BDBDBD]">
               👋 Hey welcome back
             </CardDescription>
           </div>
@@ -95,7 +95,7 @@ const Login = () => {
                     <FormMessage />
 
                     <Link to="/passwordreset">
-                      <FormDescription className=" font-bold text-army_green cursor-pointer text-base text-right">
+                      <FormDescription className=" font-bold text-army_green cursor-pointer text-base text-right pt-1">
                         Forget password?
                       </FormDescription>
                     </Link>

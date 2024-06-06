@@ -18,7 +18,7 @@ interface MyComponentProps {
 const Success: FC<MyComponentProps> = ({ title, subtitle }) => {
   return (
     <div className="flex flex-col mx-auto min-h-screen justify-center max-w-[829px] ">
-      <Card className="flex flex-col justify-center gap-[40px] mx-auto p-10 rounded-lg">
+      <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,10 +42,10 @@ const Success: FC<MyComponentProps> = ({ title, subtitle }) => {
             >
               <Check className="text-[50px] text-white bg-army_green rounded-full h-[100px] w-[100px] p-3 " />
             </motion.div>
-            <CardTitle className="pt-8 text-[25.03px] font-bold text-primary_black_text">
+            <CardTitle className="pt-8 md:text-[25.03px] text-lg font-bold text-primary_black_text">
               {title}
             </CardTitle>
-            <CardDescription className=" font-normal text-[16.93px] text-placeholder_text">
+            <CardDescription className=" font-normal md:text-[16.93px] text-base text-placeholder_text">
               {subtitle}
             </CardDescription>
           </CardHeader>

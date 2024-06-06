@@ -16,12 +16,12 @@ const WelcomeScreen = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full">
+    <div className="flex flex-col justify-center items-center h-screen">
       {!animationComplete && (
         <WelcomeAnimation onAnimationComplete={handleAnimationComplete} />
       )}
       {animationComplete && (
-        <div className="flex flex-col justify-center items-center max-w-[763px] mx-auto h-screen">
+        <div className="flex flex-col justify-center items-center lg:w-[763px] mx-auto h-screen">
           <div className="flex flex-col justify-center items-center scale-75 bg-transparent">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
@@ -30,7 +30,7 @@ const WelcomeScreen = () => {
               className="gap-5 flex flex-col justify-center items-center"
             >
               <FullLogo width={220} height={156} />
-              <CardTitle className="font-bold lg:text-[45px] lg:leading-[52px] text-heading_black_text text-center text-xl leading-6 ">
+              <CardTitle className="  font-bold lg:text-[45px] lg:leading-[52px] text-heading_black_text text-center text-xl leading-6 px-[5%] lg:px-0">
                 Make Online And Live Consultation Easily With Top Therapist
                 <img
                   src={String}
@@ -61,7 +61,7 @@ const WelcomeScreen = () => {
               <Link to="/signup">
                 <Button
                   size="lg"
-                  className="h-16 w-[556px] text-xl font-medium"
+                  className="h-16 lg:w-[556px] w-[388px] text-xl font-medium"
                 >
                   Get Started
                 </Button>
@@ -69,7 +69,7 @@ const WelcomeScreen = () => {
               <Link to="/signin">
                 <Button
                   size="lg"
-                  className="h-16 w-[556px] text-xl font-medium bg-transparent text-army_green border border-army_green"
+                  className="h-16 lg:w-[556px] w-[388px] text-xl font-medium bg-transparent text-army_green border border-army_green"
                 >
                   Login
                 </Button>
