@@ -21,10 +21,12 @@ const passwordRegex = {
 };
 
 export const userDetailsRegisterSchema = z.object({
-  firstName: z.string({
+  first_name: z.string({
     required_error: "Provide your full name to continue",
   }),
-
+  last_name: z.string({
+    required_error: "Provide your full name to continue",
+  }),
   email: z
     .string({
       invalid_type_error: "Email is required",
@@ -38,15 +40,15 @@ export const userDetailsRegisterSchema = z.object({
       required_error: "Password is required",
     })
     .trim()
-    .min(6, {
+    .min(12, {
       message: "Password does not meet requirements",
     }),
-  password_confirmation: z
+  confirm_password: z
     .string({
       required_error: "Password is required",
     })
     .trim()
-    .min(6, {
+    .min(12, {
       message: "Password does not meet requirements",
     })
     .refine((value) => passwordRegex.hasUpperCase.test(value), {
@@ -61,7 +63,6 @@ export const userDetailsRegisterSchema = z.object({
     .refine((value) => passwordRegex.hasSpecialChar.test(value), {
       message: "Password must have at least one special character",
     }),
-
   terms: z
     .boolean({
       required_error: "You must agree to the terms and conditions",
@@ -69,17 +70,19 @@ export const userDetailsRegisterSchema = z.object({
     .refine((value) => value === true, {
       message: "You must agree to the terms and conditions",
     }),
+  userType: z.enum(["patient", "therapist"], {
+    required_error: "User type is required",
+  }),
 });
-
 export const verifyEmailSchema = z.object({
   emailOtp: z
     .string({
       invalid_type_error: "Invalid code",
     })
-    .min(4, {
+    .min(6, {
       message: "Invalid code",
     })
-    .max(4, {
+    .max(6, {
       message: "Invalid code",
     }),
 });
@@ -121,16 +124,16 @@ export const resetPasswordSchema = z.object({
   }),
 });
 
-export interface handleNextProps {
-  handleNext: () => void;
-  type?: RegisterDataType["userType"] | undefined;
-}
-
 export const OTPFormSchema = z.object({
   pin: z.string().min(4, {
     message: "Your one-time password must be 4 characters.",
   }),
 });
+
+export interface handleNextProps {
+  handleNext: (userId: string) => void; // Change this line
+  type?: RegisterDataType["userType"];
+}
 
 export interface UserState {
   userType: RegisterDataType["userType"];
@@ -138,9 +141,6 @@ export interface UserState {
 }
 
 export interface VerificationProps extends handleNextProps {
-  handleSubmit: (data: z.infer<typeof verifyEmailSchema>) => void;
+  handleSubmit: (otp: string) => void;
+  userType: RegisterDataType["userType"];
 }
-// export interface MultiStepProps {
-//   handleNext: () => void;
-//   handlePrev: () => void;
-// }

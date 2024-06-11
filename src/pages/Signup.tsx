@@ -1,17 +1,22 @@
-import { useMultiStepForm } from "@/hooks/index"; // Adjust the import path
+import { useState, ReactElement } from "react";
+import { useMultiStepForm } from "@/hooks/index";
 import { UserCategory } from "@/components/auth/UserCategory";
 import Register from "@/components/auth/Register";
 import { EmailVerification } from "@/components/auth/EmailVerification";
 import Success from "@/components/ui/notifications/Success";
 import { RegisterDataType } from "@/types";
-import { useState } from "react";
+import { verifyEmailOTP } from "@/services/api";
 
 const Signup = () => {
-  const [userType, setUserType] = useState<
-    RegisterDataType["userType"] | undefined
-  >(undefined);
+  const [userType, setUserType] =
+    useState<RegisterDataType["userType"]>("patient");
+  const [emailSent, setEmailSent] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [registrationSuccess, setRegistrationSuccess] =
+    useState<boolean>(false);
 
-  const handleNext = () => {
+  const handleNext = (id?: string) => {
+    if (id) setUserId(id);
     next();
   };
 
@@ -19,44 +24,70 @@ const Signup = () => {
     setUserType(type);
   };
 
-  const handleEmailVerification = () => {
-    // Logic to handle email verification (e.g., API call)
-    console.log("Email verified");
+  const handleEmailSent = (userId: string) => {
+    console.log("Email sent");
+    setUserId(userId);
+    setEmailSent(true);
+    handleNext(userId);
   };
 
-  const steps = [
+  const handleSubmitOTP = async (otp: string) => {
+    try {
+      if (userId) {
+        console.log("Verifying OTP:", otp); // Add logging
+        const response = await verifyEmailOTP(userId, otp); // Ensure token is included in request
+        console.log("OTP verification response:", response); // Add logging
+        if (response.success) {
+          setRegistrationSuccess(true);
+          handleNext();
+        } else {
+          console.error("Error verifying OTP:", response.error);
+        }
+      }
+    } catch (error) {
+      console.error("OTP verification error:", error);
+    }
+  };
+
+  const steps: ReactElement[] = [
     <UserCategory
+      key="UserCategory"
       handleNext={handleNext}
       handleType={handleType}
       type={userType}
     />,
-    <Register handleNext={handleNext} />,
-    <EmailVerification
-      handleNext={handleNext}
-      handleSubmit={handleEmailVerification}
-    />,
-
-    <Success
-      title="Account Creation Successful"
-      subtitle="You can now login with your details"
-    />,
   ];
 
-  const {
-    step,
-    next,
-    // prev,
+  if (userType && !emailSent) {
+    steps.push(
+      <Register
+        key="Register"
+        handleNext={handleEmailSent}
+        userType={userType}
+      />
+    );
+  } else if (emailSent && !registrationSuccess) {
+    steps.push(
+      <EmailVerification
+        key="EmailVerification"
+        handleNext={handleNext}
+        handleSubmit={handleSubmitOTP}
+        userType={userType}
+      />
+    );
+  } else if (registrationSuccess) {
+    steps.push(
+      <Success
+        key="Success"
+        title="Registration Successful"
+        subtitle="Your account has been created successfully"
+      />
+    );
+  }
 
-    // isFirstStep,
-  } = useMultiStepForm(steps);
+  const { step, next } = useMultiStepForm(steps);
 
-  return (
-    <main className="h-screen">
-      {step}
-      {/* Optionally, you can add navigation buttons to go to the previous step */}
-      {/* {!isFirstStep && <button onClick={prev}>Back</button>} */}
-    </main>
-  );
+  return <>{step}</>;
 };
 
 export default Signup;

@@ -97,7 +97,7 @@ export const UserCategory: FC<CategoryProps> = ({
               });
               return;
             }
-            handleNext();
+            handleNext("");
             navigate("/signup");
           }}
           className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full my-5"
