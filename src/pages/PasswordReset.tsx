@@ -1,34 +1,44 @@
-import { EmailVerification } from "@/components/auth/EmailVerification";
-import { NewPassword } from "@/components/auth/NewPassword";
-// import { ResetDone } from "@/components/auth/ResetDone";
-import { ResetForm } from "@/components/auth/ResetForm";
-// import { ResetOTP } from "@/components/auth/ResetOTP";
+import { useState } from "react";
+import { NewPassword } from "@/components/auth/reset_password/NewPassword";
+import { ResetForm } from "@/components/auth/reset_password/ResetForm";
+import { OtpVerification } from "@/components/auth/reset_password/OtpVerification";
 import Success from "@/components/ui/notifications/Success";
-
 import { useMultiStepForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
 import { FC } from "react";
 
 const PasswordReset: FC = () => {
-  function handleNext() {
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleNext = (
+    email?: string,
+    newPassword?: string,
+    confirmPassword?: string
+  ) => {
+    if (email) setEmail(email);
+    if (newPassword) setNewPassword(newPassword);
+    if (confirmPassword) setConfirmPassword(confirmPassword);
     next();
-  }
-  const handleEmailVerification = () => {
-    // Logic to handle email verification (e.g., API call)
-    console.log("Email verified");
   };
 
   const steps = [
     <ResetForm handleNext={handleNext} />,
-    <EmailVerification
-      handleNext={handleNext}
-      handleSubmit={handleEmailVerification}
+    <NewPassword
+      handleNext={(newPassword, confirmPassword) =>
+        handleNext(undefined, newPassword, confirmPassword)
+      }
     />,
-
-    <NewPassword handleNext={handleNext} />,
+    <OtpVerification
+      email={email}
+      newPassword={newPassword}
+      confirmPassword={confirmPassword}
+      handleNext={() => handleNext()}
+    />,
     <Success
       title="Account Verification Successful"
-      subtitle="You can now procced to your dashboard"
+      subtitle="You can now proceed to your dashboard"
     />,
   ];
 

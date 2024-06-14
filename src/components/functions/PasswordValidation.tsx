@@ -34,13 +34,13 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
   return (
     <div className="flex justify-between mb-4">
       <div
-        className={`flex items-center justify-center flex-col  ${
+        className={`flex items-center justify-center flex-col text-[11.61px]  md:text-lg  ${
           passwordRequirements.minLength ? " text-army_green " : "text-red-500 "
         }`}
       >
-        <span className="font-normal md:text-base text-lg  md:pb-4">6+</span>
+        <span className="font-normal md:pb-4">6+</span>
         <span
-          className={`font-normal text-sm hidden md:block ${
+          className={`font-normal ${
             passwordRequirements.minLength
               ? " text-army_green "
               : "text-red-500"
@@ -50,15 +50,15 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         </span>
       </div>
       <div
-        className={`flex items-center justify-center flex-col ${
+        className={`flex items-center justify-center flex-col text-[11.61px]  md:text-lg ${
           passwordRequirements.hasUpperCase
             ? " text-army_green "
             : "text-red-500 "
         }`}
       >
-        <span className="font-normal md:text-base text-lg  md:pb-4">AA</span>
+        <span className="font-normal  md:pb-4">AA</span>
         <span
-          className={`font-normal text-sm hidden md:block ${
+          className={`font-normal  ${
             passwordRequirements.hasUpperCase
               ? " text-army_green "
               : "text-red-500"
@@ -68,15 +68,15 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         </span>
       </div>
       <div
-        className={`flex items-center justify-center flex-col ${
+        className={`flex items-center justify-center flex-col text-[11.61px]  md:text-lg ${
           passwordRequirements.hasLowerCase
             ? " text-army_green "
             : "text-red-500"
         }`}
       >
-        <span className="font-normal md:text-base text-lg  md:pb-4">Aa</span>
+        <span className="font-normal  md:pb-4">Aa</span>
         <span
-          className={`font-normal text-sm hidden md:block ${
+          className={`font-normal ${
             passwordRequirements.hasLowerCase
               ? " text-army_green "
               : "text-red-500"
@@ -86,13 +86,13 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         </span>
       </div>
       <div
-        className={`flex items-center justify-center flex-col ${
+        className={`flex items-center justify-center flex-col text-[11.61px]  md:text-lg  ${
           passwordRequirements.hasNumber ? " text-army_green " : "text-red-500"
         }`}
       >
-        <span className="font-normal  md:text-base text-lg  md:pb-4">123</span>
+        <span className="font-normal md:pb-4">123</span>
         <span
-          className={`font-normal text-sm hidden md:block ${
+          className={`font-normal  ${
             passwordRequirements.hasNumber
               ? " text-army_green "
               : "text-red-500"
@@ -102,15 +102,15 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
         </span>
       </div>
       <div
-        className={`flex items-center justify-center flex-col  ${
+        className={`flex items-center justify-center flex-col text-[11.61px]  md:text-lg   ${
           passwordRequirements.hasSpecialChar
             ? " text-army_green "
             : "text-red-500 "
         }`}
       >
-        <span className="font-normal md:text-base text-lg  md:pb-4">#*+</span>
+        <span className="font-normal md:pb-4">#*+</span>
         <span
-          className={`font-normal text-sm hidden md:block ${
+          className={`font-normal  ${
             passwordRequirements.hasSpecialChar
               ? " text-army_green "
               : "text-red-500"

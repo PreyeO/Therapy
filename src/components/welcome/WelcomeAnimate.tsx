@@ -52,7 +52,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
       <motion.div
         initial={{ backgroundColor: "#6D7C43" }}
         animate={{
-          backgroundColor: showInitialLogo ? "#6D7C43" : "transparent",
+          backgroundColor: showInitialLogo ? "#6D7C43" : "white",
         }}
         transition={{ duration: 1 }}
         className="flex flex-col justify-center items-center h-screen bg-main-background"

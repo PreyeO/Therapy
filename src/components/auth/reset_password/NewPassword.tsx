@@ -3,7 +3,6 @@ import { handleNextProps, resetPasswordSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import {
   Form,
   FormControl,
@@ -11,9 +10,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
-
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -21,9 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import PasswordValidation from "@/components/functions/PasswordValidation";
-import PasswordToggle from "@/components/functions/passwordToggle"; // Import the PasswordToggle component
+import PasswordToggle from "@/components/functions/passwordToggle";
 
 export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
   const [passwordMatchError, setPasswordMatchError] = useState<string>("");
@@ -46,7 +43,7 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
       return;
     }
     setPasswordMatchError("");
-    handleNext();
+    handleNext(data.newPassword, data.confirmPassword);
   }
 
   return (

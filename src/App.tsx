@@ -4,8 +4,9 @@ import Landing from "@/pages/Landing";
 import Signin from "@/pages/Signin";
 import Signup from "@/pages/Signup";
 import PasswordReset from "@/pages/PasswordReset";
-
+// import { Toaster } from "@/components/ui/sonner.tsx";
 import Testing from "./pages/Testing";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="passwordreset" element={<PasswordReset />} />
             <Route path="/testing" element={<Testing />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>
       </div>

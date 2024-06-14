@@ -4,8 +4,8 @@ export const loginFormSchema = z.object({
   email: z.string().email({
     message: "Please provide a valid email",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters",
+  password: z.string().min(6, {
+    message: "Please provide a valid password",
   }),
 });
 
@@ -25,12 +25,12 @@ export const userDetailsRegisterSchema = z.object({
     required_error: "Provide your full name to continue",
   }),
   last_name: z.string({
-    required_error: "Provide your full name to continue",
+    required_error: "Provide your last name to continue",
   }),
   email: z
     .string({
       invalid_type_error: "Email is required",
-      required_error: "Please provide your email to continue",
+      required_error: "provide your email to continue",
     })
     .email({
       message: "Provide a valid mail to continue",
@@ -40,7 +40,7 @@ export const userDetailsRegisterSchema = z.object({
       required_error: "Password is required",
     })
     .trim()
-    .min(12, {
+    .min(6, {
       message: "Password does not meet requirements",
     }),
   confirm_password: z
@@ -48,7 +48,7 @@ export const userDetailsRegisterSchema = z.object({
       required_error: "Password is required",
     })
     .trim()
-    .min(12, {
+    .min(6, {
       message: "Password does not meet requirements",
     })
     .refine((value) => passwordRegex.hasUpperCase.test(value), {
@@ -75,7 +75,7 @@ export const userDetailsRegisterSchema = z.object({
   }),
 });
 export const verifyEmailSchema = z.object({
-  emailOtp: z
+  otp: z
     .string({
       invalid_type_error: "Invalid code",
     })
@@ -125,14 +125,29 @@ export const resetPasswordSchema = z.object({
 });
 
 export const OTPFormSchema = z.object({
-  pin: z.string().min(4, {
-    message: "Your one-time password must be 4 characters.",
-  }),
+  pin: z
+    .string({
+      invalid_type_error: "Invalid code",
+    })
+    .min(6, {
+      message: "Invalid code",
+    })
+    .max(6, {
+      message: "Invalid code",
+    }),
 });
 
 export interface handleNextProps {
-  handleNext: (userId: string) => void; // Change this line
+  handleNext: (userId: string, token: string, onSuccess?: boolean) => void;
   type?: RegisterDataType["userType"];
+}
+
+export interface handleNextPropsTwo {
+  handleNext: (
+    email?: string,
+    newPassword?: string,
+    confirmPassword?: string
+  ) => void;
 }
 
 export interface UserState {

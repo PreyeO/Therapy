@@ -1,9 +1,8 @@
 import { FC } from "react";
-import { handleNextProps, resetPasswordSchema } from "@/types";
+import { handleNextPropsTwo, resetPasswordSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import {
   Form,
   FormControl,
@@ -11,9 +10,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -21,19 +20,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { searchUserEmail } from "@/services/api/password_reset";
 
-export const ResetForm: FC<handleNextProps> = ({ handleNext }) => {
-  const schema = resetPasswordSchema.pick({
-    email: true,
-  });
+export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
+  const schema = resetPasswordSchema.pick({ email: true });
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
-  function onSubmit(data: z.infer<typeof schema>) {
-    console.log(data);
-    handleNext();
+  async function onSubmit(data: z.infer<typeof schema>) {
+    try {
+      const response = await searchUserEmail(data.email);
+      console.log(response);
+      handleNext(data.email);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   return (

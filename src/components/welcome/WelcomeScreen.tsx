@@ -4,7 +4,7 @@ import { CardContent, CardTitle } from "@/components/ui/card";
 import FullLogo from "@/components/ui/logos/FullLogo";
 import String from "@/assets/image/String.png";
 import { Button } from "../ui/button";
-import WelcomeAnimation from "@/components/ui/animation/WelcomeAnimate";
+import WelcomeAnimation from "@/components/welcome/WelcomeAnimate";
 import HeroImage from "../images/HeroImage";
 import { Link } from "react-router-dom";
 
