@@ -35,7 +35,7 @@ const Success: FC<MyComponentProps> = ({ title, subtitle }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 1,
-                delay: 0.5,
+                delay: 0.8,
                 type: "spring",
                 bounce: 0.8,
               }}

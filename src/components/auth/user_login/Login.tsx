@@ -10,12 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Logo from "@/components/ui/logos/Logo";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser, setAuthToken } from "@/services/api/auth";
 import LoginForm from "@/components/auth/user_login/LoginForm";
+import { ToastContainer, toast } from "react-toastify";
+import { useState } from "react";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   // call in react-hook-form validation
   const formMethods = useForm<z.infer<typeof loginFormSchema>>({
@@ -24,6 +28,7 @@ const Login = () => {
 
   // sending a request to login and navigate to dashboard on success
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
+    setLoading(true);
     try {
       const response = await loginUser(data);
       const token = response.token;
@@ -31,6 +36,9 @@ const Login = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
+      toast.error("Ooops!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,10 +65,21 @@ const Login = () => {
               className="flex flex-col gap-[30px]"
             >
               <LoginForm />
+              <ButtonLoader loading={loading} text="Login" />
+
+              <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
+                New to R&R Therapy?
+                <Link to="/signup">
+                  <span className="text-army_green underline font-bold">
+                    Sign Up here
+                  </span>
+                </Link>
+              </p>
             </form>
           </FormProvider>
         </CardContent>
       </Card>
+      <ToastContainer />
     </div>
   );
 };

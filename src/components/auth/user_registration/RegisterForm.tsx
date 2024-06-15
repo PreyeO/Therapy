@@ -14,7 +14,7 @@ import { Checkbox } from "../../ui/checkbox";
 import PasswordValidation from "@/components/functions/PasswordValidation";
 import PasswordToggle from "@/components/functions/passwordToggle";
 import { userDetailsRegisterSchema } from "@/types";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 
 interface RegisterFormFieldsProps {
   passwordMatchError: string;
@@ -165,20 +165,6 @@ const RegisterForm: FC<RegisterFormFieldsProps> = ({ passwordMatchError }) => {
           </FormItem>
         )}
       />
-      <Button
-        type="submit"
-        className="w-full rounded-full bg-army_green font-semibold text-white hover:bg-army_green h-14 text-base"
-      >
-        Create Account
-      </Button>
-      <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
-        Already have an account?
-        <Link to="/signin">
-          <span className="text-army_green underline font-bold">
-            Sign in here
-          </span>
-        </Link>
-      </p>
     </div>
   );
 };

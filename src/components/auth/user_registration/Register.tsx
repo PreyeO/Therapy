@@ -12,7 +12,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "sonner";
 
 import {
   Card,
@@ -23,6 +22,10 @@ import {
 } from "@/components/ui/card";
 import Logo from "@/components/ui/logos/Logo";
 import RegisterForm from "@/components/auth/user_registration/RegisterForm";
+// import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 
 // accessing user category type
 interface RegisterProps extends handleNextProps {
@@ -31,6 +34,7 @@ interface RegisterProps extends handleNextProps {
 
 const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
   const [passwordMatchError, setPasswordMatchError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // accessing validated schema
   const formMethods = useForm<z.infer<typeof userDetailsRegisterSchema>>({
@@ -65,13 +69,15 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
     }
   };
 
-  // submitting both the forms payload and semding request for otp
+  // submitting both the forms payload and sending request for otp
   const onSubmit = async (data: z.infer<typeof userDetailsRegisterSchema>) => {
+    setLoading(true);
     console.log("Form submitted!", data);
     try {
-      // comparing passworded inputed and re-entry password
+      // comparing passwords inputted and re-entry password
       if (data.password !== data.confirm_password) {
         setPasswordMatchError("Passwords do not match");
+        setLoading(false);
         return;
       }
 
@@ -101,11 +107,15 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
       const userId = response?.data?.userId;
       if (userId) {
         await handleSendOTP(userId);
-        toast("Thank you for registering with us. Check your mail for");
       }
     } catch (error) {
       console.error("Registration error:", error);
-      toast("Registration error:");
+      // toast.error("Registration error:", error);
+      toast.error("Ooops!:");
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000); // Adding a 2-second delay to see the spinner
     }
   };
 
@@ -132,10 +142,23 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
               className="flex flex-col gap-[30px]"
             >
               <RegisterForm passwordMatchError={passwordMatchError} />
+              <ButtonLoader loading={loading} text="Create Account" />
+              <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
+                Already have an account?
+                <Link to="/signin">
+                  <span className="text-army_green underline font-bold">
+                    Sign in here
+                  </span>
+                </Link>
+              </p>
             </form>
           </FormProvider>
         </CardContent>
       </Card>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };

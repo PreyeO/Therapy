@@ -7,7 +7,6 @@ import {
   FormLabel,
   FormMessage,
 } from "../../ui/form";
-import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import PasswordToggle from "@/components/functions/passwordToggle";
 import { Link } from "react-router-dom";
@@ -62,22 +61,6 @@ const LoginForm = () => {
           </FormItem>
         )}
       />
-
-      <Button
-        type="submit"
-        className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full"
-      >
-        Login
-      </Button>
-
-      <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
-        New to R&R Therapy?
-        <Link to="/signup">
-          <span className="text-army_green underline font-bold">
-            Sign Up here
-          </span>
-        </Link>
-      </p>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { useMultiStepForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
 import { FC } from "react";
 
-const PasswordReset: FC = () => {
+const PasswordResetSteps: FC = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,15 +37,15 @@ const PasswordReset: FC = () => {
       handleNext={() => handleNext()}
     />,
     <Success
-      title="Account Verification Successful"
-      subtitle="You can now proceed to your dashboard"
+      title="Password Reset Successful"
+      subtitle="You can now proceed to login"
     />,
   ];
 
   const { step, prev, next, isFirstStep, completed } = useMultiStepForm(steps);
 
   return (
-    <main className="overflow-clip h-screen">
+    <>
       {steps.indexOf(step) !== steps.length - 1 && (
         <div className="flex py-4 px-4 ">
           <ArrowLeft
@@ -62,8 +62,8 @@ const PasswordReset: FC = () => {
         </div>
       )}
       <div className="w-full">{step}</div>
-    </main>
+    </>
   );
 };
 
-export default PasswordReset;
+export default PasswordResetSteps;

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { handleNextPropsTwo, resetPasswordSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -21,21 +20,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { searchUserEmail } from "@/services/api/password_reset";
+import { toast } from "sonner";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 
 export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
   const schema = resetPasswordSchema.pick({ email: true });
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
   async function onSubmit(data: z.infer<typeof schema>) {
+    setLoading(true);
     try {
       const response = await searchUserEmail(data.email);
       console.log(response);
       handleNext(data.email);
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Ooops!");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -81,12 +87,7 @@ export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
                 )}
               />
 
-              <Button
-                type="submit"
-                className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full mt-3"
-              >
-                Continue
-              </Button>
+              <ButtonLoader loading={loading} text="Continue" />
             </form>
           </Form>
         </CardContent>

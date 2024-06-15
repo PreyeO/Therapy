@@ -1,14 +1,13 @@
-// components/Signup.tsx
-
+// components/auth/SignupSteps.tsx
 import { useState, ReactElement } from "react";
 import { useMultiStepForm } from "@/hooks/index";
 import { UserCategory } from "@/components/auth/UserCategory";
 import Register from "@/components/auth/user_registration/Register";
-import { EmailVerification } from "@/components/auth/user_verification/EmailVerification";
+import EmailVerification from "@/components/auth/user_verification/EmailVerification";
 import Success from "@/components/ui/notifications/Success";
 import { RegisterDataType } from "@/types";
 
-const Signup = () => {
+const SignupSteps = () => {
   const [userType, setUserType] =
     useState<RegisterDataType["userType"]>("patient");
   const [emailSent, setEmailSent] = useState<boolean>(false);
@@ -29,8 +28,6 @@ const Signup = () => {
   };
 
   const handleEmailSent = (userId: string, token: string) => {
-    console.log("Email sent");
-    console.log("Received token: ", token); // Log the received token
     setUserId(userId);
     setToken(token);
     setEmailSent(true);
@@ -78,4 +75,4 @@ const Signup = () => {
   return <>{step}</>;
 };
 
-export default Signup;
+export default SignupSteps;

@@ -1,14 +1,8 @@
-import Success from "@/components/ui/notifications/Success";
-
 const Testing = () => {
   return (
-    <div>
-      <Success
-        title="Account Verification Successful"
-        subtitle="You can now procced to your dashboard"
-      />
-      ,
-    </div>
+    <main className=" h-screen flex flex-col  justify-center items-center">
+      <div className="loader">hi</div>
+    </main>
   );
 };
 

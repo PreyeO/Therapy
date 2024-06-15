@@ -1,10 +1,9 @@
-// import { Button } from "@/components/ui/button";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "@/pages/Landing";
 import Signin from "@/pages/Signin";
-import Signup from "@/pages/Signup";
-import PasswordReset from "@/pages/PasswordReset";
-// import { Toaster } from "@/components/ui/sonner.tsx";
+import Signup from "@/pages/signupPage/Signup";
+import PasswordReset from "@/pages/PasswordResetPage/PasswordReset";
+import "react-toastify/dist/ReactToastify.css";
 import Testing from "./pages/Testing";
 import Dashboard from "./pages/Dashboard";
 

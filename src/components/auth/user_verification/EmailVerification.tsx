@@ -13,7 +13,7 @@ interface EmailVerificationProps {
   handleNext: (userId?: string, token?: string, isSuccess?: boolean) => void;
 }
 
-export const EmailVerification = ({
+const EmailVerification = ({
   userId,
   token,
   handleNext,
@@ -35,10 +35,12 @@ export const EmailVerification = ({
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
       <VerificationCard
-        email="chrisnnaji443@gmail.com"
+        email={userId}
         verifyOtp={verifyOtp}
         resendOtp={resendOtp}
       />
     </div>
   );
 };
+
+export default EmailVerification;

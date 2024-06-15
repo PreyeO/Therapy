@@ -34,7 +34,6 @@ export const OtpVerification: FC<OtpVerificationProps> = ({
   const resendOtp = async () => {
     try {
       await searchUserEmail(email);
-      alert("OTP resent successfully");
     } catch (error) {
       console.error("Error resending OTP:", error);
     }

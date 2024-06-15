@@ -62,7 +62,7 @@ module.exports = {
       },
 
       boxShadow: {
-        custom: "rgba(60, 60, 60, 0.15)", // #3C3C3C26 is equivalent to rgba(60, 60, 60, 0.15)
+        custom: "rgba(60, 60, 60, 0.15)",
       },
       backgroundImage: {
         "main-background": "url('./assets/image/Background.svg')",
