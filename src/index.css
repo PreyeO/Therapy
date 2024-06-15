@@ -161,7 +161,65 @@
   font-size: 20.99px;
 }
 
+@keyframes move-ellipse-0 {
+  0% {
+    transform: translate(-100px, 0) rotate(-10deg);
+  }
+  33% {
+    transform: translate(80px, 24px) rotate(10deg);
+  }
+  66% {
+    transform: translate(-14px, -24px) rotate(0deg);
+  }
+  100% {
+    transform: translate(-100px, 0) rotate(-10deg);
+  }
+}
 
+@keyframes move-ellipse-1 {
+  0% {
+    transform: translate(80px, 24px) rotate(10deg);
+  }
+  33% {
+    transform: translate(-14px, -24px) rotate(0deg);
+  }
+  66% {
+    transform: translate(-100px, 0) rotate(-10deg);
+  }
+  100% {
+    transform: translate(80px, 24px) rotate(10deg);
+  }
+}
+
+@keyframes move-ellipse-2 {
+  0% {
+    transform: translate(-14px, -24px) rotate(0deg);
+  }
+  33% {
+    transform: translate(-100px, 0) rotate(-10deg);
+  }
+  66% {
+    transform: translate(80px, 24px) rotate(10deg);
+  }
+  100% {
+    transform: translate(-14px, -24px) rotate(0deg);
+  }
+}
+
+.image-position-0 {
+  z-index: 10;
+  animation: move-ellipse-0 3s infinite;
+}
+
+.image-position-1 {
+  z-index: 5;
+  animation: move-ellipse-1 3s infinite;
+}
+
+.image-position-2 {
+  z-index: 1;
+  animation: move-ellipse-2 3s infinite;
+}
   
   
   

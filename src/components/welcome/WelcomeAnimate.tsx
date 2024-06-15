@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Logo from "@/components/ui/logos/Logo";
-import FullLogo from "@/components/ui/logos/FullLogo"; // Import the FullLogo component
+import FullLogo from "@/components/ui/logos/FullLogo";
 
 interface InitialAnimationProps {
   onAnimationComplete: () => void;
@@ -13,7 +13,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
   const [showInitialBackground, setShowInitialBackground] = useState(true);
   const [showInitialLogo, setShowInitialLogo] = useState(false);
   const [expandDiv, setExpandDiv] = useState(false);
-  const [showFullLogo, setShowFullLogo] = useState(false); // New state for FullLogo
+  const [showFullLogo, setShowFullLogo] = useState(false);
   const [slideDown, setSlideDown] = useState(false);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
         animate={{
           backgroundColor: showInitialLogo ? "#6D7C43" : "white",
         }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.5 }}
         className="flex flex-col justify-center items-center h-screen bg-main-background"
       >
         {showInitialBackground && (
@@ -69,7 +69,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
               type: "spring",
               bounce: 0.7,
               ease: "easeInOut",
-              x: { duration: 1 },
+              x: { duration: 0.5 },
             }}
             className="flex flex-col justify-center items-center"
           >
@@ -99,7 +99,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
               backgroundColor: "#ffffff",
               zIndex: 1,
             }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
             className="flex justify-center items-center w-full h-full bg-main-background"
           >
             {!slideDown && !showFullLogo && (
@@ -110,9 +110,9 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
 
             {showFullLogo && (
               <motion.div
-                initial={{
-                  opacity: 1,
-                }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="logo w-full h-full flex justify-center items-center"
               >
                 <FullLogo width={150} height={100} />

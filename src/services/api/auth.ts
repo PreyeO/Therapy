@@ -1,8 +1,6 @@
-// API file
-
 import axios from "axios";
 
-const BASE_URL = "https://rr-therapy-development.up.railway.app";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -22,7 +20,13 @@ export const registerUser = async (userData) => {
     const response = await api.post("/api/users/", userData);
     return response;
   } catch (error) {
-    throw new Error("Unknown error occurred");
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.email?.[0] || "Unknown error occurred";
+      throw new Error(message);
+    } else {
+      throw new Error("Unknown error occurred");
+    }
   }
 };
 
@@ -34,7 +38,12 @@ export const sendOTPToEmail = async (userId) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error("Error sending OTP");
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.detail || "Error sending OTP";
+      throw new Error(message);
+    } else {
+      throw new Error("Error sending OTP");
+    }
   }
 };
 
@@ -47,7 +56,12 @@ export const verifyEmailOTP = async (userId, otp) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error("Unknown error occurred");
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.detail || "Unknown error occurred";
+      throw new Error(message);
+    } else {
+      throw new Error("Unknown error occurred");
+    }
   }
 };
 
@@ -57,6 +71,12 @@ export const loginUser = async (loginData) => {
     const response = await api.post("/api/users/login/", loginData);
     return response.data;
   } catch (error) {
-    throw new Error("Error logging in user");
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.non_field_errors?.[0] || "Error logging in user";
+      throw new Error(message);
+    } else {
+      throw new Error("Error logging in user");
+    }
   }
 };

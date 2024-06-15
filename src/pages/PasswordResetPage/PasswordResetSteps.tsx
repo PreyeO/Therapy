@@ -6,11 +6,14 @@ import Success from "@/components/ui/notifications/Success";
 import { useMultiStepForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PasswordResetSteps: FC = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleNext = (
     email?: string,
@@ -44,17 +47,23 @@ const PasswordResetSteps: FC = () => {
 
   const { step, prev, next, isFirstStep, completed } = useMultiStepForm(steps);
 
+  const handleBack = () => {
+    if (steps.indexOf(step) === 0) {
+      navigate("/signin"); // Redirect to login page if on the first step
+    } else if (!isFirstStep && !completed) {
+      prev();
+    }
+  };
+
   return (
     <>
       {steps.indexOf(step) !== steps.length - 1 && (
-        <div className="flex py-4 px-4 ">
+        <div className="flex py-4 px-4">
           <ArrowLeft
             className={`cursor-pointer ${
               isFirstStep || completed ? "cursor-not-allowed" : "cursor-pointer"
             }`}
-            onClick={() => {
-              !isFirstStep && !completed && prev();
-            }}
+            onClick={handleBack} // Use handleBack function
             size={25.82}
             color="#0D001E"
           />

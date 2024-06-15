@@ -138,7 +138,12 @@ export const OTPFormSchema = z.object({
 });
 
 export interface handleNextProps {
-  handleNext: (userId: string, token: string, onSuccess?: boolean) => void;
+  handleNext: (
+    userId: string,
+    token: string,
+    email: string,
+    onSuccess?: boolean
+  ) => void;
   type?: RegisterDataType["userType"];
 }
 
