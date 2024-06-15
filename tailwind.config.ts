@@ -16,6 +16,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      CabinetGrotesk: ["cabinetGrotesk", "sans-serif"],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -52,9 +55,17 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         primary_black_text: "#041827",
+        placeholder_text: "#A3A3A3",
         heading_black_text: "#2A2A2A",
         army_green: "#6D7C43",
         home_border_gradient: "rgba(117,89,229,1),rgba(102,205,237,1)",
+      },
+
+      boxShadow: {
+        custom: "rgba(60, 60, 60, 0.15)",
+      },
+      backgroundImage: {
+        "main-background": "url('./assets/image/Background.svg')",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -62,6 +73,10 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
