@@ -90,7 +90,7 @@ export const VerificationCard = ({
   const handleResendCode = async () => {
     try {
       await resendOtp();
-      toast.error("OTP resent successfully");
+      toast("OTP resent successfully");
       setResendEnabled(false);
       setResetTrigger((prev) => prev + 1); // Trigger timer reset
     } catch (error) {

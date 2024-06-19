@@ -137,20 +137,6 @@
     
 
    
-/* Tailwind CSS Custom Class Example */
-/* 
-.eclipse-wrapper {
-  background-image: url('./assets/image/Ellipse.svg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  width: 443.85px; 
-  height: 251.72px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-} */
 
 .input-cursor-style {
   caret-color: #6D7C43; /* Change the input cursor color */
@@ -161,65 +147,56 @@
   font-size: 20.99px;
 }
 
-@keyframes move-ellipse-0 {
-  0% {
-    transform: translate(-100px, 0) rotate(-10deg);
-  }
-  33% {
-    transform: translate(80px, 24px) rotate(10deg);
-  }
-  66% {
-    transform: translate(-14px, -24px) rotate(0deg);
-  }
-  100% {
-    transform: translate(-100px, 0) rotate(-10deg);
-  }
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-@keyframes move-ellipse-1 {
-  0% {
-    transform: translate(80px, 24px) rotate(10deg);
-  }
-  33% {
-    transform: translate(-14px, -24px) rotate(0deg);
-  }
-  66% {
-    transform: translate(-100px, 0) rotate(-10deg);
-  }
-  100% {
-    transform: translate(80px, 24px) rotate(10deg);
-  }
+.dashboard-header {
+  background-color: #282c34;
+  color: white;
+  padding: 20px;
+  text-align: center;
 }
 
-@keyframes move-ellipse-2 {
-  0% {
-    transform: translate(-14px, -24px) rotate(0deg);
-  }
-  33% {
-    transform: translate(-100px, 0) rotate(-10deg);
-  }
-  66% {
-    transform: translate(80px, 24px) rotate(10deg);
-  }
-  100% {
-    transform: translate(-14px, -24px) rotate(0deg);
-  }
+.dashboard-container {
+  display: flex;
+  flex: 1;
 }
 
-.image-position-0 {
-  z-index: 10;
-  animation: move-ellipse-0 3s infinite;
+.dashboard-sidebar {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
 }
 
-.image-position-1 {
-  z-index: 5;
-  animation: move-ellipse-1 3s infinite;
+.dashboard-sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-.image-position-2 {
-  z-index: 1;
-  animation: move-ellipse-2 3s infinite;
+.dashboard-sidebar nav ul li {
+  margin: 10px 0;
 }
+
+.dashboard-sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.dashboard-sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+}
+
+
   
   
   
