@@ -15,7 +15,7 @@ const Dropdown: React.FC<DropdownProps> = ({ items, isOpen, onClose }) => {
         {items.map((item, index) => (
           <li
             key={index}
-            className="p-2 hover:bg-gray-200"
+            className="p-1 hover:bg-gray-200"
             onClick={() => {
               onClose();
               item.onClick();

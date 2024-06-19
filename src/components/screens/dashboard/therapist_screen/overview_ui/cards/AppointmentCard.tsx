@@ -1,5 +1,6 @@
 import ArrowIcon from "@/assets/icon/Arrow";
-import LightTitle from "@/components/ui/Titles/LightTitle";
+import Title from "@/components/ui/Titles/Title";
+
 import {
   Card,
   CardDescription,
@@ -26,9 +27,9 @@ const AppointmentCard: FC<AppointmentCardProps> = ({ className, icon }) => {
           </div>
           <div>
             <CardTitle>
-              <LightTitle
+              <Title
                 title="Total appointment"
-                className="text-[12px] text-primary_black_text"
+                className="text-[12px] text-primary_black_text font-normal"
               />
             </CardTitle>
             <CardDescription className="flex justify-between font-bold text-primary_black_text items-center w-[94px]">

@@ -121,20 +121,48 @@ export const requestsData = [
 export const upcomingData = [
   {
     name: "Burna Boy",
-    time: "2:20pm-3:30pm",
+    time: "2:20pm",
     date: "23-07-2024",
     location: "Chicago",
+    status: "Pending",
   },
 
   {
     name: "Kizz Daniel",
-    time: "2:20pm-3:30pm",
+    time: "2:20pm",
     date: "23-07-2024",
     location: "Virtual",
+    status: "Pending",
   },
 ];
 
-// export const dropdownItems = [
-//   { label: "Accept", onClick: () => alert("Action 1") },
-//   { label: "Decline", onClick: () => alert("Action 2") },
-// ];
+export const appointmentsData = [
+  {
+    name: "Omahlay Stanley",
+    time: "2:20pm-3:30pm",
+    date: "23-07-2024",
+    location: "Virtual",
+    status: "Pending",
+  },
+  {
+    name: "Davido Adeleke",
+    time: "2:20pm-3:30pm",
+    date: "23-07-2024",
+    location: "Virtual",
+    status: "Pending",
+  },
+  {
+    name: "Rema Divine",
+    time: "2:20pm-3:30pm",
+    date: "23-07-2024",
+    location: "Virtual",
+    status: "Pending",
+  },
+  {
+    name: "Arya Starr",
+    time: "2:20pm-3:30pm",
+    date: "23-07-2024",
+    location: "Virtual",
+    status: "Pending",
+  },
+];

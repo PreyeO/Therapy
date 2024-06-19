@@ -4,7 +4,7 @@ import {
   CalendarCheck,
   Headset,
   LayoutDashboard,
-  Settings,
+  SlidersHorizontal,
   Users,
 } from "lucide-react";
 
@@ -12,7 +12,7 @@ export const sidebarLinks = [
   {
     label: "Overview",
     icon: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
-    href: "overview",
+    href: "",
   },
 
   {
@@ -25,7 +25,7 @@ export const sidebarLinks = [
   {
     label: "Appointments",
     icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "courses",
+    href: "appointment",
   },
 
   {
@@ -45,7 +45,7 @@ export const sidebarLinksTwo = [
 
   {
     label: "Account Settings",
-    icon: <Settings strokeWidth={2} color="#868686" size={24} />,
+    icon: <SlidersHorizontal strokeWidth={2} color="#868686" size={24} />,
     href: "notification",
   },
 
@@ -54,4 +54,13 @@ export const sidebarLinksTwo = [
     icon: <Headset strokeWidth={2} color="#868686" size={24} />,
     href: "search",
   },
+];
+export const dropdownItemsOne = [
+  { label: "Accept", onClick: () => alert("Accepted") },
+  { label: "Decline", onClick: () => alert("Declined") },
+];
+export const dropdownItemsTwo = [
+  { label: "Attended", onClick: () => alert("Accepted") },
+  { label: "Missed", onClick: () => alert("Declined") },
+  { label: "Canceled", onClick: () => alert("Declined") },
 ];

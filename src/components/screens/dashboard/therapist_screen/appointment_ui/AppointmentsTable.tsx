@@ -8,12 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { upcomingData } from "@/constants/DataManager";
+import { appointmentsData } from "@/constants/DataManager";
 import { Ellipsis } from "lucide-react";
-import Title from "@/components/ui/Titles/Title";
-import { dropdownItemsTwo } from "@/constants/Navigation";
 
-const UpcomingCard: React.FC = () => {
+interface AppointmentTableProps {
+  dropdownItems: { label: string; onClick: () => void }[];
+}
+
+const AppointmentTable: React.FC<AppointmentTableProps> = ({
+  dropdownItems,
+}) => {
   const [openDropdownIndex, setOpenDropdownIndex] = React.useState<
     number | null
   >(null);
@@ -29,23 +33,19 @@ const UpcomingCard: React.FC = () => {
   const closeDropdown = () => setOpenDropdownIndex(null);
 
   return (
-    <Table className="bg-white w-full h-auto rounded-lg mb-5">
-      <TableHeader>
-        <Title
-          title="Appointments"
-          className="text-[#3A5334] font-bold text-lg py-4 px-4"
-        />
+    <Table className="bg-white mt-5">
+      <TableHeader className="">
         <TableRow className="text-base font-medium text-[#040404]">
-          <TableHead>Patient Name</TableHead>
-          <TableHead>Time</TableHead>
-          <TableHead>Date</TableHead>
+          <TableHead className="">Patient Name</TableHead>
+          <TableHead>Time of appointment</TableHead>
+          <TableHead>Date of appointment</TableHead>
           <TableHead>Location</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {upcomingData.map((item, index) => (
+        {appointmentsData.map((item, index) => (
           <TableRow
             key={index}
             className="text-[#575757] text-[14px] font-normal"
@@ -60,7 +60,7 @@ const UpcomingCard: React.FC = () => {
                 <Ellipsis size={24} />
               </button>
               <Dropdown
-                items={dropdownItemsTwo}
+                items={dropdownItems}
                 isOpen={openDropdownIndex === index}
                 onClose={closeDropdown}
               />
@@ -72,4 +72,4 @@ const UpcomingCard: React.FC = () => {
   );
 };
 
-export default UpcomingCard;
+export default AppointmentTable;

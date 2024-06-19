@@ -24,7 +24,7 @@ const OverviewScreen = () => {
         </div>
       </div>
       <div className="flex justify-between">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-[63%]">
           <div className="flex gap-4">
             <AppointmentCard
               className="bg-[#4285F4]"
@@ -42,7 +42,7 @@ const OverviewScreen = () => {
             <UpcomingCard />
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-[35%]">
           <CalenderCard />
           <RequestCard />
         </div>
