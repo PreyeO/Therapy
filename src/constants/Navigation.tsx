@@ -2,8 +2,11 @@ import {
   AlarmCheck,
   Bell,
   CalendarCheck,
+  CircleAlert,
+  CircleX,
   Headset,
   LayoutDashboard,
+  MinusCircle,
   SlidersHorizontal,
   Users,
 } from "lucide-react";
@@ -56,11 +59,57 @@ export const sidebarLinksTwo = [
   },
 ];
 export const dropdownItemsOne = [
-  { label: "Accept", onClick: () => alert("Accepted") },
-  { label: "Decline", onClick: () => alert("Declined") },
+  {
+    label: "Accept",
+    onClick: () => alert("Accepted"),
+    icon: (
+      <CircleAlert
+        strokeWidth={3}
+        color="#8BA05F4D"
+        size={26}
+        fill="#8BA05F4D"
+      />
+    ),
+  },
+  {
+    label: "Decline",
+    onClick: () => alert("Declined"),
+    icon: (
+      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+    ),
+  },
 ];
+
 export const dropdownItemsTwo = [
-  { label: "Attended", onClick: () => alert("Accepted") },
-  { label: "Missed", onClick: () => alert("Declined") },
-  { label: "Canceled", onClick: () => alert("Declined") },
+  {
+    label: "Attended",
+    onClick: () => alert("Accepted"),
+    icon: (
+      <CircleAlert
+        strokeWidth={3}
+        color="#8BA05F4D"
+        size={26}
+        fill="#8BA05F4D"
+      />
+    ),
+  },
+  {
+    label: "Missed",
+    onClick: () => alert("Declined"),
+    icon: (
+      <MinusCircle
+        strokeWidth={3}
+        color="#8BA05F4D"
+        size={26}
+        fill="#8BA05F4D"
+      />
+    ),
+  },
+  {
+    label: "Canceled",
+    onClick: () => alert("Declined"),
+    icon: (
+      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+    ),
+  },
 ];

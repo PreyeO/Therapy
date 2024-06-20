@@ -1,7 +1,11 @@
 import * as React from "react";
 
 interface DropdownProps {
-  items: { label: string; onClick: () => void }[];
+  items: {
+    label: string;
+    onClick: () => void;
+    icon?: React.ReactNode;
+  }[];
   isOpen: boolean;
   onClose: () => void;
 }
@@ -15,12 +19,13 @@ const Dropdown: React.FC<DropdownProps> = ({ items, isOpen, onClose }) => {
         {items.map((item, index) => (
           <li
             key={index}
-            className="p-1 hover:bg-gray-200"
+            className="flex items-center p-1 hover:bg-gray-200"
             onClick={() => {
               onClose();
               item.onClick();
             }}
           >
+            {item.icon && <span className="mr-2">{item.icon}</span>}
             {item.label}
           </li>
         ))}

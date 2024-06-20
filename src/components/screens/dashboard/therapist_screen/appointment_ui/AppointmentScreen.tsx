@@ -24,8 +24,10 @@ const AppointmentScreen = () => {
             />
             <h2>DATE</h2>
           </div>
-
-          <AppointmentTable dropdownItems={dropdownItemsOne} />
+          <AppointmentTable
+            dropdownItems={dropdownItemsOne}
+            dropdownType="one"
+          />
         </TabsContent>
         <TabsContent
           value="accepted"
@@ -39,7 +41,10 @@ const AppointmentScreen = () => {
             <h2>DATE</h2>
           </div>
           <SearchInput />
-          <AppointmentTable dropdownItems={dropdownItemsTwo} />
+          <AppointmentTable
+            dropdownItems={dropdownItemsTwo}
+            dropdownType="two"
+          />
         </TabsContent>
       </Tabs>
     </div>

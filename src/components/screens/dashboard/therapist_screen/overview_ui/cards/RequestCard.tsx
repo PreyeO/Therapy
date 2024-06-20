@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const RequestCard = () => {
   return (
-    <Card className="h-auto  bg-white rounded-lg mb-3 py-5">
+    <Card className="h-auto  bg-white rounded-lg py-5">
       <CardHeader className="flex justify-between">
         <CardTitle className="flex justify-between items-center font-bold text-lg">
           Appointment Request
