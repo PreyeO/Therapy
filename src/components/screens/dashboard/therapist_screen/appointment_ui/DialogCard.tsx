@@ -35,6 +35,8 @@ const DialogCard: React.FC<DialogCardProps> = ({
               <Success
                 title={successMessage.title}
                 subtitle={successMessage.subtitle}
+                label="Close"
+                onButtonClick={onClose}
               />
             )}
           </DialogContent>

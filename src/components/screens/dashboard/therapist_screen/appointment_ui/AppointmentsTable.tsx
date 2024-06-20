@@ -97,6 +97,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               className="text-[#575757] text-[14px] font-normal"
             >
               <TableCell>{item.name}</TableCell>
+
               <TableCell>{item.time}</TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.location}</TableCell>
@@ -110,6 +111,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                     ...dropdownItem,
                     onClick: () => {
                       if (dropdownType === "one") {
+                        handleStatusUpdate(index, dropdownItem.label);
                         handleDialogOpen(
                           dropdownItem.label,
                           `This action will ${dropdownItem.label.toLowerCase()} the appointment.`,

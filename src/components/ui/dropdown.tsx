@@ -14,8 +14,8 @@ const Dropdown: React.FC<DropdownProps> = ({ items, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute bg-white border shadow-md z-10 translate-x-[-100px] translate-y-[-15px] w-[149px] py-2 rounded-md">
-      <ul>
+    <div className="absolute bg-white border shadow-md z-10 translate-x-[-100px] translate-y-[-15px] w-[149px] py-7 rounded-md pl-3">
+      <ul className="flex flex-col gap-4">
         {items.map((item, index) => (
           <li
             key={index}
@@ -25,7 +25,7 @@ const Dropdown: React.FC<DropdownProps> = ({ items, isOpen, onClose }) => {
               item.onClick();
             }}
           >
-            {item.icon && <span className="mr-2">{item.icon}</span>}
+            {item.icon && <span className="mr-3">{item.icon}</span>}
             {item.label}
           </li>
         ))}

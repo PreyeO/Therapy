@@ -9,6 +9,8 @@ import Schedule from "./pages/DashboardPage/therapist/Schedule";
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import Appointment from "./pages/DashboardPage/therapist/Appointment";
 
+import PatientsOverview from "./pages/DashboardPage/therapist/PatientsOverview";
+
 function App() {
   return (
     <>
@@ -18,11 +20,13 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
+
             <Route path="passwordreset" element={<PasswordReset />} />
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route path="" element={<Overview />} />
               <Route path="schedule" element={<Schedule />} />
               <Route path="appointment" element={<Appointment />} />
+              <Route path="patientoverview" element={<PatientsOverview />} />
             </Route>
           </Routes>
         </BrowserRouter>

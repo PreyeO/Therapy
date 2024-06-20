@@ -5,7 +5,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FC } from "react";
 import { motion } from "framer-motion";
@@ -13,9 +12,16 @@ import { motion } from "framer-motion";
 interface MyComponentProps {
   title: string;
   subtitle: string;
+  label: string;
+  onButtonClick: () => void;
 }
 
-const Success: FC<MyComponentProps> = ({ title, subtitle }) => {
+const Success: FC<MyComponentProps> = ({
+  title,
+  subtitle,
+  label,
+  onButtonClick,
+}) => {
   return (
     <div className="flex flex-col mx-auto min-h-screen justify-center max-w-[829px] ">
       <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg">
@@ -50,11 +56,12 @@ const Success: FC<MyComponentProps> = ({ title, subtitle }) => {
             </CardDescription>
           </CardHeader>
 
-          <Link to={"/signin"}>
-            <Button className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full">
-              Login
-            </Button>
-          </Link>
+          <Button
+            onClick={onButtonClick}
+            className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full"
+          >
+            {label}
+          </Button>
         </motion.div>
       </Card>
     </div>

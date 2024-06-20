@@ -25,6 +25,9 @@ const PasswordResetSteps: FC = () => {
     if (confirmPassword) setConfirmPassword(confirmPassword);
     next();
   };
+  const handleSuccessButtonClick = () => {
+    navigate("/signin");
+  };
 
   const steps = [
     <ResetForm handleNext={handleNext} />,
@@ -42,6 +45,8 @@ const PasswordResetSteps: FC = () => {
     <Success
       title="Password Reset Successful"
       subtitle="You can now proceed to login"
+      label="Login"
+      onButtonClick={handleSuccessButtonClick}
     />,
   ];
 

@@ -25,7 +25,7 @@ const OverviewScreen = () => {
       </div>
       <div className="flex justify-between">
         <div className="flex flex-col gap-4 w-[63%]">
-          <div className="flex gap-4">
+          <div className="flex justify-evenly">
             <AppointmentCard
               className="bg-[#4285F4]"
               icon={<BriefcaseMedical size={24} color="white" />}

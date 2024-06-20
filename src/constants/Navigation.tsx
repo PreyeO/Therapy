@@ -1,5 +1,6 @@
 import {
   AlarmCheck,
+  BadgeCheck,
   Bell,
   CalendarCheck,
   CircleAlert,
@@ -62,21 +63,12 @@ export const dropdownItemsOne = [
   {
     label: "Accept",
     onClick: () => alert("Accepted"),
-    icon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
-    ),
+    icon: <CircleAlert strokeWidth={1.5} color="#8BA05F4D" size={20} />,
   },
   {
     label: "Decline",
     onClick: () => alert("Declined"),
-    icon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
-    ),
+    icon: <CircleX strokeWidth={1.5} color="#EA43354D" size={20} />,
   },
 ];
 
@@ -84,32 +76,16 @@ export const dropdownItemsTwo = [
   {
     label: "Attended",
     onClick: () => alert("Accepted"),
-    icon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
-    ),
+    icon: <BadgeCheck strokeWidth={1.5} color="#8BA05F4D" size={20} />,
   },
   {
     label: "Missed",
     onClick: () => alert("Declined"),
-    icon: (
-      <MinusCircle
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
-    ),
+    icon: <MinusCircle strokeWidth={1.5} color="#04182766" size={20} />,
   },
   {
     label: "Canceled",
     onClick: () => alert("Declined"),
-    icon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
-    ),
+    icon: <CircleX strokeWidth={1.5} color="#EA43354D" size={20} />,
   },
 ];
