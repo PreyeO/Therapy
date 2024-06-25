@@ -2,7 +2,7 @@ import PatientOverview from "@/components/screens/dashboard/therapist_screen/app
 
 const PatientsOverview = () => {
   return (
-    <main className="py-20 h-screen">
+    <main className="py-20">
       <PatientOverview />
     </main>
   );

@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 interface AppointmentTableProps {
   dropdownItems: {
     label: string;
+    color: string;
     onClick: () => void;
     icon?: React.ReactNode;
   }[];
@@ -79,7 +80,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
 
   return (
     <div>
-      <Table className="bg-white mt-5">
+      <Table className="bg-white pt-5">
         <TableHeader className="">
           <TableRow className="text-base font-medium text-[#040404]">
             <TableHead className="">Patient Name</TableHead>
@@ -97,7 +98,6 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               className="text-[#575757] text-[14px] font-normal"
             >
               <TableCell>{item.name}</TableCell>
-
               <TableCell>{item.time}</TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.location}</TableCell>
@@ -116,17 +116,22 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                           dropdownItem.label,
                           `This action will ${dropdownItem.label.toLowerCase()} the appointment.`,
                           <>
-                            <p>
+                            <p className="py-8 text-2xl leading-8 font-normal">
                               Would you like to send a custom message to the
                               patient?
                             </p>
-                            <Textarea placeholder="Type your message here." />
-                            <Button
-                              className="w-[226px] rounded-full mt-2"
-                              onClick={handleSuccessOpen}
-                            >
-                              Send message
-                            </Button>
+                            <Textarea
+                              placeholder="Add a custom message (optional)"
+                              className="text-lg font-normal"
+                            />
+                            <div className="flex flex-col max-w-[226px] justify-end">
+                              <Button
+                                className="rounded-full h-[60px] text-base font-normal"
+                                onClick={handleSuccessOpen}
+                              >
+                                Send
+                              </Button>
+                            </div>
                           </>
                         );
                       } else {

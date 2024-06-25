@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 const CalenderCard = () => {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   return (
-    <Card className=" flex flex-col justify-center items-center rounded-lg">
+    <Card className=" flex flex-col justify-center items-center rounded-lg bg-white">
       <Calendar
         mode="single"
         selected={date}

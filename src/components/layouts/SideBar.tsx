@@ -10,8 +10,8 @@ const SideBar = () => {
       </div>
       <nav className="flex flex-col gap-[60px] pt-9 pl-5">
         <div className="flex flex-col gap-9  pt-8">
-          {sidebarLinks.map((item) => (
-            <div className="flex gap-4">
+          {sidebarLinks.map((item, index) => (
+            <div key={index} className="flex gap-4">
               <div>{item.icon}</div>
               <ul>
                 <li className="text-xl text-inactive_text font-normal">
@@ -23,8 +23,8 @@ const SideBar = () => {
         </div>
 
         <div className="flex flex-col gap-7 ">
-          {sidebarLinksTwo.map((item) => (
-            <div className="flex gap-4">
+          {sidebarLinksTwo.map((item, index) => (
+            <div key={index} className="flex gap-4">
               <div>{item.icon}</div>
               <ul>
                 <li className="text-xl text-inactive_text font-normal">

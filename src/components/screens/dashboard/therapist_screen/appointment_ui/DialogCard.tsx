@@ -28,9 +28,11 @@ const DialogCard: React.FC<DialogCardProps> = ({
       <DialogPortal>
         <DialogOverlay className=" bg-black/80" />
         {!success ? (
-          <DialogContent className=" bg-white">{children}</DialogContent>
+          <DialogContent className=" bg-white  max-w-[750px] h-[500px] ">
+            {children}
+          </DialogContent>
         ) : (
-          <DialogContent className="bg-transparent  border-none">
+          <DialogContent className="max-w-[700px] ">
             {successMessage && (
               <Success
                 title={successMessage.title}

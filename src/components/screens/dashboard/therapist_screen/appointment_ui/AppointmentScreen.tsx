@@ -2,7 +2,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
 import SearchInput from "@/components/ui/search";
-import { dropdownItemsOne, dropdownItemsTwo } from "@/constants/Navigation";
+import { dropdownItemsOne, dropdownItemsTwo } from "@/constants/Actions";
+// import PaginationFnx from "@/components/functions/paginationFnx";
 
 const AppointmentScreen = () => {
   return (
@@ -46,6 +47,7 @@ const AppointmentScreen = () => {
             dropdownType="two"
           />
         </TabsContent>
+        {/* <PaginationFnx /> */}
       </Tabs>
     </div>
   );

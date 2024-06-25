@@ -2,7 +2,7 @@ import AppointmentScreen from "@/components/screens/dashboard/therapist_screen/a
 
 const Appointment = () => {
   return (
-    <main>
+    <main className="h-screen">
       <AppointmentScreen />
     </main>
   );
