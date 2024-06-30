@@ -1,7 +1,7 @@
 import Image1 from "@/assets/image/HeroImage1.svg";
 import Image2 from "@/assets/image/HeroImage2.svg";
 import Image3 from "@/assets/image/HeroImage3.svg";
-import { CircleAlert, CircleX } from "lucide-react";
+import { Check, X } from "lucide-react";
 import Avatar from "@/assets/icon/Avater.svg";
 
 export const imageData = [
@@ -14,106 +14,94 @@ export const requestsData = [
   {
     name: "Burna Boy",
     src: Avatar,
-    // avatar: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
 
   {
     name: "Kizz Daniel",
     src: Avatar,
-    // icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
 
   {
     name: "Wizkid Balogun",
     src: Avatar,
-    // icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
 
   {
     name: "Davido Adeleke",
     src: Avatar,
-    // icon: <Users strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
   {
     name: "Omahlay Stanley",
     src: Avatar,
-    // icon: <Users strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
   {
     name: "Rema Divine",
     src: Avatar,
-    // icon: <Users strokeWidth={2} color="#868686" size={24} />,
     time: "Today . 10:00am",
     acceptIcon: (
-      <CircleAlert
-        strokeWidth={3}
-        color="#8BA05F4D"
-        size={26}
-        fill="#8BA05F4D"
-      />
+      <div className="w-6 h-6 border border-[#8BA05F4D] rounded-full bg-[#8BA05F4D] flex flex-col justify-center items-center">
+        <Check size={20} strokeWidth={2} color="#8BA05F" className="" />
+      </div>
     ),
     rejectIcon: (
-      <CircleX strokeWidth={3} color="#EA43354D" size={26} fill="#EA43354D" />
+      <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
+        <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
     ),
   },
 ];
@@ -164,5 +152,24 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+  },
+];
+
+export const TimeData = [
+  {
+    day: "Monday",
+  },
+
+  {
+    day: "Tuesday",
+  },
+  {
+    day: "Wednesday",
+  },
+  {
+    day: "Thursday",
+  },
+  {
+    day: "Friday",
   },
 ];

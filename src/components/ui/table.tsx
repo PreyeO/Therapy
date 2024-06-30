@@ -5,7 +5,9 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
+  <div className="relative w-full overflow-x-auto">
+    {" "}
+    {/* Ensures horizontal scrolling */}
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm table-fixed", className)} // Add table-fixed to ensure equal column widths

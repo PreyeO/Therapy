@@ -1,6 +1,7 @@
-import { BarChartHorizontal, Bell, Search, Settings } from "lucide-react";
+import { Bell, Search, Settings } from "lucide-react";
 import { Input } from "../ui/input";
 import FullLogo from "../ui/logos/FullLogo";
+import NavBar from "./NavBar";
 
 const Header = () => {
   return (
@@ -35,11 +36,7 @@ const Header = () => {
             <Bell size={18} strokeWidth={2} className=" cursor-pointer" />
           </div>
           <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px]   bg-white rounded-lg justify-center items-center flex-col lg:hidden flex">
-            <BarChartHorizontal
-              size={18}
-              strokeWidth={2}
-              className=" cursor-pointer"
-            />
+            <NavBar />
           </div>
         </div>
       </div>

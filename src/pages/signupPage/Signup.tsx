@@ -2,7 +2,7 @@ import SignupSteps from "./SignupSteps";
 
 const Signup = () => {
   return (
-    <main>
+    <main className="bg-main-background">
       <SignupSteps />
     </main>
   );

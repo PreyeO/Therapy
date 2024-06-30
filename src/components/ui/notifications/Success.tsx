@@ -14,6 +14,7 @@ interface MyComponentProps {
   subtitle: string;
   label: string;
   onButtonClick: () => void;
+  className?: string;
 }
 
 const Success: FC<MyComponentProps> = ({
@@ -21,9 +22,12 @@ const Success: FC<MyComponentProps> = ({
   subtitle,
   label,
   onButtonClick,
+  className,
 }) => {
   return (
-    <div className="flex flex-col mx-auto min-h-screen justify-center max-w-[829px] ">
+    <div
+      className={`flex flex-col mx-auto min-h-screen justify-center max-w-[829px] ${className} `}
+    >
       <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
@@ -48,10 +52,10 @@ const Success: FC<MyComponentProps> = ({
             >
               <Check className="text-[50px] text-white bg-army_green rounded-full h-[100px] w-[100px] p-3 " />
             </motion.div>
-            <CardTitle className="pt-8 md:text-[25.03px] text-lg font-bold text-primary_black_text">
+            <CardTitle className="pt-8 md:text-[25.03px] text-base font-bold text-primary_black_text">
               {title}
             </CardTitle>
-            <CardDescription className=" font-normal md:text-[16.93px] text-base text-placeholder_text">
+            <CardDescription className=" font-normal md:text-[16.93px] text-[9.55px] text-placeholder_text">
               {subtitle}
             </CardDescription>
           </CardHeader>

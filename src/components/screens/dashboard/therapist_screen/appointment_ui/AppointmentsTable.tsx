@@ -82,7 +82,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     <div>
       <Table className="bg-white pt-5">
         <TableHeader className="">
-          <TableRow className="text-base font-medium text-[#040404]">
+          <TableRow className="lg:text-sm text-[8.28px] font-medium text-[#040404]">
             <TableHead className="">Patient Name</TableHead>
             <TableHead>Time of appointment</TableHead>
             <TableHead>Date of appointment</TableHead>
@@ -95,7 +95,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
           {data.map((item, index) => (
             <TableRow
               key={index}
-              className="text-[#575757] text-[14px] font-normal"
+              className="text-[#575757] lg:text-sm text-[8.28px] font-normal"
             >
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.time}</TableCell>
@@ -116,17 +116,17 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                           dropdownItem.label,
                           `This action will ${dropdownItem.label.toLowerCase()} the appointment.`,
                           <>
-                            <p className="py-8 text-2xl leading-8 font-normal">
+                            <p className="py-8 lg:text-2xl text-sm lg:leading-8 leading-4 font-normal">
                               Would you like to send a custom message to the
                               patient?
                             </p>
                             <Textarea
                               placeholder="Add a custom message (optional)"
-                              className="text-lg font-normal"
+                              className=" text-[13px] lg:text-lg font-normal"
                             />
-                            <div className="flex flex-col max-w-[226px] justify-end">
+                            <div className="flex flex-col max-w-[226px] mt-7 justify-end items-end">
                               <Button
-                                className="rounded-full h-[60px] text-base font-normal"
+                                className="rounded-full lg:h-[60px] h-[37px] text-[10.04px] lg:text-base font-normal"
                                 onClick={handleSuccessOpen}
                               >
                                 Send

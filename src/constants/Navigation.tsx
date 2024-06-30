@@ -16,13 +16,6 @@ export const sidebarLinks = [
   },
 
   {
-    label: "Schedule",
-
-    icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "schedule",
-  },
-
-  {
     label: "Appointments",
     icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
     href: "appointment",
@@ -32,6 +25,12 @@ export const sidebarLinks = [
     label: "Patients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
     href: "search",
+  },
+  {
+    label: "Schedule",
+
+    icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
+    href: "schedule",
   },
 ];
 

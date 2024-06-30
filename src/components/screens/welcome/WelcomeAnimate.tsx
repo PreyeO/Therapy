@@ -48,7 +48,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
   }, [onAnimationComplete]);
 
   return (
-    <div className="w-[1728px]">
+    <div className="w-full">
       <motion.div
         initial={{ backgroundColor: "#6D7C43" }}
         animate={{

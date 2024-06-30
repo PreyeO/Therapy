@@ -1,6 +1,7 @@
 import { sidebarLinks, sidebarLinksTwo } from "@/constants/Navigation";
 import FullLogo from "../ui/logos/FullLogo";
 import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const SideBar = () => {
   return (
@@ -34,7 +35,18 @@ const SideBar = () => {
             </div>
           ))}
         </div>
-        <div className="">Dr. Christian</div>
+        <div className="flex gap-2 items-center">
+          <Avatar className="lg:w-[52px] lg:h-[52px] w-[44px] h-[44px]]">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>avatar</AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-base font-bold"> Dr. Preye</h2>
+            <h2 className="text-[12px] text-[#BDBDBD] font-normal">
+              speak2preye@co.uk
+            </h2>
+          </div>
+        </div>
       </nav>
     </aside>
   );

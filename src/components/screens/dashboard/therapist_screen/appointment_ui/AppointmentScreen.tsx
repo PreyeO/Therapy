@@ -9,11 +9,14 @@ const AppointmentScreen = () => {
   return (
     <div className="my-7">
       <Tabs defaultValue="new" className=" ">
-        <TabsList className="h-[50px]  w-[446px] text-[14px] font-medium">
-          <TabsTrigger value="new" className="w-full ">
+        <TabsList className="h-[50px]  lg:w-[446px] w-[318px] font-medium mx-auto">
+          <TabsTrigger value="new" className="w-full lg:text-sm text-[10px]">
             Appointment Request
           </TabsTrigger>
-          <TabsTrigger value="accepted" className="w-full">
+          <TabsTrigger
+            value="accepted"
+            className="w-full lg:text-sm text-[10px]"
+          >
             Upcoming Appointment
           </TabsTrigger>
         </TabsList>
@@ -21,9 +24,9 @@ const AppointmentScreen = () => {
           <div className="flex justify-between py-5 ">
             <Title
               title="New Appointments"
-              className=" text-2xl font-medium "
+              className=" text-[14.2px] lg:text-2xl font-medium "
             />
-            <h2>DATE</h2>
+            DATE
           </div>
           <AppointmentTable
             dropdownItems={dropdownItemsOne}
@@ -37,9 +40,9 @@ const AppointmentScreen = () => {
           <div className="flex justify-between py-3">
             <Title
               title="Upcoming Appointments"
-              className=" text-2xl font-medium "
+              className=" text-[14.2px] lg:text-2xl  font-medium "
             />
-            <h2>DATE</h2>
+            DATE
           </div>
           <SearchInput />
           <AppointmentTable
