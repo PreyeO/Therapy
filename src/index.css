@@ -137,20 +137,6 @@
     
 
    
-/* Tailwind CSS Custom Class Example */
-/* 
-.eclipse-wrapper {
-  background-image: url('./assets/image/Ellipse.svg');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  width: 443.85px; 
-  height: 251.72px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-} */
 
 .input-cursor-style {
   caret-color: #6D7C43; /* Change the input cursor color */
@@ -159,6 +145,55 @@
   color: #0D001E; 
   font-weight: 500;
   font-size: 20.99px;
+}
+
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.dashboard-header {
+  background-color: #282c34;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.dashboard-container {
+  display: flex;
+  flex: 1;
+}
+
+.dashboard-sidebar {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.dashboard-sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.dashboard-sidebar nav ul li {
+  margin: 10px 0;
+}
+
+.dashboard-sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.dashboard-sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
 }
 
 

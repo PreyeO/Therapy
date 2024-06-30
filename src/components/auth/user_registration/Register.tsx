@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/card";
 import Logo from "@/components/ui/logos/Logo";
 import RegisterForm from "@/components/auth/user_registration/RegisterForm";
-// import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
@@ -42,27 +41,31 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
     defaultValues: { userType },
   });
 
-  // regestering users and saving the created tokens in local storage
+  // registering users and saving the created tokens in local storage
   const handleRegister = async (userData) => {
     try {
       const response = await registerUser(userData);
       const { data } = response;
       localStorage.setItem("token", data.token);
       setAuthToken(data.token); // Set the token for future requests
-      handleNext(data.user.id, data.token);
+      handleNext(data.user.id, data.token, userData.email);
       return response;
     } catch (error) {
       console.error("Registration error:", error);
-      throw new Error("Error during registration");
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Unknown error occurred");
+      }
     }
   };
 
-  // sending a get request to send otp and passing the users created id
-  const handleSendOTP = async (userId) => {
+  // sending a get request to send otp and passing the user's created id
+  const handleSendOTP = async (userId: string, email: string) => {
     try {
       const response = await sendOTPToEmail(userId);
       if (response.detail === "OTP has been sent to your email.") {
-        handleNext(userId, "");
+        handleNext(userId, "", email);
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -106,16 +109,17 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
       // Assuming you have userId available here
       const userId = response?.data?.userId;
       if (userId) {
-        await handleSendOTP(userId);
+        await handleSendOTP(userId, data.email);
       }
     } catch (error) {
       console.error("Registration error:", error);
-      // toast.error("Registration error:", error);
-      toast.error("Ooops!:");
+      if (error instanceof Error) {
+        toast.error(error.message || "Ooops!");
+      } else {
+        toast.error("An unknown error occurred");
+      }
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000); // Adding a 2-second delay to see the spinner
+      setLoading(false);
     }
   };
 

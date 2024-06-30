@@ -1,4 +1,4 @@
-import WelcomeScreen from "@/components/welcome/WelcomeScreen";
+import WelcomeScreen from "@/components/screens/welcome/WelcomeScreen";
 
 const Landing = () => {
   return (

@@ -36,7 +36,11 @@ const Login = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Ooops!");
+      if (error instanceof Error) {
+        toast.error(error.message || "Ooops!");
+      } else {
+        toast.error("OOOPS! An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -79,7 +83,10 @@ const Login = () => {
           </FormProvider>
         </CardContent>
       </Card>
-      <ToastContainer />
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };

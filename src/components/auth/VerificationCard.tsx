@@ -90,7 +90,7 @@ export const VerificationCard = ({
   const handleResendCode = async () => {
     try {
       await resendOtp();
-      toast.error("OTP resent successfully");
+      toast("OTP resent successfully");
       setResendEnabled(false);
       setResetTrigger((prev) => prev + 1); // Trigger timer reset
     } catch (error) {
@@ -123,12 +123,15 @@ export const VerificationCard = ({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-10">
-            <div className="md:h-[62px] md:w-[230px] h-[44.36px] w-[164.73px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center">
+            <a
+              href={`mailto:${email}`}
+              className="md:h-[62px] md:w-[230px] h-[44.36px] w-[164.73px] bg-[#FBFBFB] flex gap-4 rounded-full justify-center items-center"
+            >
               <Mail size={20} fill="white" className="" color="#7e1616" />
               <p className="font-medium md:text-lg text-[12px] text-army_green">
-                Open Gmail
+                Open Mail
               </p>
-            </div>
+            </a>
             <div className="flex justify-center md:gap-[25.48px] gap-2">
               <Form {...form}>
                 <form

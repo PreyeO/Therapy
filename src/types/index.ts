@@ -138,7 +138,12 @@ export const OTPFormSchema = z.object({
 });
 
 export interface handleNextProps {
-  handleNext: (userId: string, token: string, onSuccess?: boolean) => void;
+  handleNext: (
+    userId: string,
+    token: string,
+    email: string,
+    onSuccess?: boolean
+  ) => void;
   type?: RegisterDataType["userType"];
 }
 
@@ -159,3 +164,33 @@ export interface VerificationProps extends handleNextProps {
   handleSubmit: (otp: string) => void;
   userType: RegisterDataType["userType"];
 }
+
+export const therapistSetupFormSchema = z.object({
+  practice_name: z.string({
+    message: "Please provide your practice name",
+  }),
+  state: z.string({
+    required_error: "Provide your business state to continue",
+  }),
+  city: z.string({
+    required_error: "Provide your business city to continue",
+  }),
+  street: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  zipcode: z.string({
+    required_error: "Provide your business zipcode to continue",
+  }),
+  office_name: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  service: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  duration: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  rate: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+});

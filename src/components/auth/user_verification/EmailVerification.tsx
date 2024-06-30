@@ -10,19 +10,26 @@ import {
 interface EmailVerificationProps {
   userId: string;
   token: string;
-  handleNext: (userId?: string, token?: string, isSuccess?: boolean) => void;
+  email: string;
+  handleNext: (
+    userId?: string,
+    token?: string,
+    email?: string,
+    isSuccess?: boolean
+  ) => void;
 }
 
 const EmailVerification = ({
   userId,
   token,
+  email,
   handleNext,
 }: EmailVerificationProps) => {
   const verifyOtp = async (otp: string) => {
     setAuthToken(token);
     const response = await verifyEmailOTP(userId, otp);
     if (response.detail === "OTP verified successfully.") {
-      handleNext(userId, token, true);
+      handleNext(userId, token, email, true);
       return true;
     }
     return false;
@@ -35,7 +42,7 @@ const EmailVerification = ({
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen">
       <VerificationCard
-        email={userId}
+        email={email}
         verifyOtp={verifyOtp}
         resendOtp={resendOtp}
       />

@@ -1,4 +1,3 @@
-// components/auth/SignupSteps.tsx
 import { useState, ReactElement } from "react";
 import { useMultiStepForm } from "@/hooks/index";
 import { UserCategory } from "@/components/auth/UserCategory";
@@ -6,6 +5,7 @@ import Register from "@/components/auth/user_registration/Register";
 import EmailVerification from "@/components/auth/user_verification/EmailVerification";
 import Success from "@/components/ui/notifications/Success";
 import { RegisterDataType } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 const SignupSteps = () => {
   const [userType, setUserType] =
@@ -15,10 +15,18 @@ const SignupSteps = () => {
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
   const [token, setToken] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleNext = (id?: string, token?: string, isSuccess?: boolean) => {
+  const handleNext = (
+    id?: string,
+    token?: string,
+    email?: string,
+    isSuccess?: boolean
+  ) => {
     if (id) setUserId(id);
     if (token) setToken(token);
+    if (email) setEmail(email);
     if (isSuccess) setRegistrationSuccess(true);
     next();
   };
@@ -27,11 +35,16 @@ const SignupSteps = () => {
     setUserType(type);
   };
 
-  const handleEmailSent = (userId: string, token: string) => {
+  const handleEmailSent = (userId: string, token: string, email: string) => {
     setUserId(userId);
     setToken(token);
     setEmailSent(true);
-    handleNext(userId, token);
+    setEmail(email);
+    handleNext(userId, token, email);
+  };
+
+  const handleSuccessButtonClick = () => {
+    navigate("/signin");
   };
 
   const steps: ReactElement[] = [
@@ -58,6 +71,7 @@ const SignupSteps = () => {
         handleNext={handleNext}
         userId={userId!}
         token={token}
+        email={email}
       />
     );
   } else if (registrationSuccess) {
@@ -66,6 +80,8 @@ const SignupSteps = () => {
         key="Success"
         title="Registration Successful"
         subtitle="Your account has been created successfully"
+        label="Login"
+        onButtonClick={handleSuccessButtonClick}
       />
     );
   }

@@ -4,21 +4,32 @@ import Signin from "@/pages/Signin";
 import Signup from "@/pages/signupPage/Signup";
 import PasswordReset from "@/pages/PasswordResetPage/PasswordReset";
 import "react-toastify/dist/ReactToastify.css";
-import Testing from "./pages/Testing";
-import Dashboard from "./pages/Dashboard";
+import Overview from "./pages/DashboardPage/therapist/Overview";
+import Schedule from "./pages/DashboardPage/therapist/Schedule";
+import DashboardLayout from "./components/layouts/DashboardLayout";
+import Appointment from "./pages/DashboardPage/therapist/Appointment";
+
+import PatientsOverview from "./pages/DashboardPage/therapist/PatientsOverview";
+import AccountSetup from "./pages/DashboardPage/therapist/AccountSetup";
 
 function App() {
   return (
     <>
-      <div className=" bg-main-background font-CabinetGrotesk">
+      <div className=" font-CabinetGrotesk">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/accountsetup" element={<AccountSetup />} />
+
             <Route path="passwordreset" element={<PasswordReset />} />
-            <Route path="/testing" element={<Testing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route path="" element={<Overview />} />
+              <Route path="schedule" element={<Schedule />} />
+              <Route path="appointment" element={<Appointment />} />
+              <Route path="patientoverview" element={<PatientsOverview />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </div>
