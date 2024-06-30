@@ -43,7 +43,7 @@ export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
       return;
     }
     setPasswordMatchError("");
-    handleNext(data.newPassword, data.confirmPassword);
+    handleNext(data.newPassword, data.confirmPassword, "");
   }
 
   return (
