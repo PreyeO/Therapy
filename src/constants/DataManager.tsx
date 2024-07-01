@@ -131,6 +131,7 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
     name: "Davido Adeleke",
@@ -138,6 +139,7 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
     name: "Rema Divine",
@@ -145,6 +147,7 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
     name: "Arya Starr",
@@ -152,6 +155,7 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
 ];
 

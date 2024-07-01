@@ -101,7 +101,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               <TableCell>{item.time}</TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.location}</TableCell>
-              <TableCell>{item.status}</TableCell>
+              <TableCell style={{ color: item.color }}>{item.status}</TableCell>
               <TableCell className="relative">
                 <button onClick={() => toggleDropdown(index)}>
                   <Ellipsis size={24} />
@@ -124,7 +124,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                               placeholder="Add a custom message (optional)"
                               className=" text-[13px] lg:text-lg font-normal"
                             />
-                            <div className="flex flex-col max-w-[226px] mt-7 justify-end items-end">
+                            <div className="flex flex-col max-w-[226px] mt-7">
                               <Button
                                 className="rounded-full lg:h-[60px] h-[37px] text-[10.04px] lg:text-base font-normal"
                                 onClick={handleSuccessOpen}

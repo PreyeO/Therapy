@@ -1,17 +1,17 @@
 import { Switch } from "@/components/ui/switch";
 import SetupHeader from "../SetupHeader";
-import { Button } from "@/components/ui/button";
+import { SquarePlus } from "lucide-react";
 
 const ServiceStepTwo = () => {
   return (
-    <div className="relative flex flex-col gap-20">
+    <div className="relative flex flex-col gap-10">
       <div className="text-center">
         <SetupHeader
           title="What service does your practice offer"
           subtitle="Streamline billing and scheduling by adding services offered by your practice. This information will appear when clients are requesting appointments."
         />
       </div>
-      <div className="w-[327px] border rounded-xl mx-auto flex flex-col gap-3">
+      <div className="w-[327px] border rounded-xl mx-auto flex flex-col gap-5 py-6">
         <div className="flex gap-4 items-center justify-center">
           <Switch />
           <div>
@@ -39,14 +39,10 @@ const ServiceStepTwo = () => {
             </p>
           </div>
         </div>
-      </div>
-      <div className="flex gap-3 justify-end items-end mt-10">
-        <Button className="rounded-full w-[30%] h-[55px] text-xl font-medium">
-          Next
-        </Button>
-        <Button className="rounded-full w-[30%] h-[55px] text-xl font-medium bg-transparent text-army_green border">
-          Previous
-        </Button>
+        <div className="mx-auto w-[191px] flex items-center justify-center gap-2 text-lg font-bold text-army_green bg-[#6D7C431A] rounded-full cursor-pointer h-[44px]">
+          <SquarePlus size={24} color="#6D7C43" />
+          Add offer
+        </div>
       </div>
     </div>
   );

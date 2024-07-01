@@ -3,6 +3,7 @@ import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
 import SearchInput from "@/components/ui/search";
 import { dropdownItemsOne, dropdownItemsTwo } from "@/constants/Actions";
+import { DatePickerWithRange } from "./DatePickerWithRange";
 // import PaginationFnx from "@/components/functions/paginationFnx";
 
 const AppointmentScreen = () => {
@@ -26,7 +27,7 @@ const AppointmentScreen = () => {
               title="New Appointments"
               className=" text-[14.2px] lg:text-2xl font-medium "
             />
-            DATE
+            <DatePickerWithRange />
           </div>
           <AppointmentTable
             dropdownItems={dropdownItemsOne}

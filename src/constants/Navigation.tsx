@@ -12,25 +12,25 @@ export const sidebarLinks = [
   {
     label: "Overview",
     icon: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
-    href: "",
+    href: "/dashboard",
   },
 
   {
     label: "Appointments",
     icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "appointment",
+    href: "/dashboard/appointment",
   },
 
   {
     label: "Patients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "search",
+    href: "/dashboard/patient",
   },
   {
     label: "Schedule",
 
     icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "schedule",
+    href: "/dashboard/schedule",
   },
 ];
 
@@ -45,12 +45,12 @@ export const sidebarLinksTwo = [
   {
     label: "Account Settings",
     icon: <SlidersHorizontal strokeWidth={2} color="#868686" size={24} />,
-    href: "notification",
+    href: "/accountsetup",
   },
 
   {
     label: "Support",
     icon: <Headset strokeWidth={2} color="#868686" size={24} />,
-    href: "search",
+    href: "support",
   },
 ];

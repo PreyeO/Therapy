@@ -3,7 +3,7 @@ import { Input } from "./input";
 
 const SearchInput = () => {
   return (
-    <div className="flex  justify-center items-center px-6 rounded-full border ">
+    <div className="flex   items-center px-6 rounded-full border ">
       <Search
         strokeWidth={2}
         color="#868686"

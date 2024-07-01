@@ -13,12 +13,14 @@ import SecondStep from "@/components/screens/dashboard/therapist_screen/accounts
 import FirstStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FirstStep";
 import Success from "@/components/ui/notifications/Success";
 import { useNavigate } from "react-router-dom";
+import ServiceStepTwo from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/ServiceStepTwo";
 
 const steps: ReactElement[] = [
   <FirstStep />,
   <SecondStep />,
   <ThirdStep />,
   <FourthStep />,
+  <ServiceStepTwo />,
   <FifthStep />,
   <ReviewStep />,
 ];

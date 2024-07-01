@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header>
       <div className="flex justify-between">
-        <div className=" w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex">
+        <div className=" w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex rounded-xl">
           <Search
             strokeWidth={2}
             color="#868686"
