@@ -3,7 +3,7 @@ import { Input } from "./input";
 
 const SearchInput = () => {
   return (
-    <div className="flex   items-center px-6 rounded-full border ">
+    <div className="flex items-center px-6 rounded-full border ">
       <Search
         strokeWidth={2}
         color="#868686"
@@ -12,7 +12,7 @@ const SearchInput = () => {
       />
       <Input
         placeholder="search for a patient"
-        className="focus:ring focus:ring-transparent text-base text-[#BDBDBD] border-none w-full h-[62px] "
+        className="focus:ring focus:ring-transparent text-base text-[#BDBDBD] border-none w-full h-[44px] lg:h-[62px] "
       />
     </div>
   );

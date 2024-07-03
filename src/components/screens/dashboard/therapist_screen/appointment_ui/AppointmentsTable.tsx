@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,6 +14,7 @@ import { Ellipsis } from "lucide-react";
 import DialogCard from "@/components/screens/dashboard/therapist_screen/appointment_ui/DialogCard";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import PaginationFnx from "@/components/layouts/paginationFnx";
 
 interface AppointmentTableProps {
   dropdownItems: {
@@ -79,23 +81,27 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   };
 
   return (
-    <div>
+    <div className="overflow-x-auto w-full">
       <Table className="bg-white pt-5">
-        <TableHeader className="">
-          <TableRow className="lg:text-sm text-[8.28px] font-medium text-[#040404]">
-            <TableHead className="">Patient Name</TableHead>
-            <TableHead>Time of appointment</TableHead>
-            <TableHead>Date of appointment</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Action</TableHead>
+        <TableHeader>
+          <TableRow className="lg:text-sm text-[8.28px] ">
+            <TableHead className=" font-semibold">Patient Name</TableHead>
+            <TableHead className=" font-semibold">
+              Time of appointment
+            </TableHead>
+            <TableHead className=" font-semibold">
+              Date of appointment
+            </TableHead>
+            <TableHead className=" font-semibold">Location</TableHead>
+            <TableHead className=" font-semibold"> Status</TableHead>
+            <TableHead className=" font-semibold">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((item, index) => (
             <TableRow
               key={index}
-              className="text-[#575757] lg:text-sm text-[8.28px] font-normal"
+              className="text-[#575757] font-normal lg:text-sm text-[8.28px]"
             >
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.time}</TableCell>
@@ -122,7 +128,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                             </p>
                             <Textarea
                               placeholder="Add a custom message (optional)"
-                              className=" text-[13px] lg:text-lg font-normal"
+                              className="text-[13px] lg:text-lg font-normal"
                             />
                             <div className="flex flex-col max-w-[226px] mt-7">
                               <Button
@@ -146,6 +152,9 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <PaginationFnx />
+        </TableFooter>
       </Table>
       <DialogCard
         title={dialogContent.title}
