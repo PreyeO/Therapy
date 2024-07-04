@@ -10,12 +10,15 @@ const AppointmentScreen = () => {
     <div className="my-7">
       <Tabs defaultValue="new" className="w-full">
         <TabsList className="h-[50px] lg:w-[446px] w-[318px] font-medium mx-auto">
-          <TabsTrigger value="new" className="w-full lg:text-sm text-[10px]">
+          <TabsTrigger
+            value="new"
+            className="w-full lg:text-sm md:text-[12px] text-[10px]"
+          >
             Appointment Request
           </TabsTrigger>
           <TabsTrigger
             value="accepted"
-            className="w-full lg:text-sm text-[10px]"
+            className="w-full lg:text-sm text-[10px] md:text-[12px]"
           >
             Upcoming Appointment
           </TabsTrigger>
@@ -24,10 +27,10 @@ const AppointmentScreen = () => {
           value="new"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto "
         >
-          <div className="flex justify-between py-5 items-center">
+          <div className="flex md:justify-between justify-around py-5 items-center ">
             <Title
               title="Appointments"
-              className="text-[14.2px] lg:text-2xl font-medium"
+              className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
             />
             <DatePickerWithRange />
           </div>
@@ -45,11 +48,11 @@ const AppointmentScreen = () => {
           <div className="py-3">
             <Title
               title="Upcoming Appointments"
-              className="text-[14.2px] lg:text-2xl font-medium"
+              className="text-[14.2px] lg:text-2xl font-medium md:text-xl"
             />
           </div>
           <SearchInput />
-          <div className="min-w-[687px] w-full">
+          <div className="min-w-[687px] w-full my-4">
             <AppointmentTable
               dropdownItems={dropdownItemsTwo}
               dropdownType="two"

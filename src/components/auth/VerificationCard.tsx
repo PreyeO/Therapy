@@ -143,7 +143,7 @@ export const VerificationCard = ({
                     control={form.control}
                     render={({ field }) => (
                       <InputOTP maxLength={6} {...field}>
-                        <InputOTPGroup className="flex lg:gap-5 gap-2">
+                        <InputOTPGroup className="flex md:gap-5 gap-2">
                           {[...Array(6)].map((_, index) => (
                             <InputOTPSlot
                               key={index}

@@ -21,7 +21,7 @@ const RequestCard = () => {
         <div className=" flex flex-col gap-5">
           {requestsData.map((item, index) => (
             <div key={index} className="flex justify-between">
-              <div className="flex gap-6 justify-center items-center">
+              <div className="flex md:gap-6 gap-3 justify-center items-center">
                 <Avatar className="lg:w-[52px] lg:h-[52px] w-[43.9px] h-[43.9px]]">
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>avatar</AvatarFallback>

@@ -125,7 +125,7 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto">
-      <Card className="rounded-lg md:p-5 p-0 flex flex-col justify-center my-10">
+      <Card className="rounded-lg md:p-5 p-0 flex flex-col justify-center my-10 ">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
 

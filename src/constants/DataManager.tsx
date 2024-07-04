@@ -75,7 +75,7 @@ export const requestsData = [
     ),
   },
   {
-    name: "Omahlay Stanley",
+    name: "Omahlay",
     src: Avatar,
     time: "Today . 10:00am",
     acceptIcon: (
@@ -126,7 +126,7 @@ export const upcomingData = [
 
 export const appointmentsData = [
   {
-    name: "Omahlay Stanley",
+    name: "Omahlay",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",
@@ -134,7 +134,7 @@ export const appointmentsData = [
     color: "#FBA704",
   },
   {
-    name: "Davido Adeleke",
+    name: "Davido",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",
@@ -142,7 +142,7 @@ export const appointmentsData = [
     color: "#FBA704",
   },
   {
-    name: "Rema Divine",
+    name: "Rema",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",

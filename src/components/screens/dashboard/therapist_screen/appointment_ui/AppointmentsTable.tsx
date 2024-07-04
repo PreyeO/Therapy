@@ -83,14 +83,10 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     <div className="overflow-x-auto w-full">
       <Table className="bg-white pt-5">
         <TableHeader>
-          <TableRow className="lg:text-sm text-[8.28px] ">
-            <TableHead className=" font-semibold">Patient Name</TableHead>
-            <TableHead className=" font-semibold">
-              Time of appointment
-            </TableHead>
-            <TableHead className=" font-semibold">
-              Date of appointment
-            </TableHead>
+          <TableRow className="lg:text-sm md:text-[12px] text-[8.28px] ">
+            <TableHead className=" font-semibold">Name</TableHead>
+            <TableHead className=" font-semibold">Time</TableHead>
+            <TableHead className=" font-semibold">Date</TableHead>
             <TableHead className=" font-semibold">Location</TableHead>
             <TableHead className=" font-semibold"> Status</TableHead>
             <TableHead className=" font-semibold">Action</TableHead>
@@ -100,7 +96,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
           {data.map((item, index) => (
             <TableRow
               key={index}
-              className="text-[#575757] font-normal lg:text-sm text-[8.28px]"
+              className="text-[#575757] font-normal lg:text-sm md:text-[12px] text-[8.28px]"
             >
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.time}</TableCell>
@@ -121,17 +117,17 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                           dropdownItem.label,
                           `This action will ${dropdownItem.label.toLowerCase()} the appointment.`,
                           <>
-                            <p className="py-8 lg:text-2xl text-sm lg:leading-8 leading-4 font-normal">
+                            <p className="py-8 lg:text-2xl md:text-xl text-sm lg:leading-8 leading-4 font-normal">
                               Would you like to send a custom message to the
                               patient?
                             </p>
                             <Textarea
                               placeholder="Add a custom message (optional)"
-                              className="text-[13px] lg:text-lg font-normal"
+                              className="text-[13px] md:text-lg font-normal"
                             />
 
                             <Button
-                              className="rounded-full lg:h-[60px] h-[37px] text-[10.04px] lg:text-base font-normal flex flex-col w-[226px] mt-7"
+                              className="rounded-full md:h-[60px] h-[37px] text-[10.04px] md:text-base font-normal flex flex-col w-[226px] mt-7"
                               onClick={handleSuccessOpen}
                             >
                               Send

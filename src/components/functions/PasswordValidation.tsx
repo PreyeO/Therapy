@@ -40,7 +40,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       >
         <span className="font-normal md:pb-4">6+</span>
         <span
-          className={`font-normal  lg:block hidden  ${
+          className={`font-normal  md:block hidden  ${
             passwordRequirements.minLength
               ? " text-army_green "
               : "text-red-500"
@@ -58,7 +58,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       >
         <span className="font-normal  md:pb-4">AA</span>
         <span
-          className={`font-normal  lg:block hidden  ${
+          className={`font-normal  md:block hidden  ${
             passwordRequirements.hasUpperCase
               ? " text-army_green "
               : "text-red-500"
@@ -76,7 +76,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       >
         <span className="font-normal  md:pb-4">Aa</span>
         <span
-          className={`font-normal  lg:block hidden  ${
+          className={`font-normal  md:block hidden  ${
             passwordRequirements.hasLowerCase
               ? " text-army_green "
               : "text-red-500"
@@ -92,7 +92,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       >
         <span className="font-normal md:pb-4">123</span>
         <span
-          className={`font-normal lg:block hidden  ${
+          className={`font-normal md:block hidden  ${
             passwordRequirements.hasNumber
               ? " text-army_green "
               : "text-red-500"
@@ -110,7 +110,7 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
       >
         <span className="font-normal md:pb-4">#*+</span>
         <span
-          className={`font-normal  lg:block hidden   ${
+          className={`font-normal  md:block hidden   ${
             passwordRequirements.hasSpecialChar
               ? " text-army_green "
               : "text-red-500"

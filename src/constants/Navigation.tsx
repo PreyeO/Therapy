@@ -43,7 +43,7 @@ export const sidebarLinksTwo = [
   },
 
   {
-    label: "Account Settings",
+    label: "Settings",
     icon: <SlidersHorizontal strokeWidth={2} color="#868686" size={24} />,
     href: "/accountsetup",
   },

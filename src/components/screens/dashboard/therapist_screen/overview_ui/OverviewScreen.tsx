@@ -15,13 +15,13 @@ const OverviewScreen = () => {
         <div className="flex lg:gap-3 gap-1 pl-3">
           <WandIcon width={24} height={24} className="hidden lg:block" />
           <WandIcon width={18} height={18} className="block lg:hidden" />
-          <p className="lg:text-[17px] text-army_green font-normal text-[12px] ">
+          <p className="md:text-[17px] text-army_green font-normal text-[12px] ">
             Hello! Preye you can now setup your account
           </p>
         </div>
         <div className="mr-3 ">
           <Link to="/accountsetup">
-            <Button className="rounded-full lg:text-base font-normal text-[7px] w-[74px] lg:w-full h-[29px] lg:h-full">
+            <Button className="rounded-full md:text-base font-normal text-[7px] w-[74px] md:w-full h-[29px] md:h-full">
               Setup Account
             </Button>
           </Link>
