@@ -151,14 +151,13 @@ const RegisterForm: FC<RegisterFormFieldsProps> = ({ passwordMatchError }) => {
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <FormLabel className="text-sm font-light text-placeholder_text ">
-                I agree to the{" "}
-                <Link
-                  to="/terms"
-                  className="text-primary underline  font-light text-army_green"
-                >
-                  Terms & Conditions
-                </Link>{" "}
+              <FormLabel className="text-sm font-normal text-placeholder_text ">
+                I agree to the
+                <Link to="/terms" className="">
+                  <span className="text-army_green font-medium">
+                    Terms & Conditions
+                  </span>
+                </Link>
               </FormLabel>
             </div>
             <FormMessage className="text-[#E75F51] text-[13px] font-light" />

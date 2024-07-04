@@ -198,5 +198,15 @@
 
 
   
+/* styles.css */
+.hero-image img {
+
+  max-width: 174px;
+  max-height: 174px;
+}
+.hero_image_mobile{
+  width: 124px;
+  height: 124px;
+}
   
   

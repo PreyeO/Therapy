@@ -15,6 +15,7 @@ const Header = () => {
             className=" cursor-pointer"
           />
           <Input
+            readOnly
             placeholder="search for a patient"
             className="focus:ring focus:ring-transparent text-base text-[#BDBDBD] border-none"
           />

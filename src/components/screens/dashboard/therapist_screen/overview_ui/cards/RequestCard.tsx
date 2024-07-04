@@ -7,15 +7,15 @@ const RequestCard = () => {
   return (
     <Card className="h-auto  bg-white rounded-lg py-5">
       <CardHeader className="flex justify-between">
-        <CardTitle className="flex justify-between items-center font-bold text-[15.21px] lg:text-lg">
-          Appointment Request
+        <div className="flex justify-between  font-bold text-[15.21px] lg:text-lg items-center">
+          <CardTitle className="">Appointment Request</CardTitle>
           <Button
             variant="link"
             className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium"
           >
             view all
           </Button>
-        </CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <div className=" flex flex-col gap-5">

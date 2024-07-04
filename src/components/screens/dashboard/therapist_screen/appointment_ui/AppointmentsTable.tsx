@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -130,14 +129,13 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                               placeholder="Add a custom message (optional)"
                               className="text-[13px] lg:text-lg font-normal"
                             />
-                            <div className="flex flex-col max-w-[226px] mt-7">
-                              <Button
-                                className="rounded-full lg:h-[60px] h-[37px] text-[10.04px] lg:text-base font-normal"
-                                onClick={handleSuccessOpen}
-                              >
-                                Send
-                              </Button>
-                            </div>
+
+                            <Button
+                              className="rounded-full lg:h-[60px] h-[37px] text-[10.04px] lg:text-base font-normal flex flex-col w-[226px] mt-7"
+                              onClick={handleSuccessOpen}
+                            >
+                              Send
+                            </Button>
                           </>
                         );
                       } else {
@@ -152,10 +150,10 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <PaginationFnx />
-        </TableFooter>
       </Table>
+      <div className="flex flex-col justify-center">
+        <PaginationFnx />
+      </div>
       <DialogCard
         title={dialogContent.title}
         isOpen={dialogOpen}

@@ -10,14 +10,23 @@ import {
 import { upcomingData } from "@/constants/DataManager";
 
 import Title from "@/components/ui/Titles/Title";
+import { Button } from "@/components/ui/button";
 
 const UpcomingCard: React.FC = () => {
   return (
     <div className="w-full bg-white">
-      <Title
-        title="Upcoming Appointments"
-        className="text-[#3A5334] font-bold lg:text-lg py-4 px-4 text-[12.63px]"
-      />
+      <div className="flex justify-between">
+        <Title
+          title="Upcoming Appointments"
+          className="text-[#3A5334] font-bold lg:text-lg py-4 px-4 text-[12.63px]"
+        />
+        <Button
+          variant="link"
+          className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium"
+        >
+          view all
+        </Button>
+      </div>
       <Table className="bg-white lg:w-full w-[389px] h-auto rounded-lg mb-5 ">
         <TableHeader className="">
           <TableRow className="text-[11.22px] lg:text-base font-medium text-[#040404]">

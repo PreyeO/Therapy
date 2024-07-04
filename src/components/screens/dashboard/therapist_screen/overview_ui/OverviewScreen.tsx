@@ -52,7 +52,6 @@ const OverviewScreen = () => {
           <CalenderCard />
           <RequestCard />
         </div>
-        {/* <GraphCard /> */}
       </div>
     </div>
   );
