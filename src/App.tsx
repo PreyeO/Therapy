@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
+import Patients from "./pages/DashboardPage/therapist/Patients";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -39,6 +40,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route path="" element={<Overview />} />
               <Route path="schedule" element={<Schedule />} />
+              <Route path="patients" element={<Patients />} />
               <Route path="appointment" element={<Appointment />} />
               <Route path="patientoverview" element={<PatientsOverview />} />
             </Route>

@@ -1,23 +1,18 @@
 import { Bell, Search, Settings } from "lucide-react";
-import { Input } from "../ui/input";
+
 import FullLogo from "../ui/logos/FullLogo";
 import NavBar from "./NavBar";
+import SearchInput from "../ui/search";
 
 const Header = () => {
   return (
     <header>
+      {/* w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex rounded-xl */}
       <div className="flex justify-between">
-        <div className=" w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex rounded-xl">
-          <Search
-            strokeWidth={2}
-            color="#868686"
-            size={24}
-            className=" cursor-pointer"
-          />
-          <Input
-            readOnly
+        <div className="w-[446px] h-[72px] bg-white  px-6 hidden lg:flex rounded-xl ">
+          <SearchInput
+            className="text-base text-[#BDBDBD] border-none focus:ring-transparents focus:ring-transparent "
             placeholder="search for a patient"
-            className="focus:ring focus:ring-transparent text-base text-[#BDBDBD] border-none"
           />
         </div>
         <div className="lg:hidden block">

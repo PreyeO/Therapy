@@ -159,6 +159,73 @@ export const appointmentsData = [
   },
 ];
 
+export const therapistPatientData = [
+  {
+    name: "Omahlay",
+    id: "RR00000",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00001",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00002",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00003",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00004",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00005",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00006",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00007",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Online",
+    src: Avatar,
+  },
+];
+
 export const TimeData = [
   {
     day: "Monday",
@@ -175,5 +242,23 @@ export const TimeData = [
   },
   {
     day: "Friday",
+  },
+];
+
+export const events = [
+  {
+    title: "Morning Meeting",
+    start: new Date(2024, 6, 10, 9, 0), // Morning event
+    end: new Date(2024, 6, 10, 10, 0),
+  },
+  {
+    title: "Lunch Break",
+    start: new Date(2024, 6, 11, 12, 0), // Afternoon event
+    end: new Date(2024, 6, 11, 13, 0),
+  },
+  {
+    title: "Project Presentation",
+    start: new Date(2024, 6, 12, 16, 0), // Evening event
+    end: new Date(2024, 6, 12, 17, 0),
   },
 ];

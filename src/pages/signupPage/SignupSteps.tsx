@@ -6,16 +6,24 @@ import EmailVerification from "@/components/auth/user_verification/EmailVerifica
 import Success from "@/components/ui/notifications/Success";
 import { RegisterDataType } from "@/types";
 import { useNavigate } from "react-router-dom";
+import { useSignupState } from "@/store";
 
 const SignupSteps = () => {
   const [userType, setUserType] =
     useState<RegisterDataType["userType"]>("patient");
-  const [emailSent, setEmailSent] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [registrationSuccess, setRegistrationSuccess] =
-    useState<boolean>(false);
-  const [token, setToken] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+
+  const {
+    emailSent,
+    userId,
+    registrationSuccess,
+    token,
+    email,
+    setEmailSent,
+    setUserId,
+    setRegistrationSuccess,
+    setToken,
+    setEmail,
+  } = useSignupState();
   const navigate = useNavigate();
 
   const handleNext = (

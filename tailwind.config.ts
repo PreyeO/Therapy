@@ -21,6 +21,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        "custom-light-blue": "rgba(14, 165, 233, 0.1)",
+        "custom-light-purple": "rgba(139, 92, 246, 0.1)",
+        "custom-light-pink": "rgba(255, 228, 230, 1)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

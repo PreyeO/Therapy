@@ -14,12 +14,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser, setAuthToken } from "@/services/api/auth";
 import LoginForm from "@/components/auth/user_login/LoginForm";
 import { ToastContainer, toast } from "react-toastify";
-import { useState } from "react";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { useAuthState } from "@/store";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, setLoading } = useAuthState();
 
   // call in react-hook-form validation
   const formMethods = useForm<z.infer<typeof loginFormSchema>>({

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   registerUser,
   sendOTPToEmail,
@@ -25,6 +25,7 @@ import RegisterForm from "@/components/auth/user_registration/RegisterForm";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { useAuthState } from "@/store";
 
 // accessing user category type
 interface RegisterProps extends handleNextProps {
@@ -32,8 +33,8 @@ interface RegisterProps extends handleNextProps {
 }
 
 const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
-  const [passwordMatchError, setPasswordMatchError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const { passwordMatchError, loading, setPasswordMatchError, setLoading } =
+    useAuthState();
 
   // accessing validated schema
   const formMethods = useForm<z.infer<typeof userDetailsRegisterSchema>>({

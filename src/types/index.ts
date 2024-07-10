@@ -194,3 +194,9 @@ export const therapistSetupFormSchema = z.object({
     required_error: "Provide your business street to continue",
   }),
 });
+
+export type Event = {
+  title: string;
+  start: Date;
+  end: Date;
+};

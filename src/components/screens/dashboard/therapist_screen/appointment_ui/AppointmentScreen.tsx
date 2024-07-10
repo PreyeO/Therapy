@@ -51,7 +51,12 @@ const AppointmentScreen = () => {
               className="text-[14.2px] lg:text-2xl font-medium md:text-xl"
             />
           </div>
-          <SearchInput />
+          <div className="w-full border rounded-full ">
+            <SearchInput
+              className="focus:ring-transparent  text-base text-[#BDBDBD]  h-[44px] lg:h-[62px]  "
+              placeholder="Search for patients "
+            />
+          </div>
           <div className="min-w-[687px] w-full my-4">
             <AppointmentTable
               dropdownItems={dropdownItemsTwo}

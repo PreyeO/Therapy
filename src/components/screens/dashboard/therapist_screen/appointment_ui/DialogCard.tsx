@@ -3,10 +3,10 @@ import {
   DialogContent,
   DialogOverlay,
   DialogPortal,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import * as React from "react";
 import Success from "@/components/ui/notifications/Success";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface DialogCardProps {
   title: string;

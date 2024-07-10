@@ -24,7 +24,7 @@ export const sidebarLinks = [
   {
     label: "Patients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "/dashboard/patient",
+    href: "/dashboard/patients",
   },
   {
     label: "Schedule",
