@@ -1,3 +1,4 @@
+// ScheduleSheet.tsx
 import * as React from "react";
 import { format, startOfWeek, addDays, isSameDay, isWeekend } from "date-fns";
 import { getEventsForDayAndTime, getStylesForTimeSlot } from "@/lib/utils";
@@ -50,7 +51,7 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
             {timeSlots.map((slot) => (
               <div
                 key={slot}
-                className="h-20 border-b flex items-center justify-centerbg-[#EFF6FF] text-sm font-normal"
+                className="h-20 border-b flex items-center justify-center bg-[#EFF6FF] text-sm font-normal"
               >
                 {slot}
               </div>
@@ -68,16 +69,16 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
               }`}
             >
               {timeSlots.map((slot) => {
-                const hour = parseInt(slot.split(":")[0]);
                 const eventsForSlot = getEventsForDayAndTime(events, day, slot);
                 const { bgColor, textColor } =
                   eventsForSlot.length > 0
-                    ? getStylesForTimeSlot(hour)
+                    ? getStylesForTimeSlot()
                     : { bgColor: "", textColor: "" };
                 return (
                   <div
                     key={slot}
-                    className={`h-20 border-b relative ${bgColor}`}
+                    className={`h-20 border-b relative`}
+                    style={{ backgroundColor: bgColor }}
                   >
                     {eventsForSlot.map((event) => (
                       <div
