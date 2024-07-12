@@ -11,8 +11,8 @@ import {
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { Checkbox } from "../../ui/checkbox";
-import PasswordValidation from "@/components/functions/PasswordValidation";
-import PasswordToggle from "@/components/functions/passwordToggle";
+import PasswordValidation from "@/components/common/PasswordValidation";
+import PasswordToggle from "@/components/common/passwordToggle";
 import { userDetailsRegisterSchema } from "@/types";
 // import { Button } from "@/components/ui/button";
 

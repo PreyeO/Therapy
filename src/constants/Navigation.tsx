@@ -38,8 +38,8 @@ export const sidebarLinksTwo = [
   {
     label: "Notifications",
     icon: <Bell strokeWidth={2} color="#868686" size={24} />,
-    href: "rooms",
-    auth: false,
+    href: "/dashboard/empty",
+    // auth: false,
   },
 
   {

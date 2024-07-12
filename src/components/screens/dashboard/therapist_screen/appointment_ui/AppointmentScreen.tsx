@@ -3,7 +3,7 @@ import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
 import SearchInput from "@/components/ui/search";
 import { dropdownItemsOne, dropdownItemsTwo } from "@/constants/Actions";
-import { DatePickerWithRange } from "./DatePickerWithRange";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 
 const AppointmentScreen = () => {
   return (

@@ -30,7 +30,7 @@ const FirstStep = () => {
             name="practice_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium text-primary_black_text">
+                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                   Practice Name
                 </FormLabel>
                 <FormControl>

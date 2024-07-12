@@ -19,8 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import PasswordValidation from "@/components/functions/PasswordValidation";
-import PasswordToggle from "@/components/functions/passwordToggle";
+import PasswordValidation from "@/components/common/PasswordValidation";
+import PasswordToggle from "@/components/common/passwordToggle";
 
 export const NewPassword: FC<handleNextProps> = ({ handleNext }) => {
   const [passwordMatchError, setPasswordMatchError] = useState<string>("");

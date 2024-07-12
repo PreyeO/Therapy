@@ -14,6 +14,7 @@ import DialogCard from "@/components/screens/dashboard/therapist_screen/appointm
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import PaginationFnx from "@/components/layouts/paginationFnx";
+import { useNavigate } from "react-router-dom";
 
 interface AppointmentTableProps {
   dropdownItems: {
@@ -79,6 +80,12 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     setSuccess(true);
   };
 
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/dashboard/patientoverview");
+  };
+
   return (
     <div className="overflow-x-auto w-full">
       <Table className="bg-white pt-5">
@@ -98,7 +105,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               key={index}
               className="text-[#575757] font-normal lg:text-sm md:text-[12px] text-[8.28px]"
             >
-              <TableCell>{item.name}</TableCell>
+              <TableCell onClick={handleNavigate}>{item.name}</TableCell>
               <TableCell>{item.time}</TableCell>
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.location}</TableCell>

@@ -45,18 +45,18 @@ const ThirdStep = () => {
               </FormItem>
             )}
           />
-          <div className="flex justify-evenly">
+          <div className="flex gap-6 flex-wrap">
             <FormField
               control={form.control}
               name="state"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
                     State
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-[330px]"
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
                       placeholder="Enter state name"
                       {...field}
@@ -70,13 +70,13 @@ const ThirdStep = () => {
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
                     City
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-[330px]"
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
                       placeholder="Enter city name"
                       {...field}
@@ -87,18 +87,18 @@ const ThirdStep = () => {
               )}
             />
           </div>
-          <div className="flex justify-evenly">
+          <div className="flex gap-6 flex-wrap items-center">
             <FormField
               control={form.control}
               name="street"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
                     Street
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-[330px]"
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
                       placeholder="Enter street name"
                       {...field}
@@ -112,13 +112,13 @@ const ThirdStep = () => {
               control={form.control}
               name="zipcode"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
                     Zipcode
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-[330px]"
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
                       placeholder="Enter zipcode number"
                       {...field}

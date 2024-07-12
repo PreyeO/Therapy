@@ -11,7 +11,7 @@ const ServiceStepTwo = () => {
           subtitle="Streamline billing and scheduling by adding services offered by your practice. This information will appear when clients are requesting appointments."
         />
       </div>
-      <div className="w-[327px] border rounded-xl mx-auto flex flex-col gap-5 py-6">
+      <div className="md:w-[327px] w-full border rounded-xl mx-auto flex flex-col gap-5 py-6">
         <div className="flex gap-4 items-center justify-center">
           <Switch />
           <div>

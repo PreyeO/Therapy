@@ -52,20 +52,21 @@ const Success: FC<MyComponentProps> = ({
             >
               <Check className="text-[50px] text-white bg-army_green rounded-full h-[100px] w-[100px] p-3 " />
             </motion.div>
-            <CardTitle className="pt-8 md:text-[25.03px] text-base font-bold text-primary_black_text">
+            <CardTitle className="pt-8 md:text-[25.03px] text-base font-bold text-primary_black_text text-center">
               {title}
             </CardTitle>
-            <CardDescription className=" font-normal md:text-[16.93px] text-[9.55px] text-placeholder_text">
+            <CardDescription className=" pt-3 font-normal md:text-[16.93px] text-[9.55px] text-placeholder_text">
               {subtitle}
             </CardDescription>
           </CardHeader>
-
-          <Button
-            onClick={onButtonClick}
-            className="h-[71px] w-full bg-army_green text-white text-xl font-medium rounded-full"
-          >
-            {label}
-          </Button>
+          <div className="px-2">
+            <Button
+              onClick={onButtonClick}
+              className="md:h-[71px] h-[51px] w-full bg-army_green text-white text-lg md:text-xl font-medium rounded-full "
+            >
+              {label}
+            </Button>
+          </div>
         </motion.div>
       </Card>
     </div>

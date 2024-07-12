@@ -21,6 +21,7 @@ import { z } from "zod";
 
 const ServiceStep = () => {
   const form = useForm<z.infer<typeof therapistSetupFormSchema>>();
+
   return (
     <div className="flex flex-col gap-20">
       <Form {...form}>
@@ -30,7 +31,7 @@ const ServiceStep = () => {
             name="service"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium text-primary_black_text">
+                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                   State
                 </FormLabel>
                 <FormControl>
@@ -46,18 +47,18 @@ const ServiceStep = () => {
             )}
           />
 
-          <div className="flex justify-evenly mt-4 items-center">
+          <div className="flex gap-6 mt-4 flex-wrap">
             <FormField
               control={form.control}
               name="rate"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-medium text-primary_black_text">
+                <FormItem className="flex-grow">
+                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                     Rate per unit
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-[274px]"
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
                       placeholder="$50"
                       {...field}
@@ -67,18 +68,18 @@ const ServiceStep = () => {
                 </FormItem>
               )}
             />
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center w-full lg:w-auto flex-grow">
               <FormField
                 control={form.control}
                 name="duration"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-base font-medium text-primary_black_text">
+                  <FormItem className="flex-grow">
+                    <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                       Default Duration
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="h-16 text-placeholder_text font-sm font-normal w-[274px]"
+                        className="h-16 text-placeholder_text font-sm font-normal w-full"
                         autoComplete="false"
                         placeholder="30"
                         {...field}
@@ -88,16 +89,18 @@ const ServiceStep = () => {
                   </FormItem>
                 )}
               />
-              <Select>
-                <SelectTrigger className="w-[100px] h-16 rounded-xl  text-base font-normal text-[#444444B2]">
-                  <SelectValue placeholder="min" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">sec</SelectItem>
-                  <SelectItem value="dark">min</SelectItem>
-                  <SelectItem value="system">hr</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="mt-7 flex-shrink-0 w-24">
+                <Select>
+                  <SelectTrigger className="h-16 rounded-xl text-base font-normal text-[#444444B2] w-full">
+                    <SelectValue placeholder="min" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sec">sec</SelectItem>
+                    <SelectItem value="min">min</SelectItem>
+                    <SelectItem value="hr">hr</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </form>

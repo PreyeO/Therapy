@@ -1,23 +1,17 @@
-"use client";
-
 import * as React from "react";
-import { addDays, format, subDays } from "date-fns";
-import {
-  ArrowLeftRight,
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { addDays, format } from "date-fns";
+import { ArrowLeftRight, CalendarDays } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import DateNavigator from "@/components/common/DateNavigator";
 
 export function DatePickerWithRange({
   className,
@@ -29,9 +23,6 @@ export function DatePickerWithRange({
   });
 
   const [currentDate, setCurrentDate] = React.useState<Date>(today);
-
-  const handleNextDate = () => setCurrentDate(addDays(currentDate, 1));
-  const handlePreviousDate = () => setCurrentDate(subDays(currentDate, 1));
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -92,26 +83,10 @@ export function DatePickerWithRange({
             />
           </PopoverContent>
         </Popover>
-        <div className="hidden items-center md:flex">
-          <ChevronLeft
-            onClick={handlePreviousDate}
-            className="cursor-pointer"
-            fill="#6D7C43"
-            color="#6D7C43"
-          />
-          <Button
-            className="flex items-center justify-center text-[12.61px] border-army_green w-full"
-            variant={"outline"}
-          >
-            {format(currentDate, "MMMM dd, yyyy")}
-          </Button>
-          <ChevronRight
-            onClick={handleNextDate}
-            className="cursor-pointer"
-            fill="#6D7C43"
-            color="#6D7C43"
-          />
-        </div>
+        <DateNavigator
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+        />
       </div>
     </div>
   );
