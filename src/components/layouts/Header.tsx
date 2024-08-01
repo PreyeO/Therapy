@@ -19,19 +19,19 @@ const Header = () => {
           <FullLogo width={58} height={46} />
         </div>
         <div className="flex gap-3 ">
-          <div className="w-[72px] h-[72px]  bg-white rounded-lg justify-center items-center flex-col hidden lg:flex">
+          <div className="w-[72px] h-[72px]  bg-white rounded-[10px] justify-center items-center flex-col hidden lg:flex">
             <Settings size={24} strokeWidth={2} className=" cursor-pointer" />
           </div>
-          <div className="w-[47.08px] h-[47.08px]  bg-white rounded-lg justify-center items-center flex flex-col lg:hidden ">
+          <div className="w-[47.08px] h-[47.08px]  bg-white rounded-[10px] justify-center items-center flex flex-col lg:hidden ">
             <Search size={18} strokeWidth={2} className=" cursor-pointer" />
           </div>
-          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px] hidden   bg-white rounded-lg justify-center items-center lg:flex flex-col">
+          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px] hidden   bg-white rounded-[10px] justify-center items-center lg:flex flex-col">
             <Bell size={24} strokeWidth={2} className=" cursor-pointer" />
           </div>
-          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px]   bg-white rounded-lg justify-center items-center flex flex-col lg:hidden">
+          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px]   bg-white rounded-[10px] justify-center items-center flex flex-col lg:hidden">
             <Bell size={18} strokeWidth={2} className=" cursor-pointer" />
           </div>
-          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px]   bg-white rounded-lg justify-center items-center flex-col lg:hidden flex">
+          <div className="lg:w-[72px] lg:h-[72px] w-[47.08px] h-[47.08px]   bg-white rounded-[10px] justify-center items-center flex-col lg:hidden flex">
             <NavBar />
           </div>
         </div>

@@ -165,7 +165,7 @@ export const therapistPatientData = [
     id: "RR00000",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Attended",
     src: Avatar,
   },
   {
@@ -173,7 +173,7 @@ export const therapistPatientData = [
     id: "RR00001",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Canceled",
     src: Avatar,
   },
   {
@@ -181,7 +181,7 @@ export const therapistPatientData = [
     id: "RR00002",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Missed",
     src: Avatar,
   },
   {
@@ -189,7 +189,7 @@ export const therapistPatientData = [
     id: "RR00003",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Upcoming",
     src: Avatar,
   },
   {
@@ -197,7 +197,7 @@ export const therapistPatientData = [
     id: "RR00004",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Attended",
     src: Avatar,
   },
   {
@@ -205,7 +205,7 @@ export const therapistPatientData = [
     id: "RR00005",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Missed",
     src: Avatar,
   },
   {
@@ -213,7 +213,7 @@ export const therapistPatientData = [
     id: "RR00006",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Canceled",
     src: Avatar,
   },
   {
@@ -221,7 +221,7 @@ export const therapistPatientData = [
     id: "RR00007",
     number: "+44 604 5392 66",
     email: "laurajames@gmail.com",
-    status: "Online",
+    status: "Attended",
     src: Avatar,
   },
 ];

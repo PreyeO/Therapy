@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { therapistPatientData } from "@/constants/DataManager";
-import { Dot, Ellipsis } from "lucide-react";
 
 const PatientTable = () => {
   return (
@@ -22,7 +21,6 @@ const PatientTable = () => {
             <TableHead className=" font-bold">Phone</TableHead>
             <TableHead className=" font-bold">Email</TableHead>
             <TableHead className=" font-bold"> Status</TableHead>
-            <TableHead className=" font-bold">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -41,18 +39,7 @@ const PatientTable = () => {
               </TableCell>
               <TableCell>{item.number}</TableCell>
               <TableCell>{item.email}</TableCell>
-              <TableCell>
-                <span className="border border-army_green w-[83px] rounded-xl p-3 flex items-center justify-evenly">
-                  {" "}
-                  <Dot size={10} strokeWidth={20} color="#6d7c43" />
-                  {item.status}
-                </span>
-              </TableCell>
-              <TableCell className="relative">
-                <button>
-                  <Ellipsis size={24} />
-                </button>
-              </TableCell>
+              <TableCell>{item.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>
