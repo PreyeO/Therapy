@@ -16,7 +16,7 @@ const HeroImage = () => {
   // }, []);
 
   return (
-    <div className="w-[443.85px] h-[251.72px] flex justify-center items-center">
+    <div className="max-w-[443.85px] h-[251.72px] flex justify-center items-center mx-auto">
       {/* <img
         src={ellipsePath}
         alt="Ellipse Path"
@@ -27,7 +27,7 @@ const HeroImage = () => {
           key={image.id}
           src={image.src}
           alt={image.alt}
-          className="  ml-[-30px] mr-[-30px]"
+          className=" ml-[-30px] mr-[-30px] hero_image"
           // className={`absolute ${
           //   index === 0
           //     ? "image-position-0"

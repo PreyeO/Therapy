@@ -29,12 +29,16 @@ const TimeSelect: React.FC<TimeSelectProps> = ({ placeholder }) => {
 
   return (
     <Select>
-      <SelectTrigger className="w-[144px] h-12 rounded-xl text-base font-normal text-[#444444B2]">
+      <SelectTrigger className="max-w-[144px] h-12 rounded-xl text-base font-normal text-[#444444B2]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className="max-h-60 overflow-y-auto">
         {timeOptions.map((time) => (
-          <SelectItem key={time} value={time}>
+          <SelectItem
+            key={time}
+            value={time}
+            className="md:text-base text-[9.19px]"
+          >
             {time}
           </SelectItem>
         ))}

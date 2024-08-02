@@ -75,7 +75,7 @@ export const requestsData = [
     ),
   },
   {
-    name: "Omahlay Stanley",
+    name: "Omahlay",
     src: Avatar,
     time: "Today . 10:00am",
     acceptIcon: (
@@ -126,25 +126,28 @@ export const upcomingData = [
 
 export const appointmentsData = [
   {
-    name: "Omahlay Stanley",
+    name: "Omahlay",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
-    name: "Davido Adeleke",
+    name: "Davido",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
-    name: "Rema Divine",
+    name: "Rema",
     time: "2:20pm-3:30pm",
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
   },
   {
     name: "Arya Starr",
@@ -152,6 +155,74 @@ export const appointmentsData = [
     date: "23-07-2024",
     location: "Virtual",
     status: "Pending",
+    color: "#FBA704",
+  },
+];
+
+export const therapistPatientData = [
+  {
+    name: "Omahlay",
+    id: "RR00000",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Attended",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00001",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Canceled",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00002",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Missed",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00003",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Upcoming",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00004",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Attended",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00005",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Missed",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00006",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Canceled",
+    src: Avatar,
+  },
+  {
+    name: "Omahlay",
+    id: "RR00007",
+    number: "+44 604 5392 66",
+    email: "laurajames@gmail.com",
+    status: "Attended",
+    src: Avatar,
   },
 ];
 
@@ -171,5 +242,64 @@ export const TimeData = [
   },
   {
     day: "Friday",
+  },
+];
+
+export const events = [
+  {
+    title: "Session with Omahlay",
+    start: new Date(2024, 6, 10, 9, 0), // Morning event
+    end: new Date(2024, 6, 10, 10, 0),
+  },
+  {
+    title: "Lunch Break",
+    start: new Date(2024, 6, 11, 12, 0), // Afternoon event
+    end: new Date(2024, 6, 11, 13, 0),
+  },
+  {
+    title: "Project Presentation",
+    start: new Date(2024, 6, 12, 16, 0), // Evening event
+    end: new Date(2024, 6, 12, 17, 0),
+  },
+  {
+    title: "Session with Rema",
+    start: new Date(2024, 6, 8, 9, 0), // Evening event
+    end: new Date(2024, 6, 12, 17, 0),
+  },
+  {
+    title: "Project Presentation",
+    start: new Date(2024, 6, 8, 12, 0), // Evening event
+    end: new Date(2024, 6, 12, 17, 0),
+  },
+  {
+    title: "Project Presentation",
+    start: new Date(2024, 6, 9, 10, 0), // Evening event
+    end: new Date(2024, 6, 12, 17, 0),
+  },
+];
+
+// therapist profile
+
+export const therapistProfileData = [
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Update when you get new appointment",
+  },
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Daily update about your schedule",
+  },
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Update when users cancel an appointment",
   },
 ];

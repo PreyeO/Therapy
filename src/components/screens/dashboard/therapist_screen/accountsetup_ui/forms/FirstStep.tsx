@@ -22,6 +22,9 @@ const FirstStep = () => {
           title="Let’s setup your account, Christian"
           subtitle="First what's your practice name? "
         />
+        <p className="text-[#041827B2] font-normal text-base  md:text-lg lg:text-xl leading-[24.8px]">
+          Note: You can always update this information later.
+        </p>
       </div>
       <Form {...form}>
         <form>
@@ -30,7 +33,7 @@ const FirstStep = () => {
             name="practice_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-medium text-primary_black_text">
+                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                   Practice Name
                 </FormLabel>
                 <FormControl>

@@ -3,34 +3,36 @@ import {
   Bell,
   CalendarCheck,
   Headset,
+  Hospital,
   LayoutDashboard,
+  MessageSquareDot,
   SlidersHorizontal,
   Users,
 } from "lucide-react";
 
 export const sidebarLinks = [
   {
-    label: "Overview",
+    label: "Dashboard",
     icon: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
-    href: "",
+    href: "/dashboard",
   },
 
   {
     label: "Appointments",
     icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "appointment",
+    href: "/dashboard/appointment",
   },
 
   {
     label: "Patients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "search",
+    href: "/dashboard/patients",
   },
   {
     label: "Schedule",
 
     icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "schedule",
+    href: "/dashboard/schedule",
   },
 ];
 
@@ -38,19 +40,41 @@ export const sidebarLinksTwo = [
   {
     label: "Notifications",
     icon: <Bell strokeWidth={2} color="#868686" size={24} />,
-    href: "rooms",
-    auth: false,
+    href: "/dashboard/empty",
+    // auth: false,
   },
 
   {
-    label: "Account Settings",
+    label: "Profile Settings",
     icon: <SlidersHorizontal strokeWidth={2} color="#868686" size={24} />,
-    href: "notification",
+    href: "/dashboard/profile",
   },
+  // href: "/accountsetup",
 
   {
     label: "Support",
     icon: <Headset strokeWidth={2} color="#868686" size={24} />,
-    href: "search",
+    href: "support",
+  },
+];
+
+export const miniSidebarLinks = [
+  {
+    label: "Profile Info",
+    subtitle: "Personal info",
+    icon: <Users strokeWidth={2} color="#868686" size={20} />,
+    href: "/dashboard/profile",
+  },
+  {
+    label: "Clinic Information",
+    subtitle: "Clinic location",
+    icon: <Hospital strokeWidth={2} color="#868686" size={20} />,
+    href: "/dashboard/profile/clinicinfo",
+  },
+  {
+    label: "Email Updates",
+    subtitle: "Daily schedule updates",
+    icon: <MessageSquareDot strokeWidth={2} color="#868686" size={20} />,
+    href: "/dashboard/profile/emailinfo",
   },
 ];

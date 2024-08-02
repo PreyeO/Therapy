@@ -13,11 +13,13 @@ import SecondStep from "@/components/screens/dashboard/therapist_screen/accounts
 import FirstStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FirstStep";
 import Success from "@/components/ui/notifications/Success";
 import { useNavigate } from "react-router-dom";
+import LocationStepTwo from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/LocationStepTwo";
 
 const steps: ReactElement[] = [
   <FirstStep />,
   <SecondStep />,
   <ThirdStep />,
+  <LocationStepTwo />,
   <FourthStep />,
   <FifthStep />,
   <ReviewStep />,
@@ -39,7 +41,7 @@ const AccountSetup = () => {
     navigate("/dashboard");
   };
   return (
-    <main className="bg-main-background w-full h-screen flex flex-col items-center justify-center">
+    <main className="bg-main-background w-full md:h-screen flex flex-col items-center justify-center">
       <div className="relative w-full h-full flex items-center justify-center">
         {isSetupComplete ? (
           <Success
@@ -47,15 +49,17 @@ const AccountSetup = () => {
             subtitle="You can now procced to your dashboard"
             label="Go to dashboard"
             onButtonClick={handleSuccessButtonClick}
-            className=" "
+            className=""
           />
         ) : (
           <div className="w-full flex flex-col items-center scale-75">
-            <Card className="w-[60%] bg-white rounded-3xl py-8 shadow-md flex flex-col gap-16">
+            <Card className="xl:w-[60%] w-full bg-white rounded-3xl py-8 shadow-md flex flex-col gap-16 ">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between px-[4%] py-8">
-                  <h3 className="text-2xl font-medium">Account setup</h3>
-                  <h3 className="text-lg font-bold text-army_green">
+                  <h3 className="lg:text-2xl md:text-xl text-base font-medium">
+                    Account setup
+                  </h3>
+                  <h3 className="md:text-lg text-base font-bold text-army_green">
                     Step {currentStep + 1} of {steps.length}
                   </h3>
                 </div>
@@ -64,11 +68,11 @@ const AccountSetup = () => {
                 </div>
               </div>
               <CardContent>{step}</CardContent>
-              <div className="flex gap-3 justify-end items-end mt-10 mx-[4%] mb-2">
+              <div className="flex gap-3 justify-end items-end mx-[4%] mb-2">
                 {!isFirstStep && (
                   <Button
                     onClick={prev}
-                    className="rounded-full w-[30%] h-[55px] text-xl font-medium bg-transparent text-army_green border"
+                    className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium bg-transparent text-army_green border mb-4"
                   >
                     Previous
                   </Button>
@@ -76,14 +80,14 @@ const AccountSetup = () => {
                 {isLastStep ? (
                   <Button
                     onClick={handleFinishSetup}
-                    className="rounded-full w-[30%] h-[55px] text-xl font-medium"
+                    className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium mb-4"
                   >
                     Finish Setup
                   </Button>
                 ) : (
                   <Button
                     onClick={next}
-                    className="rounded-full w-[30%] h-[55px] text-xl font-medium"
+                    className="rounded-full md:w-[30%] h-[55px] text-xl font-medium w-full mb-4"
                   >
                     Next
                   </Button>

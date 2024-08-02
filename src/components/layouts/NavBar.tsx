@@ -7,6 +7,7 @@ import {
 import { sidebarLinks, sidebarLinksTwo } from "@/constants/Navigation";
 import { BarChartHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
+
 const NavBar = () => {
   return (
     <nav>

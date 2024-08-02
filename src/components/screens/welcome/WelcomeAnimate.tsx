@@ -52,10 +52,11 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
       <motion.div
         initial={{ backgroundColor: "#6D7C43" }}
         animate={{
-          backgroundColor: showInitialLogo ? "#6D7C43" : "white",
+          backgroundColor: showInitialLogo ? "#ffffff" : "#6D7C43",
         }}
         transition={{ duration: 0.5 }}
         className="flex flex-col justify-center items-center h-screen bg-main-background"
+        style={{ backgroundColor: showInitialLogo ? "#ffffff" : "#6D7C43" }}
       >
         {showInitialBackground && (
           <div className="flex justify-center items-center h-screen w-full bg-[#6D7C43] bg-main-background" />
@@ -101,6 +102,7 @@ const WelcomeAnimation: React.FC<InitialAnimationProps> = ({
             }}
             transition={{ duration: 0.7, ease: "easeInOut" }}
             className="flex justify-center items-center w-full h-full bg-main-background"
+            style={{ backgroundColor: "#ffffff" }}
           >
             {!slideDown && !showFullLogo && (
               <div className="logo w-full h-full flex justify-center items-center">

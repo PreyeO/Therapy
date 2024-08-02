@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { NewPassword } from "@/components/auth/reset_password/NewPassword";
 import { ResetForm } from "@/components/auth/reset_password/ResetForm";
 import { OtpVerification } from "@/components/auth/reset_password/OtpVerification";
@@ -7,11 +6,17 @@ import { useMultiStepForm } from "@/hooks";
 import { ArrowLeft } from "lucide-react";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePasswordResetState } from "@/store";
 
 const PasswordResetSteps: FC = () => {
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const {
+    email,
+    newPassword,
+    confirmPassword,
+    setEmail,
+    setNewPassword,
+    setConfirmPassword,
+  } = usePasswordResetState();
 
   const navigate = useNavigate();
 

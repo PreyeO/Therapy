@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "../../ui/form";
 import { Input } from "../../ui/input";
-import PasswordToggle from "@/components/functions/passwordToggle";
+import PasswordToggle from "@/components/common/passwordToggle";
 import { Link } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { loginFormSchema } from "@/types";

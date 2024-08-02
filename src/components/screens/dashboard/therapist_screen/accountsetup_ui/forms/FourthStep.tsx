@@ -1,16 +1,29 @@
 // FourthStep.tsx
-import { useState } from "react";
-import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { SquarePlus } from "lucide-react";
-import ServiceCard from "../ServiceCard";
-import OverlayPortal from "../OverlayPortal";
+
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { therapistSetupFormSchema } from "@/types";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import SetupHeader from "../SetupHeader";
 
 const FourthStep = () => {
-  const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false);
-
-  const toggleOverlay = () => {
-    setIsOverlayVisible(!isOverlayVisible);
-  };
+  const form = useForm<z.infer<typeof therapistSetupFormSchema>>();
 
   return (
     <div className="relative flex flex-col gap-20">
@@ -20,21 +33,64 @@ const FourthStep = () => {
           subtitle="Streamline billing and scheduling by adding services offered by your practice. This information will appear when clients are requesting appointments."
         />
       </div>
-      <div
-        className="mx-auto w-[191px] flex items-center justify-center gap-2 text-lg font-bold text-army_green bg-[#6D7C431A] rounded-full cursor-pointer h-[44px]"
-        onClick={toggleOverlay}
-      >
-        <SquarePlus size={24} color="#6D7C43" />
-        Add offer
-      </div>
-
-      {isOverlayVisible && (
-        <OverlayPortal>
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <ServiceCard toggleOverlay={toggleOverlay} />
+      <Form {...form}>
+        <form className="flex flex-col gap-5">
+          <FormField
+            control={form.control}
+            name="rate"
+            render={({ field }) => (
+              <FormItem className="flex-grow">
+                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
+                  Rate per session
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                    autoComplete="false"
+                    placeholder="$50"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+              </FormItem>
+            )}
+          />
+          <div className="flex gap-2 items-center w-full lg:w-auto flex-grow">
+            <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
+                    Duration per session
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
+                      autoComplete="false"
+                      placeholder="30"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                </FormItem>
+              )}
+            />
+            <div className="mt-7 flex-shrink-0 w-44">
+              <Select>
+                <SelectTrigger className="h-16 rounded-xl text-base font-normal text-[#444444B2] w-full">
+                  <SelectValue placeholder="Min" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sec">sec</SelectItem>
+                  <SelectItem value="min">min</SelectItem>
+                  <SelectItem value="hr">hr</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </OverlayPortal>
-      )}
+        </form>
+      </Form>
     </div>
   );
 };

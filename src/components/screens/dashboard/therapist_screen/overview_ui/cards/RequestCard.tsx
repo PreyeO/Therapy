@@ -7,21 +7,21 @@ const RequestCard = () => {
   return (
     <Card className="h-auto  bg-white rounded-lg py-5">
       <CardHeader className="flex justify-between">
-        <CardTitle className="flex justify-between items-center font-bold text-[15.21px] lg:text-lg">
-          Appointment Request
+        <div className="flex justify-between  font-bold text-[15.21px] lg:text-lg items-center">
+          <CardTitle className="">Appointment Request</CardTitle>
           <Button
             variant="link"
             className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium"
           >
             view all
           </Button>
-        </CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <div className=" flex flex-col gap-5">
           {requestsData.map((item, index) => (
             <div key={index} className="flex justify-between">
-              <div className="flex gap-6 justify-center items-center">
+              <div className="flex md:gap-6 gap-3 justify-center items-center">
                 <Avatar className="lg:w-[52px] lg:h-[52px] w-[43.9px] h-[43.9px]]">
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>avatar</AvatarFallback>

@@ -169,6 +169,7 @@ export const therapistSetupFormSchema = z.object({
   practice_name: z.string({
     message: "Please provide your practice name",
   }),
+
   state: z.string({
     required_error: "Provide your business state to continue",
   }),
@@ -194,3 +195,30 @@ export const therapistSetupFormSchema = z.object({
     required_error: "Provide your business street to continue",
   }),
 });
+
+export const therepistProfileFormSchema = z.object({
+  full_name: z.string({
+    message: "Please provide your full name",
+  }),
+  email: z.string({
+    message: "Please provide your email address",
+  }),
+  state: z.string({
+    required_error: "Provide your business state to continue",
+  }),
+  city: z.string({
+    required_error: "Provide your business city to continue",
+  }),
+  street: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  zipcode: z.string({
+    required_error: "Provide your business zipcode to continue",
+  }),
+});
+
+export type Event = {
+  title: string;
+  start: Date;
+  end: Date;
+};

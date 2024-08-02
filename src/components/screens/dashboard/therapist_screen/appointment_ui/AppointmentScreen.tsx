@@ -3,54 +3,67 @@ import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
 import SearchInput from "@/components/ui/search";
 import { dropdownItemsOne, dropdownItemsTwo } from "@/constants/Actions";
-// import PaginationFnx from "@/components/functions/paginationFnx";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 
 const AppointmentScreen = () => {
   return (
     <div className="my-7">
-      <Tabs defaultValue="new" className=" ">
-        <TabsList className="h-[50px]  lg:w-[446px] w-[318px] font-medium mx-auto">
-          <TabsTrigger value="new" className="w-full lg:text-sm text-[10px]">
+      <Tabs defaultValue="new" className="w-full">
+        <TabsList className="h-[50px] lg:w-[446px] w-[318px] font-medium mx-auto">
+          <TabsTrigger
+            value="new"
+            className="w-full lg:text-sm md:text-[12px] text-[10px]"
+          >
             Appointment Request
           </TabsTrigger>
           <TabsTrigger
             value="accepted"
-            className="w-full lg:text-sm text-[10px]"
+            className="w-full lg:text-sm text-[10px] md:text-[12px]"
           >
             Upcoming Appointment
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="new" className="bg-white px-[2%] mt-6">
-          <div className="flex justify-between py-5 ">
+        <TabsContent
+          value="new"
+          className="bg-white px-[2%] mt-6 w-full overflow-x-auto "
+        >
+          <div className="flex md:justify-between justify-around py-5 items-center ">
             <Title
-              title="New Appointments"
-              className=" text-[14.2px] lg:text-2xl font-medium "
+              title="Appointments"
+              className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
             />
-            DATE
+            <DatePickerWithRange />
           </div>
-          <AppointmentTable
-            dropdownItems={dropdownItemsOne}
-            dropdownType="one"
-          />
+          <div className="min-w-[687px] w-full">
+            <AppointmentTable
+              dropdownItems={dropdownItemsOne}
+              dropdownType="one"
+            />
+          </div>
         </TabsContent>
         <TabsContent
           value="accepted"
-          className="bg-white px-[2%] flex flex-col gap-3 mt-6"
+          className="bg-white px-[2%] mt-6 w-full overflow-x-auto "
         >
-          <div className="flex justify-between py-3">
+          <div className="py-3">
             <Title
               title="Upcoming Appointments"
-              className=" text-[14.2px] lg:text-2xl  font-medium "
+              className="text-[14.2px] lg:text-2xl font-medium md:text-xl"
             />
-            DATE
           </div>
-          <SearchInput />
-          <AppointmentTable
-            dropdownItems={dropdownItemsTwo}
-            dropdownType="two"
-          />
+          <div className="w-full border rounded-full ">
+            <SearchInput
+              className="focus:ring-transparent  text-base text-[#BDBDBD]  h-[44px] lg:h-[62px]  "
+              placeholder="Search for patients "
+            />
+          </div>
+          <div className="min-w-[687px] w-full my-4">
+            <AppointmentTable
+              dropdownItems={dropdownItemsTwo}
+              dropdownType="two"
+            />
+          </div>
         </TabsContent>
-        {/* <PaginationFnx /> */}
       </Tabs>
     </div>
   );

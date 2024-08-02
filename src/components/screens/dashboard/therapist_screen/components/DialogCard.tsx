@@ -3,10 +3,10 @@ import {
   DialogContent,
   DialogOverlay,
   DialogPortal,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import * as React from "react";
 import Success from "@/components/ui/notifications/Success";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface DialogCardProps {
   title: string;
@@ -28,21 +28,19 @@ const DialogCard: React.FC<DialogCardProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogPortal>
         <DialogOverlay className=" bg-black bg-opacity-50 " />
-        {!success ? (
-          <DialogContent className=" bg-white  max-w-[750px] h-[450px] flex flex-col items-center justify-center ">
-            <DialogTitle>{children}</DialogTitle>
+        {success && successMessage ? (
+          <DialogContent className="max-w-[700px] scale-75 lg:scale-75 md:scale-80">
+            <Success
+              title={successMessage.title}
+              subtitle={successMessage.subtitle}
+              label="Close"
+              onButtonClick={onClose}
+              className=""
+            />
           </DialogContent>
         ) : (
-          <DialogContent className="max-w-[700px] scale-75 lg:scale-75 md:scale-80 ]">
-            {successMessage && (
-              <Success
-                title={successMessage.title}
-                subtitle={successMessage.subtitle}
-                label="Close"
-                onButtonClick={onClose}
-                className=" "
-              />
-            )}
+          <DialogContent className=" bg-white max-w-[550px] h-[450px] flex flex-col items-center justify-center">
+            <DialogTitle>{children}</DialogTitle>
           </DialogContent>
         )}
       </DialogPortal>

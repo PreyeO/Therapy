@@ -1,7 +1,5 @@
-// components/ui/VerificationCard.tsx
-
 import { motion } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +21,7 @@ import {
 import { Form } from "../ui/form";
 import { toast } from "sonner";
 import LoadingOverlay from "@/components/ui/loader_effects/LoadingOverlay";
+import { useAuthState, useVerificationState } from "@/store/index";
 
 interface VerificationCardProps {
   email: string;
@@ -39,10 +38,16 @@ export const VerificationCard = ({
   verifyOtp,
   resendOtp,
 }: VerificationCardProps) => {
-  const [verificationError, setVerificationError] = useState<string>("");
-  const [resendEnabled, setResendEnabled] = useState(false);
-  const [resetTrigger, setResetTrigger] = useState(0);
-  const [loading, setLoading] = useState(false); // State to handle loading
+  const {
+    verificationError,
+    resendEnabled,
+    resetTrigger,
+    setVerificationError,
+    setResendEnabled,
+    incrementResetTrigger,
+  } = useVerificationState();
+
+  const { loading, setLoading } = useAuthState();
 
   const form = useForm<z.infer<typeof OTPFormSchema>>({
     resolver: zodResolver(OTPFormSchema),
@@ -68,7 +73,7 @@ export const VerificationCard = ({
         setVerificationError("Invalid OTP or Expired OTP. Please try again.");
       }
     },
-    [verifyOtp]
+    [verifyOtp, setLoading, setVerificationError]
   );
 
   const onSubmit = useCallback(
@@ -92,7 +97,7 @@ export const VerificationCard = ({
       await resendOtp();
       toast("OTP resent successfully");
       setResendEnabled(false);
-      setResetTrigger((prev) => prev + 1); // Trigger timer reset
+      incrementResetTrigger(); // Trigger timer reset
     } catch (error) {
       console.error("Error resending OTP:", error);
     }
@@ -143,7 +148,7 @@ export const VerificationCard = ({
                     control={form.control}
                     render={({ field }) => (
                       <InputOTP maxLength={6} {...field}>
-                        <InputOTPGroup className="flex gap-5">
+                        <InputOTPGroup className="flex md:gap-5 gap-2">
                           {[...Array(6)].map((_, index) => (
                             <InputOTPSlot
                               key={index}
