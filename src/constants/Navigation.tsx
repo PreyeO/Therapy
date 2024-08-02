@@ -12,7 +12,7 @@ import {
 
 export const sidebarLinks = [
   {
-    label: "Overview",
+    label: "Dashboard",
     icon: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
     href: "/dashboard",
   },
@@ -45,7 +45,7 @@ export const sidebarLinksTwo = [
   },
 
   {
-    label: "Settings",
+    label: "Profile Settings",
     icon: <SlidersHorizontal strokeWidth={2} color="#868686" size={24} />,
     href: "/dashboard/profile",
   },

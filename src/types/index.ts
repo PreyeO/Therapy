@@ -169,6 +169,7 @@ export const therapistSetupFormSchema = z.object({
   practice_name: z.string({
     message: "Please provide your practice name",
   }),
+
   state: z.string({
     required_error: "Provide your business state to continue",
   }),

@@ -104,9 +104,9 @@ interface DialogState {
   isOpen: boolean;
   success: boolean;
   title: string;
-  description: string;
+  description?: string;
   children: React.ReactNode | null;
-  successMessage: { title: string; subtitle: string } | null;
+  successMessage?: { title: string; subtitle: string } | null;
   openDialog: (
     title: string,
     description: string,

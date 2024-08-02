@@ -66,6 +66,7 @@ function App() {
                 <Route path="emailinfo" element={<EmailProfile />} />
               </Route>
               <Route path="patientoverview" element={<PatientsOverview />} />
+
               <Route path="empty" element={<Empty />} />
             </Route>
           </Routes>

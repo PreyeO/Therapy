@@ -19,8 +19,8 @@ const SecondStep = () => {
     <div className="flex flex-col lg:gap-20 gap-10 items-center">
       <div className="text-center">
         <SetupHeader
-          title="What’s your business address"
-          subtitle="Fill in your business address , this will enable your to know your work place "
+          title="What’s your business address?"
+          subtitle="Fill in your business address. "
         />
       </div>
       <Form {...form}>

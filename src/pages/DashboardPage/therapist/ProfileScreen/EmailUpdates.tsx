@@ -2,7 +2,7 @@ import EmailInfo from "@/components/screens/dashboard/therapist_screen/profile_u
 
 const EmailProfile = () => {
   return (
-    <main>
+    <main className="">
       <EmailInfo />
     </main>
   );

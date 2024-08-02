@@ -13,14 +13,14 @@ import SecondStep from "@/components/screens/dashboard/therapist_screen/accounts
 import FirstStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FirstStep";
 import Success from "@/components/ui/notifications/Success";
 import { useNavigate } from "react-router-dom";
-import ServiceStepTwo from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/ServiceStepTwo";
+import LocationStepTwo from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/LocationStepTwo";
 
 const steps: ReactElement[] = [
   <FirstStep />,
   <SecondStep />,
   <ThirdStep />,
+  <LocationStepTwo />,
   <FourthStep />,
-  <ServiceStepTwo />,
   <FifthStep />,
   <ReviewStep />,
 ];
@@ -68,7 +68,7 @@ const AccountSetup = () => {
                 </div>
               </div>
               <CardContent>{step}</CardContent>
-              <div className="flex gap-3 justify-end items-end lg:mt-10 mx-[4%] mb-2">
+              <div className="flex gap-3 justify-end items-end mx-[4%] mb-2">
                 {!isFirstStep && (
                   <Button
                     onClick={prev}

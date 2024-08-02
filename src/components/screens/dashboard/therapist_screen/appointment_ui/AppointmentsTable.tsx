@@ -1,5 +1,4 @@
 import * as React from "react";
-import Dropdown from "@/components/ui/dropdown";
 import {
   Table,
   TableBody,
@@ -9,12 +8,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { appointmentsData } from "@/constants/DataManager";
-import { Ellipsis } from "lucide-react";
-import DialogCard from "@/components/screens/dashboard/therapist_screen/appointment_ui/DialogCard";
+import DialogCard from "@/components/screens/dashboard/therapist_screen/components/DialogCard";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import PaginationFnx from "@/components/layouts/paginationFnx";
 import { useNavigate } from "react-router-dom";
+import { Ellipsis } from "lucide-react";
+import EllipsisDropdown from "@/components/common/EllipsisDropdown";
+import useDropdown from "@/hooks/useDropdown";
+import { useDialogState } from "@/store/index";
 
 interface AppointmentTableProps {
   dropdownItems: {
@@ -30,28 +32,20 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   dropdownItems,
   dropdownType,
 }) => {
-  const [openDropdownIndex, setOpenDropdownIndex] = React.useState<
-    number | null
-  >(null);
+  const { openDropdownIndex, toggleDropdown, closeDropdown } = useDropdown();
+  const {
+    isOpen,
+    success,
+    title,
+    children,
+    successMessage,
+    openDialog,
+    closeDialog,
+    openSuccess,
+  } = useDialogState();
+
   const [data, setData] = React.useState(appointmentsData);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const [dialogContent, setDialogContent] = React.useState({
-    title: "",
-    description: "",
-  });
-  const [dialogChildren, setDialogChildren] =
-    React.useState<React.ReactNode>(null);
-
-  const toggleDropdown = (index: number) => {
-    if (openDropdownIndex === index) {
-      setOpenDropdownIndex(null);
-    } else {
-      setOpenDropdownIndex(index);
-    }
-  };
-
-  const closeDropdown = () => setOpenDropdownIndex(null);
+  const navigate = useNavigate();
 
   const handleStatusUpdate = (index: number, status: string) => {
     const updatedData = [...data];
@@ -59,28 +53,6 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     setData(updatedData);
     closeDropdown();
   };
-
-  const handleDialogOpen = (
-    title: string,
-    description: string,
-    children: React.ReactNode
-  ) => {
-    setDialogContent({ title, description });
-    setDialogChildren(children);
-    setDialogOpen(true);
-    setSuccess(false);
-  };
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    setSuccess(false);
-  };
-
-  const handleSuccessOpen = () => {
-    setSuccess(true);
-  };
-
-  const navigate = useNavigate();
 
   const handleNavigate = () => {
     navigate("/dashboard/patientoverview");
@@ -91,12 +63,12 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
       <Table className="bg-white pt-5">
         <TableHeader>
           <TableRow className="lg:text-sm md:text-[12px] text-[8.28px] ">
-            <TableHead className=" font-semibold">Name</TableHead>
-            <TableHead className=" font-semibold">Time</TableHead>
-            <TableHead className=" font-semibold">Date</TableHead>
-            <TableHead className=" font-semibold">Location</TableHead>
-            <TableHead className=" font-semibold"> Status</TableHead>
-            <TableHead className=" font-semibold">Action</TableHead>
+            <TableHead className="font-semibold">Name</TableHead>
+            <TableHead className="font-semibold">Time</TableHead>
+            <TableHead className="font-semibold">Date</TableHead>
+            <TableHead className="font-semibold">Location</TableHead>
+            <TableHead className="font-semibold">Status</TableHead>
+            <TableHead className="font-semibold">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -110,17 +82,17 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               <TableCell>{item.date}</TableCell>
               <TableCell>{item.location}</TableCell>
               <TableCell style={{ color: item.color }}>{item.status}</TableCell>
-              <TableCell className="relative">
+              <TableCell>
                 <button onClick={() => toggleDropdown(index)}>
                   <Ellipsis size={24} />
                 </button>
-                <Dropdown
+                <EllipsisDropdown
                   items={dropdownItems.map((dropdownItem) => ({
                     ...dropdownItem,
                     onClick: () => {
+                      handleStatusUpdate(index, dropdownItem.label);
                       if (dropdownType === "one") {
-                        handleStatusUpdate(index, dropdownItem.label);
-                        handleDialogOpen(
+                        openDialog(
                           dropdownItem.label,
                           `This action will ${dropdownItem.label.toLowerCase()} the appointment.`,
                           <>
@@ -135,14 +107,14 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
 
                             <Button
                               className="rounded-full md:h-[60px] h-[37px] text-[10.04px] md:text-base font-normal flex flex-col w-[226px] mt-7"
-                              onClick={handleSuccessOpen}
+                              onClick={() => {
+                                openSuccess();
+                              }}
                             >
                               Send
                             </Button>
                           </>
                         );
-                      } else {
-                        handleStatusUpdate(index, dropdownItem.label);
                       }
                     },
                   }))}
@@ -158,16 +130,18 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
         <PaginationFnx />
       </div>
       <DialogCard
-        title={dialogContent.title}
-        isOpen={dialogOpen}
-        onClose={handleDialogClose}
+        title={title}
+        isOpen={isOpen}
+        onClose={closeDialog}
         success={success}
-        successMessage={{
-          title: "Message Sent Successfully",
-          subtitle: "Your message has been sent to the patient.",
-        }}
+        successMessage={
+          successMessage || {
+            title: "Message Sent Successfully",
+            subtitle: "Your message has been sent to the patient.",
+          }
+        }
       >
-        {dialogChildren}
+        {children}
       </DialogCard>
     </div>
   );

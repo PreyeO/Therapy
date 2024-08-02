@@ -277,3 +277,29 @@ export const events = [
     end: new Date(2024, 6, 12, 17, 0),
   },
 ];
+
+// therapist profile
+
+export const therapistProfileData = [
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Update when you get new appointment",
+  },
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Daily update about your schedule",
+  },
+  {
+    office_name: "Rockline",
+    state: "California",
+    city: "San Diego",
+    street: "Arouba Rd, San Diego County",
+    email_update: "Update when users cancel an appointment",
+  },
+];

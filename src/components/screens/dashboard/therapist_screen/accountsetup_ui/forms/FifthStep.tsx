@@ -5,7 +5,7 @@ import { TimeData } from "@/constants/DataManager";
 
 const FifthStep = () => {
   return (
-    <div className="relative flex flex-col gap-10">
+    <div className="relative flex flex-col gap-10 scale-90">
       <div className="text-center">
         <SetupHeader
           title="Let clients know your business hour"
