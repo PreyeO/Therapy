@@ -7,60 +7,100 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { therepistProfileFormSchema } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Title from "@/components/ui/Titles/Title";
+import { useEffect, useState } from "react";
+import { getUserData } from "@/services/api/auth";
+import { useTherapistProfileState } from "@/store/useTherapistProfileState"; // Use Zustand store
 
 const ProfileForm = () => {
-  const form = useForm<z.infer<typeof therepistProfileFormSchema>>();
+  const { profile, loading, error, fetchProfile } = useTherapistProfileState(); // Use Zustand state
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const form = useForm<z.infer<typeof therepistProfileFormSchema>>({
+    defaultValues: {
+      state: "",
+      city: "",
+      street: "",
+      zipcode: "", // Use `zipcode` instead of `postal_code`
+    },
+  });
+
+  // Fetch user data and set full name and email
+  useEffect(() => {
+    const userData = getUserData();
+    if (userData) {
+      const { first_name, last_name, email } = userData.user;
+      setFullName(`${first_name || ""} ${last_name || ""}`);
+      setEmail(email || "");
+    }
+  }, []);
+
+  // Fetch profile data once when the component mounts
+  useEffect(() => {
+    if (!profile) {
+      fetchProfile();
+    }
+  }, [fetchProfile, profile]);
+
+  // Populate form fields after profile data is fetched
+  useEffect(() => {
+    if (profile) {
+      console.log("Profile data:", profile); // Debugging line
+      form.reset({
+        state: profile.business_address?.state || "",
+        city: profile.business_address?.city || "",
+        street: profile.business_address?.street_address || "",
+        zipcode: profile.business_address?.postal_code || "", // Use `zipcode`
+      });
+    }
+  }, [profile, form]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div className="flex flex-col gap-10 ">
+    <div className="flex flex-col gap-10">
       <Title title="Personal Info" className="text-lg font-bold" />
       <Form {...form}>
         <form className="flex flex-col gap-5 w-full">
-          <FormField
-            control={form.control}
-            name="full_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Full Name
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal"
-                    autoComplete="false"
-                    placeholder="Enter your full name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Email
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal"
-                    autoComplete="false"
-                    placeholder="Enter your email address"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <Title title="Address" className=" py-5 text-lg font-bold" />
+          <FormItem>
+            <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
+              Full Name
+            </FormLabel>
+            <FormControl>
+              <Input
+                className="h-16 text-placeholder_text font-sm font-normal"
+                autoComplete="off"
+                placeholder="Enter your full name"
+                value={fullName} // Use state to display the full name
+                readOnly
+              />
+            </FormControl>
+          </FormItem>
+          <FormItem>
+            <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
+              Email
+            </FormLabel>
+            <FormControl>
+              <Input
+                className="h-16 text-placeholder_text font-sm font-normal"
+                autoComplete="off"
+                placeholder="Enter your email address"
+                value={email} // Use state to display the email
+                readOnly
+              />
+            </FormControl>
+          </FormItem>
+          <Title title="Address" className="py-5 text-lg font-bold" />
           <div className="flex gap-6 flex-wrap w-full">
             <FormField
               control={form.control}
@@ -73,7 +113,7 @@ const ProfileForm = () => {
                   <FormControl>
                     <Input
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="false"
+                      autoComplete="off"
                       placeholder="Enter state name"
                       {...field}
                     />
@@ -93,7 +133,7 @@ const ProfileForm = () => {
                   <FormControl>
                     <Input
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="false"
+                      autoComplete="off"
                       placeholder="Enter city name"
                       {...field}
                     />
@@ -109,13 +149,13 @@ const ProfileForm = () => {
               name="street"
               render={({ field }) => (
                 <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm  font-medium text-primary_black_text">
+                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
                     Street
                   </FormLabel>
                   <FormControl>
                     <Input
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="false"
+                      autoComplete="off"
                       placeholder="Enter street name"
                       {...field}
                     />
@@ -135,7 +175,7 @@ const ProfileForm = () => {
                   <FormControl>
                     <Input
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="false"
+                      autoComplete="off"
                       placeholder="Enter zipcode number"
                       {...field}
                     />

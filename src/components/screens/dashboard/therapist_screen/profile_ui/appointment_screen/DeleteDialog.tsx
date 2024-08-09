@@ -16,7 +16,7 @@ const DeleteDialog = () => {
       <Trash2 size={80} color="#8BA05F" />
       <Title
         title="Are you sure you want to delete this location?"
-        className="font-bold text-2xl"
+        className="font-bold text-xl"
       />
       <div className="flex gap-4">
         <Button

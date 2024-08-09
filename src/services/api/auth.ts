@@ -66,10 +66,15 @@ export const verifyEmailOTP = async (userId, otp) => {
 };
 
 // api to login users
+
+// api to login users
 export const loginUser = async (loginData) => {
   try {
     const response = await api.post("/api/users/login/", loginData);
-    return response.data;
+    const userData = response.data;
+    localStorage.setItem("user", JSON.stringify(userData));
+    setAuthToken(userData.token); // Set the token after login
+    return userData;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message =
@@ -79,4 +84,25 @@ export const loginUser = async (loginData) => {
       throw new Error("Error logging in user");
     }
   }
+};
+
+// api to get user data from local storage
+export const getUserData = () => {
+  const userData = localStorage.getItem("user");
+  if (userData) {
+    console.log("Retrieved user data:", JSON.parse(userData)); // Log retrieved user data
+    return JSON.parse(userData);
+  }
+  console.log("No user data found in local storage");
+  return null;
+};
+
+// api to get auth token from local storage
+export const getAuthToken = () => {
+  const userData = localStorage.getItem("user");
+  if (userData) {
+    const { token } = JSON.parse(userData);
+    return token;
+  }
+  return null;
 };

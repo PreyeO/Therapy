@@ -165,37 +165,6 @@ export interface VerificationProps extends handleNextProps {
   userType: RegisterDataType["userType"];
 }
 
-export const therapistSetupFormSchema = z.object({
-  practice_name: z.string({
-    message: "Please provide your practice name",
-  }),
-
-  state: z.string({
-    required_error: "Provide your business state to continue",
-  }),
-  city: z.string({
-    required_error: "Provide your business city to continue",
-  }),
-  street: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-  zipcode: z.string({
-    required_error: "Provide your business zipcode to continue",
-  }),
-  office_name: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-  service: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-  duration: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-  rate: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-});
-
 export const therepistProfileFormSchema = z.object({
   full_name: z.string({
     message: "Please provide your full name",
@@ -203,17 +172,23 @@ export const therepistProfileFormSchema = z.object({
   email: z.string({
     message: "Please provide your email address",
   }),
-  state: z.string({
-    required_error: "Provide your business state to continue",
+  state: z.string().optional(),
+  city: z.string().optional(),
+  street: z.string().optional(),
+  zipcode: z.string().optional(),
+});
+export const therapistProfileBusinessAddressSchema = z.object({
+  street_address: z.string({
+    required_error: "Provide your business street to continue",
   }),
   city: z.string({
     required_error: "Provide your business city to continue",
   }),
-  street: z.string({
-    required_error: "Provide your business street to continue",
+  state: z.string({
+    required_error: "Provide your business state to continue",
   }),
-  zipcode: z.string({
-    required_error: "Provide your business zipcode to continue",
+  postal_code: z.string({
+    required_error: "Provide your business postal code to continue",
   }),
 });
 
@@ -222,3 +197,40 @@ export type Event = {
   start: Date;
   end: Date;
 };
+
+export const businessAddressSchema = z.object({
+  street_address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postal_code: z.string().optional(),
+});
+
+export const appointmentAddressSchema = z.object({
+  street_address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postal_code: z.string().optional(),
+});
+
+export const therapistSetupFormSchema = z.object({
+  professional_license_number: z.string().optional(),
+  specialty: z.string().optional(),
+  practice_name: z.string().optional(),
+  rate_per_session: z.string().optional(),
+  duration_per_session: z.string().optional(),
+  duration_unit: z.string().optional(),
+  business_address: businessAddressSchema.optional(),
+  appointment_addresses: z.array(appointmentAddressSchema).default([]),
+});
+
+export const businessPeriodSchema = z.object({
+  day_of_week: z.string(),
+  opening_hour: z.string(),
+  closing_hour: z.string(),
+});
+
+// Infer types from schemas
+export type BusinessAddress = z.infer<typeof businessAddressSchema>;
+export type AppointmentAddress = z.infer<typeof appointmentAddressSchema>;
+export type FormState = z.infer<typeof therapistSetupFormSchema>;
+export type BusinessPeriod = z.infer<typeof businessPeriodSchema>;

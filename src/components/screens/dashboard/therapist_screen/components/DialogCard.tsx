@@ -39,7 +39,7 @@ const DialogCard: React.FC<DialogCardProps> = ({
             />
           </DialogContent>
         ) : (
-          <DialogContent className=" bg-white max-w-[550px] h-[450px] flex flex-col items-center justify-center">
+          <DialogContent className=" bg-white max-w-[550px] md:h-[450px] flex flex-col items-center justify-center">
             <DialogTitle>{children}</DialogTitle>
           </DialogContent>
         )}

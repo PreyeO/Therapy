@@ -2,6 +2,7 @@ import {
   AlarmCheck,
   Bell,
   CalendarCheck,
+  CalendarDays,
   Headset,
   Hospital,
   LayoutDashboard,
@@ -66,10 +67,16 @@ export const miniSidebarLinks = [
     href: "/dashboard/profile",
   },
   {
-    label: "Clinic Information",
-    subtitle: "Clinic location",
+    label: "Appointment Info",
+    subtitle: "Appointment location",
     icon: <Hospital strokeWidth={2} color="#868686" size={20} />,
-    href: "/dashboard/profile/clinicinfo",
+    href: "/dashboard/profile/appointmentinfo",
+  },
+  {
+    label: "Business Periods",
+    subtitle: "Sessions Timeslot",
+    icon: <CalendarDays strokeWidth={2} color="#868686" size={20} />,
+    href: "/dashboard/profile/businessperiodinfo",
   },
   {
     label: "Email Updates",

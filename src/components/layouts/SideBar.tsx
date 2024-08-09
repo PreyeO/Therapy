@@ -24,7 +24,7 @@ const SideBar = () => {
               </div>
               <ul>
                 <li
-                  className={`text-xl font-normal ${
+                  className={`text-xl ${
                     location.pathname === item.href
                       ? "text-[#6D7C43] font-bold"
                       : "text-inactive_text"
