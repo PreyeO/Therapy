@@ -1,4 +1,3 @@
-// services/api/auth.ts
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -10,19 +9,63 @@ const api = axios.create({
   },
 });
 
-// Initializing api headers
+// initializing api headers
 export const setAuthToken = (token: string) => {
   api.defaults.headers.common["Authorization"] = `Token ${token}`;
 };
 
+// api to send register users
 export const registerUser = async (userData) => {
   try {
     const response = await api.post("/api/users/", userData);
     return response;
   } catch (error) {
-    handleError(error);
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.email?.[0] || "Unknown error occurred";
+      throw new Error(message);
+    } else {
+      throw new Error("Unknown error occurred");
+    }
   }
 };
+
+// api to send otp sent to users email address
+export const sendOTPToEmail = async (userId) => {
+  try {
+    const response = await api.get(
+      `/api/users/${userId}/email-verification/request-otp/`
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.detail || "Error sending OTP";
+      throw new Error(message);
+    } else {
+      throw new Error("Error sending OTP");
+    }
+  }
+};
+
+// api to verify otp sent to users
+export const verifyEmailOTP = async (userId, otp) => {
+  try {
+    const response = await api.post(
+      `/api/users/${userId}/email-verification/verify-otp/`,
+      { otp }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.detail || "Unknown error occurred";
+      throw new Error(message);
+    } else {
+      throw new Error("Unknown error occurred");
+    }
+  }
+};
+
+// api to login users
 
 export const loginUser = async (loginData) => {
   try {
@@ -36,7 +79,7 @@ export const loginUser = async (loginData) => {
   }
 };
 
-// Get user data from local storage
+// api to get user data from local storage
 export const getUserData = () => {
   const userData = localStorage.getItem("user");
   if (userData) {
@@ -47,7 +90,8 @@ export const getUserData = () => {
   return null;
 };
 
-// Get auth token from local storage
+// api to get auth token from local storage
+
 export const getAuthToken = () => {
   const userData = getUserData();
   if (userData) {
@@ -56,13 +100,10 @@ export const getAuthToken = () => {
   return null;
 };
 
-// Handle logout
 export const logoutUser = () => {
   localStorage.removeItem("user");
   delete api.defaults.headers.common["Authorization"];
 };
-
-// Handle API errors
 const handleError = (error) => {
   if (axios.isAxiosError(error)) {
     const message = error.response?.data?.detail || "Unknown error occurred";
