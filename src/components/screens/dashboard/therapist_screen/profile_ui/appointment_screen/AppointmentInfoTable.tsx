@@ -32,16 +32,7 @@ const AppointmentInfoTable: React.FC<ClinicTableProps> = ({
 }) => {
   const { profile, loading, error, fetchProfile } = useTherapistProfileState(); // Use Zustand state
   const { openDropdownIndex, toggleDropdown, closeDropdown } = useDropdown();
-  const {
-    isOpen,
-    success,
-    title,
-    children,
-    successMessage,
-    openDialog,
-    closeDialog,
-    openSuccess,
-  } = useDialogState();
+  const { openDialog, openSuccess } = useDialogState();
 
   useEffect(() => {
     fetchProfile(); // Fetch profile data when the component mounts
@@ -51,9 +42,7 @@ const AppointmentInfoTable: React.FC<ClinicTableProps> = ({
     openDialog(
       "Edit Location",
       "This action will edit the location.",
-      <>
-        <DialogForm onClick={openSuccess} />
-      </>
+      <DialogForm onClick={openSuccess} />
     );
   };
 
@@ -61,9 +50,7 @@ const AppointmentInfoTable: React.FC<ClinicTableProps> = ({
     openDialog(
       "Delete Location",
       "Are you sure you want to delete this location?",
-      <>
-        <DeleteDialog />
-      </>
+      <DeleteDialog />
     );
   };
 
@@ -131,20 +118,8 @@ const AppointmentInfoTable: React.FC<ClinicTableProps> = ({
           </TableBody>
         </Table>
 
-        <DialogCard
-          title={title}
-          isOpen={isOpen}
-          onClose={closeDialog}
-          success={success}
-          successMessage={
-            successMessage || {
-              title: "Location updated Successfully",
-              subtitle: "Your location has been updated.",
-            }
-          }
-        >
-          {children}
-        </DialogCard>
+        {/* DialogCard is now self-sufficient */}
+        <DialogCard />
       </div>
     </div>
   );

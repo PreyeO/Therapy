@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { Button } from "@/components/ui/button";
 import { AppointmentAddress, FormState } from "@/types";
 import ServiceCard from "../ServiceCard";
 import EditIcon from "@/components/icons/EditIcon";
@@ -59,9 +58,9 @@ const ThirdStep = ({
         ))}
       </div>
       <ServiceCard addAppointmentAddress={addAppointmentAddress} />
-      <Button onClick={handleSave} className="mt-5">
-        Save Addresses
-      </Button>
+      <button onClick={handleSave} className="mt-5">
+        .
+      </button>
     </div>
   );
 };

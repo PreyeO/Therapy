@@ -3,7 +3,6 @@ import SetupHeader from "@/components/screens/dashboard/therapist_screen/account
 import { Switch } from "@/components/ui/switch";
 
 import { useBusinessPeriods } from "@/hooks/useBusinessPeriods";
-import { Button } from "@/components/ui/button";
 import { BusinessPeriod } from "@/types";
 import TimeSelect from "../../components/TimeSelect";
 
@@ -76,9 +75,9 @@ const FifthStep: React.FC<{
             </div>
           </div>
         ))}
-        <Button type="submit" className="mt-5">
-          Save
-        </Button>
+        <button type="submit" className="mt-5">
+          .
+        </button>
       </form>
     </div>
   );

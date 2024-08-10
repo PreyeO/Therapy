@@ -33,16 +33,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   dropdownType,
 }) => {
   const { openDropdownIndex, toggleDropdown, closeDropdown } = useDropdown();
-  const {
-    isOpen,
-    success,
-    title,
-    children,
-    successMessage,
-    openDialog,
-    closeDialog,
-    openSuccess,
-  } = useDialogState();
+  const { openDialog, openSuccess } = useDialogState();
 
   const [data, setData] = React.useState(appointmentsData);
   const navigate = useNavigate();
@@ -129,20 +120,8 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
       <div className="flex flex-col justify-center">
         <PaginationFnx />
       </div>
-      <DialogCard
-        title={title}
-        isOpen={isOpen}
-        onClose={closeDialog}
-        success={success}
-        successMessage={
-          successMessage || {
-            title: "Message Sent Successfully",
-            subtitle: "Your message has been sent to the patient.",
-          }
-        }
-      >
-        {children}
-      </DialogCard>
+      {/* DialogCard is now self-sufficient */}
+      <DialogCard />
     </div>
   );
 };

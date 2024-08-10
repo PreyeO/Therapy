@@ -14,6 +14,7 @@ import Title from "@/components/ui/Titles/Title";
 import { useEffect, useState } from "react";
 import { getUserData } from "@/services/api/auth";
 import { useTherapistProfileState } from "@/store/useTherapistProfileState"; // Use Zustand store
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 const ProfileForm = () => {
   const { profile, loading, error, fetchProfile } = useTherapistProfileState(); // Use Zustand state
@@ -25,7 +26,7 @@ const ProfileForm = () => {
       state: "",
       city: "",
       street: "",
-      zipcode: "", // Use `zipcode` instead of `postal_code`
+      zipcode: "", 
     },
   });
 
@@ -60,7 +61,11 @@ const ProfileForm = () => {
   }, [profile, form]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="relative w-full h-[200px] flex justify-center items-center">
+        <SmallLoader />
+      </div>
+    );
   }
 
   if (error) {

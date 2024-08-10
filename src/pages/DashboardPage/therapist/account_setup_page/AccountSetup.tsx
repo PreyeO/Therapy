@@ -18,6 +18,7 @@ const AccountSetup = () => {
       try {
         const userData = getUserData();
         console.log("User data:", userData); // Log user data for debugging
+
         if (userData && userData.user && userData.user.therapist_profile) {
           const profileId = userData.user.therapist_profile.id;
           setTherapistProfileId(profileId);
@@ -26,12 +27,18 @@ const AccountSetup = () => {
           const token = getAuthToken();
           if (token) {
             setAuthToken(token);
+          } else {
+            console.error("Token not found");
+            navigate("/login"); // Redirect to login if token is not found
+            return;
           }
 
-          const profileData = await getTherapistProfile(profileId); // Ensure the profile data is fetched
+          // Fetch the therapist profile
+          const profileData = await getTherapistProfile(profileId);
           console.log("Profile data:", profileData); // Log profile data for debugging
         } else {
           console.error("Therapist profile not found in user data");
+          navigate("/login"); // Redirect to login if profile is not found
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -39,7 +46,7 @@ const AccountSetup = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
   const handleSuccessButtonClick = () => {
     navigate("/dashboard");
@@ -54,7 +61,7 @@ const AccountSetup = () => {
       <div className="relative w-full h-full flex items-center justify-center">
         {isSetupComplete ? (
           <Success
-            title="You have successfully setup your account"
+            title="You have successfully set up your account"
             subtitle="You can now proceed to your dashboard"
             label="Go to dashboard"
             onButtonClick={handleSuccessButtonClick}

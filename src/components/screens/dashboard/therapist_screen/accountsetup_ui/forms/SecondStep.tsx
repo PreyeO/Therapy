@@ -124,7 +124,7 @@ const SecondStep = ({ updateAccountSetup, formState }: SecondStepProps) => {
               )}
             />
           </div>
-          <button type="submit">submit</button>
+          <button type="submit">.</button>
         </form>
       </Form>
     </div>

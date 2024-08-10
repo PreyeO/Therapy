@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
 import Empty from "./pages/DashboardPage/therapist/Empty";
 import BusinessPeriods from "./pages/DashboardPage/therapist/ProfileScreen/BusinessPeriods";
+import BusinessSessionRates from "./pages/DashboardPage/therapist/ProfileScreen/BusinessSessionRates";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -71,6 +72,10 @@ function App() {
                 <Route
                   path="businessperiodinfo"
                   element={<BusinessPeriods />}
+                />
+                <Route
+                  path="business_session_rate"
+                  element={<BusinessSessionRates />}
                 />
                 <Route path="emailinfo" element={<EmailProfile />} />
               </Route>

@@ -118,7 +118,7 @@ const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
       <Card className="xl:w-[60%] w-full bg-white rounded-3xl  shadow-md flex flex-col">
         <div className="flex flex-col">
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between px-[4%] py-8">
+            <div className="flex justify-between px-[4%] py-4">
               <h3 className="lg:text-2xl md:text-xl text-base font-medium">
                 Account setup
               </h3>
@@ -132,11 +132,11 @@ const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
           </div>
           <CardContent>{step}</CardContent>
         </div>
-        <div className="flex gap-3 justify-end items-end mx-[4%] mb-4">
+        <div className="flex gap-3 justify-end items-end mx-[4%] mb-6">
           {!isFirstStep && (
             <Button
               onClick={prev}
-              className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium bg-transparent text-army_green border mb-4"
+              className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium bg-transparent text-army_green border "
             >
               Previous
             </Button>
@@ -144,14 +144,14 @@ const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
           {isLastStep ? (
             <Button
               onClick={handleFinishSetup}
-              className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium mb-4"
+              className="rounded-full md:w-[30%] w-full h-[55px] text-xl font-medium "
             >
               Finish Setup
             </Button>
           ) : (
             <Button
               onClick={next}
-              className="rounded-full md:w-[30%] h-[55px] text-xl font-medium w-full mb-4"
+              className="rounded-full md:w-[30%] h-[55px] text-xl font-medium w-full "
             >
               Next
             </Button>
