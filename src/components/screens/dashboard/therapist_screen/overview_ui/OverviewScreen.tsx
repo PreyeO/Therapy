@@ -7,8 +7,19 @@ import RequestCard from "./cards/RequestCard";
 import GraphCard from "./cards/GraphCard";
 import UpcomingCard from "./cards/UpcomingCard";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getUserData } from "@/services/api/auth";
 
 const OverviewScreen = () => {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const userData = getUserData();
+    if (userData) {
+      const { first_name } = userData.user;
+      setName(`${first_name}`);
+    }
+  }, []);
   return (
     <div className="">
       <div className=" py-6 bg-white my-7 flex justify-between rounded-lg max-w-full items-center ">
@@ -16,7 +27,7 @@ const OverviewScreen = () => {
           <WandIcon width={24} height={24} className="hidden lg:block" />
           <WandIcon width={18} height={18} className="block lg:hidden" />
           <p className="md:text-[17px] text-army_green font-normal text-[12px] ">
-            Hello! Preye you can now setup your account
+            Hello! {name} you can now setup your account
           </p>
         </div>
         <div className="mr-3 ">

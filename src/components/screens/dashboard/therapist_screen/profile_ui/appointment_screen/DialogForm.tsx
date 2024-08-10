@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { therapistSetupFormSchema } from "@/types";
+import { therapistProfileBusinessAddressSchema } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import OverlayHeading from "../../components/OverlayHeading";
@@ -20,7 +20,7 @@ interface DialogFormProps {
 }
 
 const DialogForm: FC<DialogFormProps> = ({ onClick }) => {
-  const form = useForm<z.infer<typeof therapistSetupFormSchema>>();
+  const form = useForm<z.infer<typeof therapistProfileBusinessAddressSchema>>();
 
   return (
     <div className="flex flex-col gap-20  w-full">
@@ -78,7 +78,7 @@ const DialogForm: FC<DialogFormProps> = ({ onClick }) => {
           </div>
           <FormField
             control={form.control}
-            name="street"
+            name="street_address"
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">

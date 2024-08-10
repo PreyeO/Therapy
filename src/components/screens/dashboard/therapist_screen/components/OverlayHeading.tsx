@@ -19,6 +19,7 @@ const OverlayHeading: FC<OverlayHeadingProps> = ({ onClick, title, label }) => {
         <Button
           onClick={onClick}
           className="lg:w-[109px] w-[90px] rounded-full text-base font-medium h-[31px] lg:h-[37px]"
+          type="submit"
         >
           {label}
         </Button>

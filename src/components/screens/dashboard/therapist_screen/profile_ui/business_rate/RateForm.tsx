@@ -7,6 +7,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { therapistSetupFormSchema } from "@/types";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
@@ -14,45 +18,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEffect } from "react";
+import { useTherapistProfileState } from "@/store/useTherapistProfileState";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
-import { FormState, therapistSetupFormSchema } from "@/types";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import SetupHeader from "../SetupHeader";
-import { zodResolver } from "@hookform/resolvers/zod";
+const RateForm = () => {
+  const { profile, loading } = useTherapistProfileState();
 
-interface FourthStepProps {
-  updateAccountSetup: (data: Partial<FormState>) => void;
-  formState: FormState;
-}
-
-const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
   const form = useForm<z.infer<typeof therapistSetupFormSchema>>({
     resolver: zodResolver(therapistSetupFormSchema),
-    defaultValues: formState,
+    defaultValues: {
+      rate_per_session: "",
+      duration_per_session: "",
+      duration_unit: "minutes", // default value if not provided
+    },
   });
 
-  const onSubmit = (data: Partial<FormState>) => {
-    if (!data.duration_unit) {
-      delete data.duration_unit; // Remove duration_unit if not selected
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        rate_per_session: profile.rate_per_session?.toString() || "",
+        duration_per_session: profile.duration_per_session?.toString() || "",
+        duration_unit: profile.duration_unit || "minutes",
+      });
     }
-    // Merge new data with existing form state
-    updateAccountSetup({ ...formState, ...data });
-  };
+  }, [profile, form]);
+
+  if (loading) {
+    return (
+      <div className="relative w-full h-[200px] flex justify-center items-center">
+        <SmallLoader />
+      </div>
+    );
+  }
 
   return (
-    <div className="relative flex flex-col gap-20">
-      <div className="text-center py-6 mt-6">
-        <SetupHeader
-          title="What service does your practice offer"
-          subtitle="Streamline billing and scheduling by adding services offered by your practice. This information will appear when clients are requesting appointments."
-        />
-      </div>
+    <div className="flex flex-col gap-10">
       <Form {...form}>
-        <form
-          className="flex flex-col gap-5"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col gap-5 pt-12">
           <FormField
             control={form.control}
             name="rate_per_session"
@@ -65,7 +68,6 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
                   <Input
                     className="h-16 text-placeholder_text font-sm font-normal w-full"
                     autoComplete="false"
-                    placeholder="$50"
                     {...field}
                   />
                 </FormControl>
@@ -87,7 +89,6 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
                       type="number"
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="false"
-                      placeholder="30"
                       {...field}
                     />
                   </FormControl>
@@ -96,27 +97,28 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
               )}
             />
             <div className="mt-7 flex-shrink-0 w-44">
-              <Select
-                onValueChange={(value) =>
-                  updateAccountSetup({ duration_unit: value || undefined })
-                }
-              >
-                <SelectTrigger className="h-16 rounded-xl text-base font-normal text-[#444444B2] w-full">
-                  <SelectValue placeholder="Min" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="seconds">sec</SelectItem>
-                  <SelectItem value="minutes">min</SelectItem>
-                  <SelectItem value="hours">hr</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormField
+                control={form.control}
+                name="duration_unit"
+                render={({ field }) => (
+                  <Select {...field}>
+                    <SelectTrigger className="h-16 rounded-xl text-base font-normal text-[#444444B2] w-full">
+                      <SelectValue placeholder="Min" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="seconds">sec</SelectItem>
+                      <SelectItem value="minutes">min</SelectItem>
+                      <SelectItem value="hours">hr</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           </div>
-          <button type="submit">.</button>
         </form>
       </Form>
     </div>
   );
 };
 
-export default FourthStep;
+export default RateForm;

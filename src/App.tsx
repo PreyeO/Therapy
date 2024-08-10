@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
 import Empty from "./pages/DashboardPage/therapist/Empty";
+import BusinessPeriods from "./pages/DashboardPage/therapist/ProfileScreen/BusinessPeriods";
+import BusinessSessionRates from "./pages/DashboardPage/therapist/ProfileScreen/BusinessSessionRates";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -23,14 +25,16 @@ const PatientsOverview = lazy(
   () => import("./pages/DashboardPage/therapist/PatientsOverview")
 );
 const AccountSetup = lazy(
-  () => import("./pages/DashboardPage/therapist/AccountSetup")
+  () =>
+    import("@/pages/DashboardPage/therapist/account_setup_page/AccountSetup")
 );
 const Patients = lazy(() => import("./pages/DashboardPage/therapist/Patients"));
 const Profile = lazy(
   () => import("./pages/DashboardPage/therapist/ProfileScreen/Profile")
 );
-const ClinicProfile = lazy(
-  () => import("./pages/DashboardPage/therapist/ProfileScreen/ClinicProfile")
+const AppointmentProfile = lazy(
+  () =>
+    import("./pages/DashboardPage/therapist/ProfileScreen/AppointmentProfile")
 );
 const EmailProfile = lazy(
   () => import("./pages/DashboardPage/therapist/ProfileScreen/EmailUpdates")
@@ -61,8 +65,18 @@ function App() {
               <Route path="appointment" element={<Appointment />} />
               <Route path="profile" element={<ProfileLayout />}>
                 <Route path="" element={<Profile />} />
-
-                <Route path="clinicinfo" element={<ClinicProfile />} />
+                <Route
+                  path="appointmentinfo"
+                  element={<AppointmentProfile />}
+                />
+                <Route
+                  path="businessperiodinfo"
+                  element={<BusinessPeriods />}
+                />
+                <Route
+                  path="business_session_rate"
+                  element={<BusinessSessionRates />}
+                />
                 <Route path="emailinfo" element={<EmailProfile />} />
               </Route>
               <Route path="patientoverview" element={<PatientsOverview />} />
