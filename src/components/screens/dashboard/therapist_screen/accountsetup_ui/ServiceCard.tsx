@@ -1,6 +1,6 @@
 import { useDialogState } from "@/store"; // Import the Zustand store
 import DialogForm from "./forms/DialogForm";
-import { AppointmentAddress } from "@/types";
+import { AppointmentAddress } from "@/types/formSchema";
 import DialogCard from "../components/DialogCard";
 import { SquarePlus } from "lucide-react";
 

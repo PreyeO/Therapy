@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { FormState, therapistSetupFormSchema } from "@/types";
+import { FormState, therapistSetupFormSchema } from "@/types/formSchema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import SetupHeader from "../SetupHeader";
@@ -50,6 +50,7 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
       </div>
       <Form {...form}>
         <form
+          id="step-3-form"
           className="flex flex-col gap-5"
           onSubmit={form.handleSubmit(onSubmit)}
         >
@@ -97,8 +98,8 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
             />
             <div className="mt-7 flex-shrink-0 w-44">
               <Select
-                onValueChange={(value) =>
-                  updateAccountSetup({ duration_unit: value || undefined })
+                onValueChange={
+                  (value) => form.setValue("duration_unit", value) // Update form state when Select value changes
                 }
               >
                 <SelectTrigger className="h-16 rounded-xl text-base font-normal text-[#444444B2] w-full">
@@ -112,7 +113,6 @@ const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
               </Select>
             </div>
           </div>
-          <button type="submit">.</button>
         </form>
       </Form>
     </div>

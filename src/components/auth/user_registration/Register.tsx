@@ -3,12 +3,12 @@ import {
   registerUser,
   sendOTPToEmail,
   setAuthToken,
-} from "@/services/api/auth";
+} from "@/services/api/authentication/auth";
 import {
   RegisterDataType,
   handleNextProps,
   userDetailsRegisterSchema,
-} from "@/types";
+} from "@/types/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";

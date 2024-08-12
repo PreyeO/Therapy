@@ -1,3 +1,9 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTherapistProfileState } from "@/store/useTherapistProfileState";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -7,10 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { therapistSetupFormSchema } from "@/types";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
@@ -18,12 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect } from "react";
-import { useTherapistProfileState } from "@/store/useTherapistProfileState";
-import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
+
+import { therapistSetupFormSchema } from "@/types/formSchema";
 
 const RateForm = () => {
-  const { profile, loading } = useTherapistProfileState();
+  const { profile, loading, fetchProfile } = useTherapistProfileState();
 
   const form = useForm<z.infer<typeof therapistSetupFormSchema>>({
     resolver: zodResolver(therapistSetupFormSchema),
@@ -33,6 +34,11 @@ const RateForm = () => {
       duration_unit: "minutes", // default value if not provided
     },
   });
+
+  useEffect(() => {
+    // Fetch profile data on component mount
+    fetchProfile();
+  }, [fetchProfile]);
 
   useEffect(() => {
     if (profile) {
@@ -71,7 +77,7 @@ const RateForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                <FormMessage className="text-[#000000] text-[13px] font-light" />
               </FormItem>
             )}
           />

@@ -1,7 +1,7 @@
 import React from "react";
 import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { FormState, BusinessPeriod } from "@/types";
-import { getUserData } from "@/services/api/auth";
+import { FormState, BusinessPeriod } from "@/types/formSchema";
+import { getUserData } from "@/services/api/authentication/auth";
 
 interface ReviewStepProps {
   businessPeriods: BusinessPeriod[];

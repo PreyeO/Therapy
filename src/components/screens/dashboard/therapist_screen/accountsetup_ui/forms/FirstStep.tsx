@@ -10,7 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { FormState, therapistSetupFormSchema } from "@/types";
+import { FormState, therapistSetupFormSchema } from "@/types/formSchema";
 
 interface FirstStepProps {
   updateAccountSetup: (data: Partial<FormState>) => void;
@@ -64,7 +64,6 @@ const FirstStep = ({ updateAccountSetup, formState }: FirstStepProps) => {
               </FormItem>
             )}
           />
-          <button type="submit">.</button>
         </form>
       </Form>
     </div>

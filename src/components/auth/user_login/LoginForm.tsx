@@ -11,7 +11,7 @@ import { Input } from "../../ui/input";
 import PasswordToggle from "@/components/common/passwordToggle";
 import { Link } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { loginFormSchema } from "@/types";
+import { loginFormSchema } from "@/types/formSchema";
 
 const LoginForm = () => {
   const form = useFormContext<z.infer<typeof loginFormSchema>>();

@@ -7,12 +7,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { therepistProfileFormSchema } from "@/types";
+import { therepistProfileFormSchema } from "@/types/formSchema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Title from "@/components/ui/Titles/Title";
 import { useEffect, useState } from "react";
-import { getUserData } from "@/services/api/auth";
+import { getUserData } from "@/services/api/authentication/auth";
 import { useTherapistProfileState } from "@/store/useTherapistProfileState"; // Use Zustand store
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
@@ -26,7 +26,7 @@ const ProfileForm = () => {
       state: "",
       city: "",
       street: "",
-      zipcode: "", 
+      zipcode: "",
     },
   });
 

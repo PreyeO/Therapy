@@ -13,7 +13,7 @@ import { Input } from "../../ui/input";
 import { Checkbox } from "../../ui/checkbox";
 import PasswordValidation from "@/components/common/PasswordValidation";
 import PasswordToggle from "@/components/common/passwordToggle";
-import { userDetailsRegisterSchema } from "@/types";
+import { userDetailsRegisterSchema } from "@/types/formSchema";
 // import { Button } from "@/components/ui/button";
 
 interface RegisterFormFieldsProps {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch } from "@/components/ui/switch";
-import { BusinessPeriod } from "@/types";
+import { BusinessPeriod } from "@/types/formSchema";
 import TimeSelect from "./TimeSelect";
 
 interface BusinessPeriodFormProps {

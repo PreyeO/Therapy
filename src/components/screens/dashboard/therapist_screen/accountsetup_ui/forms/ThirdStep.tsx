@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { AppointmentAddress, FormState } from "@/types";
+import { AppointmentAddress, FormState } from "@/types/formSchema";
 import ServiceCard from "../ServiceCard";
 import EditIcon from "@/components/icons/EditIcon";
 
@@ -18,15 +18,10 @@ const ThirdStep = ({
   const [addresses, setAddresses] = useState<AppointmentAddress[]>([]);
 
   useEffect(() => {
-    console.log(
-      "Updating addresses in ThirdStep:",
-      formState.appointment_addresses
-    );
     setAddresses(formState.appointment_addresses || []);
   }, [formState.appointment_addresses]);
 
   const handleSave = () => {
-    console.log("Saving addresses:", addresses);
     updateAccountSetup({ appointment_addresses: addresses });
   };
 
@@ -58,9 +53,17 @@ const ThirdStep = ({
         ))}
       </div>
       <ServiceCard addAppointmentAddress={addAppointmentAddress} />
-      <button onClick={handleSave} className="mt-5">
-        .
-      </button>
+      <form
+        id="step-2-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+      >
+        <button type="submit" className="hidden">
+          Submit
+        </button>
+      </form>
     </div>
   );
 };

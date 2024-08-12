@@ -7,7 +7,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { appointmentAddressSchema, AppointmentAddress } from "@/types";
+import {
+  appointmentAddressSchema,
+  AppointmentAddress,
+} from "@/types/formSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC } from "react";

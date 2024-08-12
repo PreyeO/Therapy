@@ -8,7 +8,7 @@ import GraphCard from "./cards/GraphCard";
 import UpcomingCard from "./cards/UpcomingCard";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserData } from "@/services/api/auth";
+import { getUserData } from "@/services/api/authentication/auth";
 
 const OverviewScreen = () => {
   const [name, setName] = useState("");

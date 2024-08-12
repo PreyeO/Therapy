@@ -72,7 +72,7 @@ const AppointmentInfoTable: React.FC<ClinicTableProps> = ({
 
   if (loading) {
     return (
-      <div className="relative w-full h-[200px] flex justify-center items-center">
+      <div className="relative w-full h-[300px] flex justify-center items-center">
         <SmallLoader />
       </div>
     );

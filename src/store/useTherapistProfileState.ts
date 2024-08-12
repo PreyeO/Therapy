@@ -1,8 +1,12 @@
 // src/store/therapistProfileStore.ts
 import { create } from "zustand";
-import { getUserData, getAuthToken, setAuthToken } from "@/services/api/auth";
+import {
+  getUserData,
+  getAuthToken,
+  setAuthToken,
+} from "@/services/api/authentication/auth";
 import { getTherapistProfile } from "@/services/api/therapist/account_setup";
-import { FormState } from "@/types";
+import { FormState } from "@/types/formSchema";
 
 // Define the type for the therapist profile state
 interface TherapistProfileState {

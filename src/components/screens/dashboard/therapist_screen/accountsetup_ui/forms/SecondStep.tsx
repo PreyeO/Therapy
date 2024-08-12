@@ -10,7 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-import { FormState, therapistSetupFormSchema } from "@/types";
+import { FormState, therapistSetupFormSchema } from "@/types/formSchema";
 
 interface SecondStepProps {
   updateAccountSetup: (data: Partial<FormState>) => void;
@@ -37,6 +37,7 @@ const SecondStep = ({ updateAccountSetup, formState }: SecondStepProps) => {
       </div>
       <Form {...form}>
         <form
+          id="step-1-form"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5 w-full mb-3"
         >
@@ -124,7 +125,6 @@ const SecondStep = ({ updateAccountSetup, formState }: SecondStepProps) => {
               )}
             />
           </div>
-          <button type="submit">.</button>
         </form>
       </Form>
     </div>

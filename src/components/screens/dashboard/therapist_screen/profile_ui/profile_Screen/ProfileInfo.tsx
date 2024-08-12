@@ -5,6 +5,7 @@ import Title from "@/components/ui/Titles/Title";
 import ProfileForm from "./ProfileForm";
 import { CircleCheck } from "lucide-react";
 import { useTherapistProfileState } from "@/store/useTherapistProfileState";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 const ProfileInfo = () => {
   const { profile, loading, error, fetchProfile } = useTherapistProfileState(); // Use Zustand state
@@ -14,7 +15,11 @@ const ProfileInfo = () => {
   }, [fetchProfile]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="relative w-full h-[300px] flex justify-center items-center">
+        <SmallLoader />
+      </div>
+    );
   }
 
   if (error) {

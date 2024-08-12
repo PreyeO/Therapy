@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BusinessPeriod } from "@/types";
+import { BusinessPeriod } from "@/types/formSchema";
 
 const formatTime = (time: string) => {
   if (time.length === 5) {

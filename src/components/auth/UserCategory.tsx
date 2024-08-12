@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
-import { RegisterDataType, handleNextProps } from "@/types";
+import { RegisterDataType, handleNextProps } from "@/types/formSchema";
 import { useToast } from "../ui/use-toast";
 import { useUserState } from "@/store";
 import { useNavigate } from "react-router-dom";

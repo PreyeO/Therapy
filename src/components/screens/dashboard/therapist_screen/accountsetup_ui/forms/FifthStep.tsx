@@ -3,7 +3,7 @@ import SetupHeader from "@/components/screens/dashboard/therapist_screen/account
 import { Switch } from "@/components/ui/switch";
 
 import { useBusinessPeriods } from "@/hooks/useBusinessPeriods";
-import { BusinessPeriod } from "@/types";
+import { BusinessPeriod } from "@/types/formSchema";
 import TimeSelect from "../../components/TimeSelect";
 
 const FifthStep: React.FC<{
@@ -25,7 +25,11 @@ const FifthStep: React.FC<{
           subtitle="Control your schedule by deciding which day and time you’re available for an appointment request."
         />
       </div>
-      <form onSubmit={handleSave} className="flex flex-col gap-5">
+      <form
+        id="step-4-form"
+        onSubmit={handleSave}
+        className="flex flex-col gap-5"
+      >
         {/* Header Row */}
         <div className="flex items-center justify-center md:gap-20 pb-10 pt-3 md:text-base text-[9.19px] font-normal text-[#444444B2]">
           <h3 className="w-1/4 text-center"></h3>
@@ -75,9 +79,6 @@ const FifthStep: React.FC<{
             </div>
           </div>
         ))}
-        <button type="submit" className="mt-5">
-          .
-        </button>
       </form>
     </div>
   );
