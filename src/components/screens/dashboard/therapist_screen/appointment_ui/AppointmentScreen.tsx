@@ -9,18 +9,24 @@ const AppointmentScreen = () => {
   return (
     <div className="my-7">
       <Tabs defaultValue="new" className="w-full">
-        <TabsList className="h-[50px] lg:w-[446px] w-[318px] font-medium mx-auto">
+        <TabsList className="h-[50px] lg:w-[546px] w-[318px] font-medium mx-auto">
           <TabsTrigger
             value="new"
-            className="w-full lg:text-sm md:text-[12px] text-[10px]"
+            className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Appointment Request
           </TabsTrigger>
           <TabsTrigger
             value="accepted"
-            className="w-full lg:text-sm text-[10px] md:text-[12px]"
+            className="w-full lg:text-sm text-[10px] md:text-[12px] bg-white"
           >
             Upcoming Appointment
+          </TabsTrigger>
+          <TabsTrigger
+            value="new"
+            className="w-full lg:text-sm text-[10px] md:text-[12px] bg-white"
+          >
+            Waitlisted Appointment
           </TabsTrigger>
         </TabsList>
         <TabsContent

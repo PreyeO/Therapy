@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/Titles/Title";
-import RateForm from "./RateForm";
+// import RateForm from "./RateForm";
 
 const RateInfo = () => {
   return (
@@ -9,7 +9,7 @@ const RateInfo = () => {
         <Title title="Session Rate" className="text-xl font-medium  " />
         <Button className="w-[198px] rounded-full bg-army_green">Update</Button>
       </div>
-      <RateForm />
+      {/* <RateForm /> */}
     </div>
   );
 };

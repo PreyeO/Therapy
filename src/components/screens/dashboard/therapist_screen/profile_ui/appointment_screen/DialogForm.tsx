@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { therapistProfileBusinessAddressSchema } from "@/types";
+import { therapistProfileBusinessAddressSchema } from "@/types/formSchema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import OverlayHeading from "../../components/OverlayHeading";

@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { VerificationCard } from "@/components/auth/VerificationCard";
-import { changePassword, searchUserEmail } from "@/services/api/password_reset";
+import {
+  changePassword,
+  searchUserEmail,
+} from "@/services/api/authentication/password_reset";
 
 interface OtpVerificationProps {
   email: string;

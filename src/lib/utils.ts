@@ -2,7 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isSameDay } from "date-fns";
-import { Event } from "@/types/index";
+import { Event } from "@/types/formSchema";
 import chroma from "chroma-js";
 
 export function cn(...inputs: ClassValue[]) {

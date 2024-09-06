@@ -5,6 +5,10 @@ import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
 import Empty from "./pages/DashboardPage/therapist/Empty";
 import BusinessPeriods from "./pages/DashboardPage/therapist/ProfileScreen/BusinessPeriods";
 import BusinessSessionRates from "./pages/DashboardPage/therapist/ProfileScreen/BusinessSessionRates";
+import EmailProfile from "./pages/DashboardPage/therapist/ProfileScreen/EmailUpdates";
+import Profile from "./pages/DashboardPage/therapist/ProfileScreen/Profile";
+import AppointmentProfile from "./pages/DashboardPage/therapist/ProfileScreen/AppointmentProfile";
+import ProfileLayout from "./components/screens/dashboard/therapist_screen/profile_ui/ProfileLayout";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -29,22 +33,6 @@ const AccountSetup = lazy(
     import("@/pages/DashboardPage/therapist/account_setup_page/AccountSetup")
 );
 const Patients = lazy(() => import("./pages/DashboardPage/therapist/Patients"));
-const Profile = lazy(
-  () => import("./pages/DashboardPage/therapist/ProfileScreen/Profile")
-);
-const AppointmentProfile = lazy(
-  () =>
-    import("./pages/DashboardPage/therapist/ProfileScreen/AppointmentProfile")
-);
-const EmailProfile = lazy(
-  () => import("./pages/DashboardPage/therapist/ProfileScreen/EmailUpdates")
-);
-const ProfileLayout = lazy(
-  () =>
-    import(
-      "./components/screens/dashboard/therapist_screen/profile_ui/ProfileLayout"
-    )
-);
 
 function App() {
   return (

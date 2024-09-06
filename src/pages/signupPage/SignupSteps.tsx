@@ -4,13 +4,13 @@ import { UserCategory } from "@/components/auth/UserCategory";
 import Register from "@/components/auth/user_registration/Register";
 import EmailVerification from "@/components/auth/user_verification/EmailVerification";
 import Success from "@/components/ui/notifications/Success";
-import { RegisterDataType } from "@/types";
+import { RegisterDataType } from "@/types/formSchema";
 import { useNavigate } from "react-router-dom";
 import { useSignupState } from "@/store";
 
 const SignupSteps = () => {
   const [userType, setUserType] =
-    useState<RegisterDataType["userType"]>("patient");
+    useState<RegisterDataType["userType"]>("is_client");
 
   const {
     emailSent,

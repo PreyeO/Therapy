@@ -5,7 +5,7 @@ import {
   verifyEmailOTP,
   sendOTPToEmail,
   setAuthToken,
-} from "@/services/api/auth";
+} from "@/services/api/authentication/auth";
 
 interface EmailVerificationProps {
   userId: string;

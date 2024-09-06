@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { handleNextProps, resetPasswordSchema } from "@/types";
+import { handleNextProps, resetPasswordSchema } from "@/types/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { UserState } from "@/types";
+import { UserState } from "@/types/formSchema";
 
 export const useUserState = create<UserState>()((set) => ({
-  userType: "patient",
+  userType: "is_client",
   setUserType: (userType) => set({ userType }),
 }));
 

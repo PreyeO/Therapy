@@ -1,4 +1,4 @@
-import { loginFormSchema } from "@/types";
+import { loginFormSchema } from "@/types/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import Logo from "@/components/ui/logos/Logo";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, setAuthToken } from "@/services/api/auth";
+import { loginUser, setAuthToken } from "@/services/api/authentication/auth";
 import LoginForm from "@/components/auth/user_login/LoginForm";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";

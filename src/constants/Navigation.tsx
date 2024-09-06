@@ -4,11 +4,13 @@ import {
   CalendarCheck,
   CalendarDays,
   Coins,
+  HandCoins,
   Headset,
   Hospital,
   LayoutDashboard,
   MessageSquareDot,
   SlidersHorizontal,
+  User,
   Users,
 } from "lucide-react";
 
@@ -26,12 +28,18 @@ export const sidebarLinks = [
   },
 
   {
-    label: "Patients",
+    label: "Clients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
     href: "/dashboard/patients",
   },
   {
-    label: "Schedule",
+    label: "Billing",
+
+    icon: <HandCoins strokeWidth={2} color="#868686" size={24} />,
+    href: "/dashboard/billing",
+  },
+  {
+    label: "Calender",
 
     icon: <CalendarCheck strokeWidth={2} color="#868686" size={24} />,
     href: "/dashboard/schedule",
@@ -62,16 +70,22 @@ export const sidebarLinksTwo = [
 
 export const miniSidebarLinks = [
   {
-    label: "Profile Info",
+    label: "Profile",
     subtitle: "Personal info",
-    icon: <Users strokeWidth={2} color="#868686" size={20} />,
+    icon: <User strokeWidth={2} color="#868686" size={20} />,
     href: "/dashboard/profile",
   },
   {
-    label: "Appointment Info",
-    subtitle: "Appointment location",
+    label: "Clinincal Information",
+    subtitle: "Clinical location",
     icon: <Hospital strokeWidth={2} color="#868686" size={20} />,
     href: "/dashboard/profile/appointmentinfo",
+  },
+  {
+    label: "Business Period",
+    subtitle: "Daily updates about your schedule ",
+    icon: <CalendarDays strokeWidth={2} color="#868686" size={20} />,
+    href: "/dashboard/profile/businessperiodinfo",
   },
   {
     label: "Business Rate",
@@ -79,16 +93,10 @@ export const miniSidebarLinks = [
     icon: <Coins strokeWidth={2} color="#868686" size={20} />,
     href: "/dashboard/profile/business_session_rate",
   },
-  {
-    label: "Business Periods",
-    subtitle: "Sessions Timeslot",
-    icon: <CalendarDays strokeWidth={2} color="#868686" size={20} />,
-    href: "/dashboard/profile/businessperiodinfo",
-  },
 
   {
     label: "Email Updates",
-    subtitle: "Daily schedule updates",
+    subtitle: "Daily updates about your schedule",
     icon: <MessageSquareDot strokeWidth={2} color="#868686" size={20} />,
     href: "/dashboard/profile/emailinfo",
   },

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { handleNextPropsTwo, resetPasswordSchema } from "@/types";
+import { handleNextPropsTwo, resetPasswordSchema } from "@/types/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { searchUserEmail } from "@/services/api/password_reset";
+import { searchUserEmail } from "@/services/api/authentication/password_reset";
 import { toast } from "sonner";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 
