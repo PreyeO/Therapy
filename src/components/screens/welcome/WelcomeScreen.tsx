@@ -21,7 +21,7 @@ const WelcomeScreen = () => {
         <WelcomeAnimation onAnimationComplete={handleAnimationComplete} />
       )}
       {animationComplete && (
-        <div className="flex flex-col justify-center items-center lg:w-[763px] mx-auto h-screen">
+        <div className="flex flex-col justify-center items-center lg:w-[1000px] mx-auto h-screen">
           <div className="flex flex-col justify-center items-center  scale-75 lg:scale-75 md:scale-80 bg-transparent 3xl:scale-100">
             <motion.div
               initial={{ opacity: 0, y: 100 }}
@@ -30,14 +30,15 @@ const WelcomeScreen = () => {
               className="gap-5 flex flex-col justify-center items-center"
             >
               <FullLogo width={220} height={156} />
-              <CardTitle className="font-bold lg:text-[45px] lg:leading-[52px] text-heading_black_text text-center text-xl leading-6 px-[5%] lg:px-0">
-                Make Online And Live Consultation Easily With Top Therapist
+              <CardTitle className="  font-bold lg:text-[45px] lg:leading-[52px] text-heading_black_text text-center text-xl leading-6 px-[5%] lg:px-0">
+                Seamlessly Connect with Leading Therapists for Virtual and In
+                person sessions
                 <img
                   src={String}
                   alt="images for health care professionals"
                   width={141.51}
                   height={14}
-                  className="ml-[15%]"
+                  className="ml-[20%]"
                 />
               </CardTitle>
             </motion.div>
@@ -47,7 +48,7 @@ const WelcomeScreen = () => {
               transition={{ duration: 0.8, delay: 0.5, ease: "easeInOut" }}
             >
               <CardContent>
-                <div className="mx-auto my-6">
+                <div className="mx-auto mb-6">
                   <HeroImage />
                 </div>
               </CardContent>

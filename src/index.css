@@ -219,6 +219,7 @@
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
   margin: auto; /* Center within flex container */
+
 }
 
 .small_loader::after {
@@ -233,6 +234,10 @@
   border-radius: 50%;
   border: 3px solid;
   border-color: #8BA05F transparent;
+  
+}
+button{
+  background-color: #E2B887;
 }
 
 @keyframes rotation {

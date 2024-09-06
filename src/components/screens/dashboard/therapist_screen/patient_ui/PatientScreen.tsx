@@ -45,7 +45,7 @@ const PatientScreen = () => {
           </div>
           <div className="border rounded-md w-[260.56px]  text-[11.28px] ">
             <SearchInput
-              className="h-14 text-placeholder_text font-normal"
+              className="h-14 text-placeholder_text font-normal bg-transparent"
               placeholder="Search patients"
             />
           </div>

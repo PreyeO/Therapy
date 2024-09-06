@@ -30,46 +30,49 @@ const RegisterForm: FC<RegisterFormFieldsProps> = ({ passwordMatchError }) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <FormField
-        control={form.control}
-        name="first_name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-base font-medium text-primary_black_text">
-              First Name
-            </FormLabel>
-            <FormControl>
-              <Input
-                className="h-16 text-placeholder_text font-sm font-normal"
-                autoComplete="false"
-                placeholder="Enter your first name"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="last_name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-base font-medium text-primary_black_text">
-              Last Name
-            </FormLabel>
-            <FormControl>
-              <Input
-                className="h-16 text-placeholder_text font-sm font-normal"
-                autoComplete="false"
-                placeholder="Enter your last name"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-          </FormItem>
-        )}
-      />
+      <div className="flex gap-3">
+        <FormField
+          control={form.control}
+          name="first_name"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel className="text-base font-medium text-primary_black_text">
+                Legal First Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="h-16 text-placeholder_text font-sm font-normal"
+                  autoComplete="false"
+                  placeholder="Enter your flegal irst name"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="last_name"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel className="text-base font-medium text-primary_black_text">
+                Legal Last Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="h-16 text-placeholder_text font-sm font-normal"
+                  autoComplete="false"
+                  placeholder="Enter your legal last name"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+            </FormItem>
+          )}
+        />
+      </div>
       <FormField
         control={form.control}
         name="email"

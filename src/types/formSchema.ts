@@ -10,7 +10,7 @@ export const loginFormSchema = z.object({
 });
 
 export interface RegisterDataType {
-  userType: "patient" | "therapist";
+  userType: "is_client" | "is_clinician";
 }
 
 const passwordRegex = {
@@ -70,7 +70,7 @@ export const userDetailsRegisterSchema = z.object({
     .refine((value) => value === true, {
       message: "You must agree to the terms and conditions",
     }),
-  userType: z.enum(["patient", "therapist"], {
+  userType: z.enum(["is_client", "is_clinician"], {
     required_error: "User type is required",
   }),
 });
@@ -198,39 +198,29 @@ export type Event = {
   end: Date;
 };
 
-export const businessAddressSchema = z.object({
-  street_address: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  postal_code: z.string().optional(),
-});
-
-export const appointmentAddressSchema = z.object({
-  street_address: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  postal_code: z.string().optional(),
-});
-
-export const therapistSetupFormSchema = z.object({
-  professional_license_number: z.string().optional(),
-  specialty: z.string().optional(),
-  practice_name: z.string().optional(),
-  rate_per_session: z.string().optional(),
-  duration_per_session: z.string().optional(),
-  duration_unit: z.string().optional(),
-  business_address: businessAddressSchema.optional(),
-  appointment_addresses: z.array(appointmentAddressSchema).default([]),
-});
-
 export const businessPeriodSchema = z.object({
   day_of_week: z.string(),
   opening_hour: z.string(),
   closing_hour: z.string(),
+  appointment_location_ids: z.array(z.string()).optional(), // Location IDs
 });
 
-// Infer types from schemas
-export type BusinessAddress = z.infer<typeof businessAddressSchema>;
-export type AppointmentAddress = z.infer<typeof appointmentAddressSchema>;
-export type FormState = z.infer<typeof therapistSetupFormSchema>;
+// Infer the BusinessPeriod type from the schema
 export type BusinessPeriod = z.infer<typeof businessPeriodSchema>;
+
+export interface FetchedBusinessPeriod {
+  id: string;
+  day_of_week: string;
+  opening_hour: string;
+  closing_hour: string;
+  business_locations: Array<{
+    id: string;
+    location: {
+      id: number;
+      street_address: string;
+      city: string;
+      state: string;
+      postal_code: string;
+    };
+  }> | null;
+}

@@ -20,7 +20,6 @@ const PatientTable = () => {
             <TableHead className=" font-bold">Patient Name</TableHead>
             <TableHead className=" font-bold">Phone</TableHead>
             <TableHead className=" font-bold">Email</TableHead>
-            <TableHead className=" font-bold"> Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -39,7 +38,6 @@ const PatientTable = () => {
               </TableCell>
               <TableCell>{item.number}</TableCell>
               <TableCell>{item.email}</TableCell>
-              <TableCell>{item.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

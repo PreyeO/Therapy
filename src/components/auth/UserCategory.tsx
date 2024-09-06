@@ -22,14 +22,14 @@ const registrationCategories: {
   icon: JSX.Element;
 }[] = [
   {
-    key: "patient",
-    title: "Patient",
+    key: "is_client",
+    title: "Client",
     desc: "Get started as a user",
     icon: <User className="" size={30} color="#6D7C43" />,
   },
   {
-    key: "therapist",
-    title: "Therapist",
+    key: "is_clinician",
+    title: "Clinician",
     desc: "Get started as a user",
     icon: <Mail size={30} className="" color="#6D7C43" />,
   },
@@ -54,10 +54,10 @@ export const UserCategory: FC<CategoryProps> = ({
       <Card className="rounded-lg md:p-5 flex flex-col justify-center gap-10 mx-[3%] lg:mx-0">
         <CardHeader>
           <CardTitle className="font-medium md:text-3xl text-primary_black_text text-xl">
-            Get Started As
+            Get Started As?
           </CardTitle>
           <CardDescription className=" text-base md:text-lg font-normal text-[#BDBDBD]">
-            Select the specification that suits you?
+            Select the specification that suits you
           </CardDescription>
         </CardHeader>
         <div className="flex justify-center gap-[21px] flex-wrap">

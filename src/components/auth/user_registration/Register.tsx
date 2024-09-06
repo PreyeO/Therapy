@@ -87,10 +87,10 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
 
       // adding the particular user in the payload
       let userTypePayload;
-      if (data.userType === "therapist") {
-        userTypePayload = { is_therapist: true };
+      if (data.userType === "is_clinician") {
+        userTypePayload = { is_clinician: true };
       } else {
-        userTypePayload = { is_patient: true };
+        userTypePayload = { is_client: true };
       }
 
       // data expected when form is submitted

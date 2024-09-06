@@ -13,8 +13,8 @@ export interface RegisterUserData {
   email: string;
   password: string;
   confirm_password: string;
-  is_therapist?: boolean;
-  is_patient?: boolean;
+  is_clinician?: boolean;
+  is_client?: boolean;
 }
 
 export interface LoginData {

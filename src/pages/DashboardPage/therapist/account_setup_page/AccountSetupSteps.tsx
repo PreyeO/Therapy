@@ -1,130 +1,85 @@
-import { useMemo, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { toast, ToastContainer } from "react-toastify";
+// src/pages/DashboardPage/therapist/account_setup_page/AccountSetupSteps.tsx
+import React, { useMemo, useCallback } from "react";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import BusinessPeriodStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/BusinessPeriodStep";
+import ReviewStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/ReviewStep";
 import { useMultiStepForm } from "@/hooks/index";
-import ReviewStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/ReviewStep";
-import FifthStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FifthStep";
-import FourthStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FourthStep";
-import ThirdStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/ThirdStep";
-import SecondStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/SecondStep";
-import FirstStep from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/forms/FirstStep";
 import StepNavigation from "@/components/ui/step-navigation";
-import { useAccountSetup } from "@/hooks/useAccountSetup";
+import { Progress } from "@/components/ui/progress";
+import { ToastContainer } from "react-toastify";
 import {
-  setupTherapistProfile,
   setupTherapistBusinessPeriods,
+  getAppointmentAddress,
 } from "@/services/api/therapist/account_setup";
 
-const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
-  const {
-    formState,
-    updateAccountSetup,
-    addAppointmentAddress,
-    businessPeriods,
-    handleSaveBusinessPeriods,
-  } = useAccountSetup();
+interface AppointmentAddress {
+  id: string;
+  street_address: string;
+  city: string;
+  state: string;
+  postal_code: string;
+}
+
+// Explicitly define the type for the props
+interface AccountSetupStepsProps {
+  setIsSetupComplete: (isComplete: boolean) => void;
+}
+
+const AccountSetupSteps: React.FC<AccountSetupStepsProps> = ({
+  setIsSetupComplete,
+}) => {
+  const { businessPeriods, clearBusinessPeriods } = useBusinessPeriodsStore();
+  const [appointmentAddresses, setAppointmentAddresses] = React.useState<
+    AppointmentAddress[]
+  >([]);
+
+  // Fetch appointment addresses when component mounts
+  React.useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const addresses = await getAppointmentAddress();
+        setAppointmentAddresses(addresses); // Directly set the data as received from the API
+      } catch (error) {
+        console.error("Error fetching appointment addresses:", error);
+      }
+    };
+    fetchAddresses();
+  }, []);
 
   const steps = useMemo(
     () => [
-      <FirstStep
-        updateAccountSetup={updateAccountSetup}
-        formState={formState}
-        key="FirstStep"
+      <BusinessPeriodStep
+        onSave={() => {}}
+        appointmentAddresses={appointmentAddresses}
       />,
-      <SecondStep
-        updateAccountSetup={updateAccountSetup}
-        formState={formState}
-        key="SecondStep"
-      />,
-      <ThirdStep
-        addAppointmentAddress={addAppointmentAddress}
-        updateAccountSetup={updateAccountSetup}
-        formState={formState}
-        key="ThirdStep"
-      />,
-      <FourthStep
-        updateAccountSetup={updateAccountSetup}
-        formState={formState}
-        key="FourthStep"
-      />,
-      <FifthStep onSave={handleSaveBusinessPeriods} key="FifthStep" />,
-      <ReviewStep
-        businessPeriods={businessPeriods}
-        formState={formState}
-        key="ReviewStep"
-      />,
+      <ReviewStep appointmentAddresses={appointmentAddresses} />,
     ],
-    [
-      formState,
-      updateAccountSetup,
-      addAppointmentAddress,
-      handleSaveBusinessPeriods,
-      businessPeriods,
-    ]
+    [appointmentAddresses]
   );
 
   const { currentStep, step, next, prev, isFirstStep, isLastStep } =
     useMultiStepForm(steps);
 
-  const progressValue = useMemo(
-    () => (currentStep + 1) * (100 / steps.length),
-    [currentStep, steps.length]
-  );
-
   const handleFinishSetup = useCallback(async () => {
     try {
-      console.log("Final form state before submission:", formState);
-      const profileResponse = await setupTherapistProfile(
-        therapistProfileId,
-        formState
-      );
-      console.log("Profile setup response:", profileResponse);
-
       const validBusinessPeriods = businessPeriods.filter(
         (period) => period.opening_hour && period.closing_hour
       );
-      console.log(
-        "Filtered business periods before submission:",
-        validBusinessPeriods
-      );
-
-      const periodsResponse = await setupTherapistBusinessPeriods(
-        validBusinessPeriods
-      );
-      console.log("Business periods setup response:", periodsResponse);
-
-      setIsSetupComplete(true); // Update state to show Success component
+      await setupTherapistBusinessPeriods(validBusinessPeriods);
+      clearBusinessPeriods();
+      setIsSetupComplete(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      if (error instanceof Error) {
-        toast.error(error.message || "Ooops!");
-      } else {
-        toast.error("OOOPS! An unknown error occurred");
-      }
     }
-  }, [formState, businessPeriods, therapistProfileId, setIsSetupComplete]);
+  }, [businessPeriods, clearBusinessPeriods, setIsSetupComplete]);
 
   const handleNext = useCallback(() => {
-    const form = document.getElementById(
-      `step-${currentStep}-form`
-    ) as HTMLFormElement;
-
-    if (form) {
-      form.requestSubmit(); // This triggers the form's onSubmit handler
-
-      // After the form is submitted, we need to ensure that the form was valid.
-      if (form.checkValidity()) {
-        next(); // Proceed to the next step only if the form is valid
-      } else {
-        console.warn("Form is invalid, staying on the current step.");
-      }
-    }
-  }, [currentStep, next]);
+    next();
+  }, [next]);
 
   return (
     <div className="w-full flex flex-col items-center scale-75">
-      <Card className="xl:w-[60%] w-full bg-white rounded-3xl shadow-md flex flex-col">
+      <div className="xl:w-[60%] w-full bg-white rounded-3xl shadow-md flex flex-col">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between px-[4%] py-4">
             <h3 className="lg:text-2xl md:text-xl text-base font-medium">
@@ -135,10 +90,10 @@ const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
             </h3>
           </div>
           <div className="px-[4%]">
-            <Progress value={progressValue} />
+            <Progress value={(currentStep + 1) * (100 / steps.length)} />
           </div>
         </div>
-        <CardContent>{step}</CardContent>
+        {step}
         <StepNavigation
           isFirstStep={isFirstStep}
           isLastStep={isLastStep}
@@ -146,7 +101,7 @@ const AccountSetupSteps = ({ setIsSetupComplete, therapistProfileId }) => {
           handleNext={handleNext}
           handleFinishSetup={handleFinishSetup}
         />
-      </Card>
+      </div>
       <ToastContainer
         toastStyle={{ backgroundColor: "crimson", color: "white" }}
         className="text-white"
