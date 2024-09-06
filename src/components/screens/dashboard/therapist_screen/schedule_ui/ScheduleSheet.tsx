@@ -2,7 +2,7 @@
 import * as React from "react";
 import { format, startOfWeek, addDays, isSameDay, isWeekend } from "date-fns";
 import { getEventsForDayAndTime, getStylesForTimeSlot } from "@/lib/utils";
-import { Event } from "@/types/index";
+import { Event } from "@/types/formSchema";
 
 type ScheduleSheetProps = {
   events: Event[];
