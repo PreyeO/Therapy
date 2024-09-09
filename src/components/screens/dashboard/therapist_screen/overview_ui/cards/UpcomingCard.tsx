@@ -22,7 +22,7 @@ const UpcomingCard: React.FC = () => {
         />
         <Button
           variant="link"
-          className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium"
+          className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium bg-transparent"
         >
           view all
         </Button>

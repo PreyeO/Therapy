@@ -4,11 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
 import Empty from "./pages/DashboardPage/therapist/Empty";
 import BusinessPeriods from "./pages/DashboardPage/therapist/ProfileScreen/BusinessPeriods";
-import BusinessSessionRates from "./pages/DashboardPage/therapist/ProfileScreen/BusinessSessionRates";
 import EmailProfile from "./pages/DashboardPage/therapist/ProfileScreen/EmailUpdates";
 import Profile from "./pages/DashboardPage/therapist/ProfileScreen/Profile";
 import AppointmentProfile from "./pages/DashboardPage/therapist/ProfileScreen/AppointmentProfile";
 import ProfileLayout from "./components/screens/dashboard/therapist_screen/profile_ui/ProfileLayout";
+import BusinessServices from "./pages/DashboardPage/therapist/ProfileScreen/BusinessServices";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -61,10 +61,7 @@ function App() {
                   path="businessperiodinfo"
                   element={<BusinessPeriods />}
                 />
-                <Route
-                  path="business_session_rate"
-                  element={<BusinessSessionRates />}
-                />
+                <Route path="businessservices" element={<BusinessServices />} />
                 <Route path="emailinfo" element={<EmailProfile />} />
               </Route>
               <Route path="patientoverview" element={<PatientsOverview />} />

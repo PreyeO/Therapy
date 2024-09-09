@@ -88,10 +88,10 @@ export const miniSidebarLinks = [
     href: "/dashboard/profile/businessperiodinfo",
   },
   {
-    label: "Business Rate",
-    subtitle: "Your rate per session",
+    label: "Clinic Service",
+    subtitle: "List of clinic services",
     icon: <Coins strokeWidth={2} color="#868686" size={20} />,
-    href: "/dashboard/profile/business_session_rate",
+    href: "/dashboard/profile/businessservices",
   },
 
   {

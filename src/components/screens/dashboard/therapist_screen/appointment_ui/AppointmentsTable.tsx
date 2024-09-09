@@ -74,7 +74,10 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               <TableCell>{item.location}</TableCell>
               <TableCell style={{ color: item.color }}>{item.status}</TableCell>
               <TableCell>
-                <button onClick={() => toggleDropdown(index)}>
+                <button
+                  className="bg-transparent"
+                  onClick={() => toggleDropdown(index)}
+                >
                   <Ellipsis size={24} />
                 </button>
                 <EllipsisDropdown

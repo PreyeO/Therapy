@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/Titles/Title";
 // import RateForm from "./RateForm";
 
-const RateInfo = () => {
+const ServiceInfo = () => {
   return (
     <div className="pt-9 mx-6">
       <div className="flex justify-between">
@@ -14,4 +14,4 @@ const RateInfo = () => {
   );
 };
 
-export default RateInfo;
+export default ServiceInfo;
