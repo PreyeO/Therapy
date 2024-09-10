@@ -36,8 +36,8 @@ export const getUnavailableSlots = async () => {
 
 export const getAppointments = async () => {
   try {
-    console.log("Fetching all appointments...");
-    const response = await api.get(`/api/appointments`);
+    console.log("Fetching all appointments with details...");
+    const response = await api.get(`/api/appointments?detail=true`);
     return response.data;
   } catch (error) {
     handleError(error);

@@ -1,16 +1,38 @@
-// ScheduleSheet.tsx
 import * as React from "react";
-import { format, startOfWeek, addDays, isSameDay, isWeekend } from "date-fns";
+import {
+  format,
+  startOfWeek,
+  addDays,
+  isSameDay,
+  isWeekend,
+  getHours,
+  getMinutes,
+} from "date-fns";
 import { getEventsForDayAndTime, getStylesForTimeSlot } from "@/lib/utils";
 import { Event } from "@/types/formSchema";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import ScheduleInfo from "@/components/screens/dashboard/therapist_screen/schedule_ui/components/ScheduleInfo";
+import UnavailableInfo from "@/components/screens/dashboard/therapist_screen/schedule_ui/components/UnavailableInfo";
+
+type UnavailableSlot = {
+  start: Date;
+  end: Date;
+  reason: string;
+};
 
 type ScheduleSheetProps = {
   events: Event[];
+  unavailableSlots: UnavailableSlot[];
   weekStartDate: Date;
 };
 
 const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
   events,
+  unavailableSlots,
   weekStartDate,
 }) => {
   const daysOfWeek = Array.from({ length: 7 }).map((_, index) =>
@@ -20,6 +42,17 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
   const timeSlots = Array.from({ length: 11 }).map(
     (_, index) => `${7 + index}:00`
   );
+
+  const getUnavailableSlotForDayAndTime = (
+    unavailableSlots: UnavailableSlot[],
+    day: Date,
+    hour: number
+  ) => {
+    return unavailableSlots.filter((slot) => {
+      const start = new Date(slot.start);
+      return isSameDay(start, day) && getHours(start) === hour;
+    });
+  };
 
   return (
     <div className="w-full h-full overflow-x-auto">
@@ -51,7 +84,7 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
             {timeSlots.map((slot) => (
               <div
                 key={slot}
-                className="h-20 border-b flex items-center justify-center bg-[#EFF6FF] text-sm font-normal"
+                className="h-[60px] border-b flex items-center justify-center bg-[#EFF6FF] text-sm font-normal"
               >
                 {slot}
               </div>
@@ -69,29 +102,106 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
               }`}
             >
               {timeSlots.map((slot) => {
-                const eventsForSlot = getEventsForDayAndTime(events, day, slot);
-                const { bgColor, textColor } =
-                  eventsForSlot.length > 0
-                    ? getStylesForTimeSlot()
-                    : { bgColor: "", textColor: "" };
+                const hour = parseInt(slot.split(":")[0], 10);
+                const eventsForHour = getEventsForDayAndTime(events, day, hour);
+                const unavailableForHour = getUnavailableSlotForDayAndTime(
+                  unavailableSlots,
+                  day,
+                  hour
+                );
+
                 return (
-                  <div
-                    key={slot}
-                    className={`h-20 border-b relative`}
-                    style={{ backgroundColor: bgColor }}
-                  >
-                    {eventsForSlot.map((event) => (
-                      <div
-                        key={event.title}
-                        className={`absolute inset-0 p-2 rounded bg-inherit`}
-                        style={{
-                          borderLeft: `4px solid ${textColor}`,
-                          color: textColor,
-                        }}
-                      >
-                        {event.title}
-                      </div>
-                    ))}
+                  <div key={slot} className="h-[60px] border-b relative">
+                    {unavailableForHour.length > 0 ? (
+                      unavailableForHour.map((slot) => {
+                        const startMinutes = getMinutes(new Date(slot.start));
+                        const slotDurationInMinutes =
+                          (new Date(slot.end).getTime() -
+                            new Date(slot.start).getTime()) /
+                          1000 /
+                          60;
+
+                        const cellsToFill = Math.ceil(
+                          slotDurationInMinutes / 20
+                        );
+
+                        const topOffset = (startMinutes % 60) / 60;
+
+                        return (
+                          <HoverCard key={slot.reason}>
+                            <HoverCardTrigger asChild>
+                              <div
+                                className="absolute inset-0 bg-gray-400 rounded flex items-center justify-center cursor-pointer"
+                                style={{
+                                  height: `${cellsToFill * 33.33}%`,
+                                  top: `${topOffset * 100}%`,
+                                }}
+                              >
+                                <p className="text-white">{slot.reason}</p>
+                              </div>
+                            </HoverCardTrigger>
+
+                            <HoverCardContent>
+                              <UnavailableInfo
+                                reason={slot.reason}
+                                start={new Date(slot.start)}
+                                end={new Date(slot.end)}
+                              />
+                            </HoverCardContent>
+                          </HoverCard>
+                        );
+                      })
+                    ) : eventsForHour.length > 0 ? (
+                      eventsForHour.map((event) => {
+                        const { bgColor, textColor } = getStylesForTimeSlot();
+
+                        const eventDurationInMinutes =
+                          (new Date(event.end).getTime() -
+                            new Date(event.start).getTime()) /
+                          1000 /
+                          60;
+
+                        const cellsToFill = Math.ceil(
+                          eventDurationInMinutes / 20
+                        );
+
+                        return (
+                          <HoverCard key={event.title}>
+                            <HoverCardTrigger asChild>
+                              <div
+                                className="absolute inset-0 rounded cursor-pointer"
+                                style={{
+                                  backgroundColor: bgColor,
+                                  borderLeft: `4px solid ${textColor}`,
+                                  color: textColor,
+                                  height: `${cellsToFill * 33.33}%`,
+                                  top: `${
+                                    (new Date(event.start).getMinutes() / 60) *
+                                    100
+                                  }%`,
+                                }}
+                              >
+                                <p className="text-[14px]">
+                                  {event.service.name}
+                                </p>
+                              </div>
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                              <ScheduleInfo
+                                title={event.service.name}
+                                first_name={event.client}
+                                last_name={event.client}
+                                serviceDuration={event.serviceDuration}
+                                start={new Date(event.start)}
+                                end={new Date(event.end)}
+                              />
+                            </HoverCardContent>
+                          </HoverCard>
+                        );
+                      })
+                    ) : (
+                      <div className="h-full bg-transparent"></div>
+                    )}
                   </div>
                 );
               })}

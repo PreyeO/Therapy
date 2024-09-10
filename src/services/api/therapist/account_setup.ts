@@ -24,28 +24,6 @@ const handleError = (error) => {
   }
 };
 
-// export const setupTherapistProfile = async (profileId, profileData) => {
-//   try {
-//     console.log("API call to setupTherapistProfile with ID:", profileId);
-//     const response = await api.patch(
-//       `/api/therapist-profiles/${profileId}/`,
-//       profileData
-//     );
-//     return response.data;
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };
-
-// export const getTherapistProfile = async (profileId) => {
-//   try {
-//     const response = await api.get(`/api/therapist-profiles/${profileId}/`);
-//     return response.data;
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };
-
 export const getAppointmentAddress = async () => {
   try {
     const response = await api.get("/api/appointment-addresses");

@@ -237,39 +237,6 @@ export const TimeData = [
   },
 ];
 
-export const events = [
-  {
-    title: "Session with Omahlay",
-    start: new Date(2024, 6, 10, 9, 0), // Morning event
-    end: new Date(2024, 6, 10, 10, 0),
-  },
-  {
-    title: "Lunch Break",
-    start: new Date(2024, 6, 11, 12, 0), // Afternoon event
-    end: new Date(2024, 6, 11, 13, 0),
-  },
-  {
-    title: "Project Presentation",
-    start: new Date(2024, 6, 12, 16, 0), // Evening event
-    end: new Date(2024, 6, 12, 17, 0),
-  },
-  {
-    title: "Session with Rema",
-    start: new Date(2024, 6, 8, 9, 0), // Evening event
-    end: new Date(2024, 6, 12, 17, 0),
-  },
-  {
-    title: "Project Presentation",
-    start: new Date(2024, 6, 8, 12, 0), // Evening event
-    end: new Date(2024, 6, 12, 17, 0),
-  },
-  {
-    title: "Project Presentation",
-    start: new Date(2024, 6, 9, 10, 0), // Evening event
-    end: new Date(2024, 6, 12, 17, 0),
-  },
-];
-
 // therapist profile
 
 export const therapistProfileData = [

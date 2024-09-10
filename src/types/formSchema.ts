@@ -192,10 +192,29 @@ export const therapistProfileBusinessAddressSchema = z.object({
   }),
 });
 
+export type Service = {
+  id: string;
+  name: string;
+  code: string;
+  duration: number;
+  price: number;
+};
+
+export type Client = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  // Add any other relevant client fields here
+};
+
 export type Event = {
   title: string;
   start: Date;
   end: Date;
+  client: string;
+  service: Service; // Update this to reflect that service is an object, not a string
+  serviceDuration: number;
 };
 
 export const businessPeriodSchema = z.object({
