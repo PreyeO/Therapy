@@ -49,7 +49,7 @@ const Login = () => {
   // using card and form from shadcn
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto py-10 h-screen">
-      <Card className="md:px-[3%] rounded-lg">
+      <Card className="md:px-[3%] rounded-lg md:shadow-md">
         <CardHeader className="flex flex-col justify-center items-center gap-5">
           <Logo />
           <div className="flex flex-col gap-1 text-center">

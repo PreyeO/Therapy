@@ -9,8 +9,8 @@
 // } from "@/components/ui/form";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
-// import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
-// import { FormState, therapistSetupFormSchema } from "@/types/formSchema";
+// import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
+// import { FormState, clinicianSetupFormSchema } from "@/types/formSchema";
 
 // interface SecondStepProps {
 //   updateAccountSetup: (data: Partial<FormState>) => void;
@@ -19,7 +19,7 @@
 
 // const SecondStep = ({ updateAccountSetup, formState }: SecondStepProps) => {
 //   const form = useForm<Partial<FormState>>({
-//     resolver: zodResolver(therapistSetupFormSchema),
+//     resolver: zodResolver(clinicianSetupFormSchema),
 //     defaultValues: formState, // Set default values from formState
 //   });
 

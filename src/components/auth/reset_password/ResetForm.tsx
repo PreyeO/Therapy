@@ -47,7 +47,7 @@ export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
 
   return (
     <div className="max-w-[821px] flex flex-col justify-center mx-auto min-h-screen my-[-60px]">
-      <Card className="px-[3%] rounded-lg p-5 flex flex-col justify-center ">
+      <Card className="px-[3%] rounded-lg p-5 flex flex-col justify-center md:shadow-md">
         <CardHeader className="flex flex-col  gap-5">
           <div className="flex flex-col gap-3 ">
             <CardTitle className=" font-medium md:text-3xl text-xl text-primary_black_text font">

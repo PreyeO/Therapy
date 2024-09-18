@@ -31,7 +31,7 @@ const WelcomeScreen = () => {
             >
               <FullLogo width={220} height={156} />
               <CardTitle className="  font-bold lg:text-[45px] lg:leading-[52px] text-heading_black_text text-center text-xl leading-6 px-[5%] lg:px-0">
-                Seamlessly Connect with Leading Therapists for Virtual and In
+                Seamlessly Connect with Leading clinicians for Virtual and In
                 person sessions
                 <img
                   src={String}

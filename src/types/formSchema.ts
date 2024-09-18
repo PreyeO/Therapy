@@ -177,7 +177,7 @@ export const therepistProfileFormSchema = z.object({
   street: z.string().optional(),
   zipcode: z.string().optional(),
 });
-export const therapistProfileBusinessAddressSchema = z.object({
+export const clinicianProfileBusinessAddressSchema = z.object({
   street_address: z.string({
     required_error: "Provide your business street to continue",
   }),
@@ -243,3 +243,15 @@ export interface FetchedBusinessPeriod {
     };
   }> | null;
 }
+
+export type AppointmentRequest = {
+  id: string;
+  client: {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  service: Service;
+  start_time: string;
+  end_time: string;
+};

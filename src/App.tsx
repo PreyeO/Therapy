@@ -2,13 +2,13 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingOverlay from "./components/ui/loader_effects/LoadingOverlay";
-import Empty from "./pages/DashboardPage/therapist/Empty";
-import BusinessPeriods from "./pages/DashboardPage/therapist/ProfileScreen/BusinessPeriods";
-import EmailProfile from "./pages/DashboardPage/therapist/ProfileScreen/EmailUpdates";
-import Profile from "./pages/DashboardPage/therapist/ProfileScreen/Profile";
-import AppointmentProfile from "./pages/DashboardPage/therapist/ProfileScreen/AppointmentProfile";
-import ProfileLayout from "./components/screens/dashboard/therapist_screen/profile_ui/ProfileLayout";
-import BusinessServices from "./pages/DashboardPage/therapist/ProfileScreen/BusinessServices";
+import Empty from "./pages/DashboardPage/clinician/Empty";
+import EmailProfile from "./pages/DashboardPage/clinician/ProfileScreen/EmailUpdates";
+import BusinessServices from "./pages/DashboardPage/clinician/ProfileScreen/BusinessServices";
+import BusinessPeriods from "./pages/DashboardPage/clinician/ProfileScreen/BusinessPeriods";
+import AppointmentProfile from "./pages/DashboardPage/clinician/ProfileScreen/AppointmentProfile";
+import Profile from "./pages/DashboardPage/clinician/ProfileScreen/Profile";
+import ProfileLayout from "./components/screens/dashboard/clinician_screen/profile_ui/ProfileLayout";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -17,22 +17,22 @@ const Signup = lazy(() => import("@/pages/signupPage/Signup"));
 const PasswordReset = lazy(
   () => import("@/pages/PasswordResetPage/PasswordReset")
 );
-const Overview = lazy(() => import("./pages/DashboardPage/therapist/Overview"));
-const Schedule = lazy(() => import("./pages/DashboardPage/therapist/Schedule"));
+const Overview = lazy(() => import("@/pages/DashboardPage/clinician/Overview"));
+const Schedule = lazy(() => import("@/pages/DashboardPage/clinician/Schedule"));
 const DashboardLayout = lazy(
   () => import("./components/layouts/DashboardLayout")
 );
 const Appointment = lazy(
-  () => import("./pages/DashboardPage/therapist/Appointment")
+  () => import("@/pages/DashboardPage/clinician/Appointment")
 );
-const PatientsOverview = lazy(
-  () => import("./pages/DashboardPage/therapist/PatientsOverview")
+const ClientsOverview = lazy(
+  () => import("@/pages/DashboardPage/clinician/ClientsOverview")
 );
 const AccountSetup = lazy(
   () =>
-    import("@/pages/DashboardPage/therapist/account_setup_page/AccountSetup")
+    import("@/pages/DashboardPage/clinician/account_setup_page/AccountSetup")
 );
-const Patients = lazy(() => import("./pages/DashboardPage/therapist/Patients"));
+const Clients = lazy(() => import("./pages/DashboardPage/clinician/Clients"));
 
 function App() {
   return (
@@ -49,7 +49,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route path="" element={<Overview />} />
               <Route path="schedule" element={<Schedule />} />
-              <Route path="patients" element={<Patients />} />
+              <Route path="clients" element={<Clients />} />
               <Route path="appointment" element={<Appointment />} />
               <Route path="profile" element={<ProfileLayout />}>
                 <Route path="" element={<Profile />} />
@@ -64,7 +64,7 @@ function App() {
                 <Route path="businessservices" element={<BusinessServices />} />
                 <Route path="emailinfo" element={<EmailProfile />} />
               </Route>
-              <Route path="patientoverview" element={<PatientsOverview />} />
+              <Route path="clientoverview" element={<ClientsOverview />} />
 
               <Route path="empty" element={<Empty />} />
             </Route>

@@ -103,28 +103,44 @@ export const usePasswordResetState = create<PasswordResetState>((set) => ({
 interface DialogState {
   isOpen: boolean;
   success: boolean;
-  title: string;
-  description?: string;
-  children: React.ReactNode | null;
   successMessage?: { title: string; subtitle: string } | null;
-  openDialog: (
-    title: string,
-    description: string,
-    children: React.ReactNode
-  ) => void;
+  openSuccess: (message: { title: string; subtitle: string }) => void;
   closeDialog: () => void;
-  openSuccess: () => void;
 }
 
 export const useDialogState = create<DialogState>((set) => ({
   isOpen: false,
   success: false,
-  title: "",
-  description: "",
-  children: null,
   successMessage: null,
-  openDialog: (title, description, children) =>
-    set({ isOpen: true, title, description, children, success: false }),
-  closeDialog: () => set({ isOpen: false, success: false }),
-  openSuccess: () => set({ success: true }),
+  openSuccess: (message) =>
+    set({ isOpen: true, success: true, successMessage: message }),
+  closeDialog: () =>
+    set({ isOpen: false, success: false, successMessage: null }),
+}));
+
+interface PaginationState {
+  currentPage: number;
+  itemsPerPage: number;
+  totalItems: number;
+  setCurrentPage: (page: number) => void;
+  setTotalItems: (total: number) => void;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
+  resetPagination: () => void;
+}
+
+export const usePaginationStore = create<PaginationState>((set) => ({
+  currentPage: 1,
+  itemsPerPage: 5, // Default items per page
+  totalItems: 0,
+  setCurrentPage: (page) => set({ currentPage: page }),
+  setTotalItems: (total) => set({ totalItems: total }),
+  goToNextPage: () =>
+    set((state) => {
+      const totalPages = Math.ceil(state.totalItems / state.itemsPerPage);
+      return { currentPage: Math.min(state.currentPage + 1, totalPages) };
+    }),
+  goToPreviousPage: () =>
+    set((state) => ({ currentPage: Math.max(state.currentPage - 1, 1) })),
+  resetPagination: () => set({ currentPage: 1, totalItems: 0 }),
 }));

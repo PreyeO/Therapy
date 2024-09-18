@@ -5,9 +5,9 @@ import { Check, X } from "lucide-react";
 import Avatar from "@/assets/icon/Avater.svg";
 
 export const imageData = [
-  { src: Image1, alt: "This is an image of a therapist", id: 1, size: 174.13 },
-  { src: Image2, alt: "This is an image of a therapist", id: 2, size: 174.13 },
-  { src: Image3, alt: "This is an image of a therapist", id: 3, size: 174.13 },
+  { src: Image1, alt: "This is an image of a clinician", id: 1, size: 174.13 },
+  { src: Image2, alt: "This is an image of a clinician", id: 2, size: 174.13 },
+  { src: Image3, alt: "This is an image of a clinician", id: 3, size: 174.13 },
 ];
 
 export const requestsData = [
@@ -159,7 +159,7 @@ export const appointmentsData = [
   },
 ];
 
-export const therapistPatientData = [
+export const clinicianclientData = [
   {
     name: "Omahlay",
     id: "RR00000",
@@ -237,9 +237,9 @@ export const TimeData = [
   },
 ];
 
-// therapist profile
+// clinician profile
 
-export const therapistProfileData = [
+export const clinicianProfileData = [
   {
     office_name: "Rockline",
     state: "California",

@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-// import SetupHeader from "@/components/screens/dashboard/therapist_screen/accountsetup_ui/SetupHeader";
+// import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
 // import { AppointmentAddress, FormState } from "@/types/formSchema";
 // import ServiceCard from "../ServiceCard";
 // import EditIcon from "@/components/icons/EditIcon";

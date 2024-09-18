@@ -15,7 +15,7 @@
 //   SelectValue,
 // } from "@/components/ui/select";
 
-// import { FormState, therapistSetupFormSchema } from "@/types/formSchema";
+// import { FormState, clinicianSetupFormSchema } from "@/types/formSchema";
 // import { useForm } from "react-hook-form";
 // import { z } from "zod";
 // import SetupHeader from "../SetupHeader";
@@ -27,8 +27,8 @@
 // }
 
 // const FourthStep = ({ updateAccountSetup, formState }: FourthStepProps) => {
-//   const form = useForm<z.infer<typeof therapistSetupFormSchema>>({
-//     resolver: zodResolver(therapistSetupFormSchema),
+//   const form = useForm<z.infer<typeof clinicianSetupFormSchema>>({
+//     resolver: zodResolver(clinicianSetupFormSchema),
 //     defaultValues: formState,
 //   });
 

@@ -115,7 +115,7 @@ export const VerificationCard = ({
       className="relative" // Add relative position
     >
       {loading && <LoadingOverlay />}
-      <Card className="md:px-[3%] rounded-lg">
+      <Card className="md:px-[3%] rounded-lg md:shadow-md">
         <CardHeader>
           <Mail size={20} fill="white" className="" color="#041827" />
           <CardTitle className="font-medium md:text-3xl text-xl pt-6">

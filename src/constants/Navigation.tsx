@@ -30,7 +30,7 @@ export const sidebarLinks = [
   {
     label: "Clients",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "/dashboard/patients",
+    href: "/dashboard/clients",
   },
   {
     label: "Billing",

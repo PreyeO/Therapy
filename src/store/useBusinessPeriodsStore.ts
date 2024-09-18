@@ -1,8 +1,8 @@
 import create from "zustand";
 import {
-  getTherapistBusinessPeriods,
-  setupTherapistBusinessPeriods,
-} from "@/services/api/therapist/account_setup";
+  getclinicianBusinessPeriods,
+  setupclinicianBusinessPeriods,
+} from "@/services/api/clinicians/account_setup";
 import { BusinessPeriod, FetchedBusinessPeriod } from "@/types/formSchema"; // For setting up
 import { getUserData } from "@/services/api/authentication/auth";
 
@@ -97,7 +97,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>((set) => ({
   fetchBusinessPeriods: async () => {
     set({ loading: true, error: null });
     try {
-      const periods = await getTherapistBusinessPeriods(); // Fetch from API
+      const periods = await getclinicianBusinessPeriods(); // Fetch from API
       setLocalStorage("fetchedBusinessPeriods", periods); // Save fetched periods to localStorage
       set({ fetchedBusinessPeriods: periods, loading: false });
     } catch (error) {
@@ -155,7 +155,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>((set) => ({
       const validBusinessPeriods = businessPeriods.filter(
         (period: BusinessPeriod) => period.opening_hour && period.closing_hour
       );
-      await setupTherapistBusinessPeriods(validBusinessPeriods); // Set up valid periods
+      await setupclinicianBusinessPeriods(validBusinessPeriods); // Set up valid periods
       set({ isSetupComplete: true, loading: false });
     } catch (error) {
       set({ error: "Error setting up business periods", loading: false });
