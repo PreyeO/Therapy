@@ -10,7 +10,7 @@ import { ToastContainer } from "react-toastify";
 import {
   setupclinicianBusinessPeriods,
   getAppointmentAddress,
-} from "@/services/api/clinician/account_setup";
+} from "@/services/api/clinicians/account_setup";
 
 interface AppointmentAddress {
   id: string;
