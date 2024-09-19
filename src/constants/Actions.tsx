@@ -1,28 +1,26 @@
 import { Check, Menu, Trash2, X } from "lucide-react";
 import EditIcon from "@/components/icons/EditIcon";
-import { updateAppointmentStatus } from "@/services/api/clinicians/appointment"; // API call for updating appointment status
+import { updateAppointmentStatus } from "@/services/api/clinicians/appointment";
+import { DropdownItem } from "@/types/formSchema";
 
 // Function to handle the status update
-interface DropdownItem {
-  label: string;
-  color: string;
-  onClick: () => void | Promise<void>; // Allow async functions
-  icons?: React.ReactNode;
-}
 
 const handleActionClick = async (
   appointmentId: string,
-  status: string,
+  data: { status?: string; acceptance_status?: string },
   openSuccess: (message: { title: string; subtitle: string }) => void
 ) => {
   try {
-    await updateAppointmentStatus(appointmentId, status); // API call to update status
+    await updateAppointmentStatus(appointmentId, data); // Send dynamic data
+    const key = data.status ? "status" : "acceptance_status";
+    const value = data.status || data.acceptance_status;
+
     openSuccess({
-      title: `Appointment ${status}`,
-      subtitle: `The appointment status has been successfully updated to ${status}.`,
+      title: `Appointment ${value}`,
+      subtitle: `The appointment ${key} has been successfully updated to ${value}.`,
     });
   } catch (error) {
-    console.error("Failed to update appointment status:", error);
+    console.error("Failed to update appointment:", error);
   }
 };
 
@@ -35,7 +33,11 @@ export const getDropdownItemsOne = (
     label: "Waitlist",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Waitlisted", openSuccess),
+      handleActionClick(
+        appointmentId,
+        { acceptance_status: "Waitlisted" },
+        openSuccess
+      ),
     icons: (
       <div className="w-5 h-5 rounded-full">
         <Menu size={18} strokeWidth={1.5} color="black" />
@@ -46,7 +48,11 @@ export const getDropdownItemsOne = (
     label: "Accept",
     color: "text-[#8BA05F]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Accepted", openSuccess),
+      handleActionClick(
+        appointmentId,
+        { acceptance_status: "Accepted" },
+        openSuccess
+      ),
     icons: (
       <div className="w-5 h-5 border border-army_green rounded-full">
         <Check size={18} strokeWidth={1.5} color="#8BA05F" />
@@ -57,7 +63,11 @@ export const getDropdownItemsOne = (
     label: "Decline",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Declined", openSuccess),
+      handleActionClick(
+        appointmentId,
+        { acceptance_status: "Declined" },
+        openSuccess
+      ),
     icons: (
       <div className="w-5 h-5 border border-[#E25D1A] rounded-full">
         <X size={18} strokeWidth={1.5} color="#E25D1A" />
@@ -70,36 +80,50 @@ export const getDropdownItemsOne = (
 export const getDropdownItemsTwo = (
   appointmentId: string,
   openSuccess: (message: { title: string; subtitle: string }) => void
-) => [
+): DropdownItem[] => [
   {
     label: "Scheduled",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Scheduled", openSuccess),
+      handleActionClick(appointmentId, { status: "Scheduled" }, openSuccess),
   },
   {
     label: "No Show",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, "No Show", openSuccess),
+      handleActionClick(appointmentId, { status: "No Show" }, openSuccess),
   },
   {
     label: "Attended",
     color: "text-army_green",
     onClick: async () =>
-      handleActionClick(appointmentId, "Attended", openSuccess),
+      handleActionClick(appointmentId, { status: "Attended" }, openSuccess),
   },
   {
-    label: "Late Canceled",
+    label: "Late Cancel",
     color: "text-[#0418274D]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Late Canceled", openSuccess),
+      handleActionClick(appointmentId, { status: "Late Cancel" }, openSuccess),
   },
   {
     label: "Clinician Canceled",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, "Clinician Canceled", openSuccess),
+      handleActionClick(
+        appointmentId,
+        { status: "Clinician Canceled" },
+        openSuccess
+      ),
+  },
+  {
+    label: "Client Canceled",
+    color: "text-[#E25D1A]",
+    onClick: async () =>
+      handleActionClick(
+        appointmentId,
+        { status: "Client Canceled" },
+        openSuccess
+      ),
   },
 ];
 

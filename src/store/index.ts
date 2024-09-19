@@ -144,3 +144,18 @@ export const usePaginationStore = create<PaginationState>((set) => ({
     set((state) => ({ currentPage: Math.max(state.currentPage - 1, 1) })),
   resetPagination: () => set({ currentPage: 1, totalItems: 0 }),
 }));
+
+interface DropdownState {
+  openDropdownIndex: number | null;
+  toggleDropdown: (index: number) => void;
+  closeDropdown: () => void;
+}
+
+export const useDropdownStore = create<DropdownState>((set) => ({
+  openDropdownIndex: null,
+  toggleDropdown: (index: number) =>
+    set((state) => ({
+      openDropdownIndex: state.openDropdownIndex === index ? null : index,
+    })),
+  closeDropdown: () => set({ openDropdownIndex: null }),
+}));

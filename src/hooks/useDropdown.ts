@@ -6,7 +6,7 @@ const useDropdown = () => {
   );
 
   const toggleDropdown = (index: number) => {
-    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+    setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   const closeDropdown = () => setOpenDropdownIndex(null);

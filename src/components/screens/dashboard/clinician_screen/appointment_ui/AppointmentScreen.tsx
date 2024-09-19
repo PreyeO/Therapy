@@ -2,174 +2,166 @@ import { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
-import SearchInput from "@/components/ui/search";
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { useAppointmentsStore } from "@/store/useAppointment";
-import { AppointmentRequest } from "@/types/formSchema";
 import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
 import DialogCard from "../components/DialogCard";
+import AppointmentSearch from "./AppointmentSearch";
+import AllAppointmentSearch from "./AllAppointmentSearch";
+import { mapToAppointmentTableFormat } from "@/lib/utils";
+import { AppointmentInfo, DropdownItem } from "@/types/formSchema"; // Assuming types exist
 
-// Function to format time range (start - end) to "13:00 - 14:00"
-const formatTimeRange = (start: string, end: string) => {
-  const startTime = new Date(start);
-  const endTime = new Date(end);
-
-  const formattedStartTime = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false, // 24-hour format
-  }).format(startTime);
-
-  const formattedEndTime = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false, // 24-hour format
-  }).format(endTime);
-
-  return `${formattedStartTime} - ${formattedEndTime}`;
-};
-
-// Function to format date to "MM-DD-YY"
-const formatDate = (date: string) => {
-  const formattedDate = new Date(date);
-  const day = String(formattedDate.getDate()).padStart(2, "0");
-  const month = String(formattedDate.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-  const year = String(formattedDate.getFullYear()).slice(2); // Get last two digits of the year
-
-  return `${month}-${day}-${year}`; // MM-DD-YY format with hyphens
-};
-
-// Helper function to map AppointmentRequest[] to AppointmentTable format
-const mapToAppointmentRequestFormat = (requests: AppointmentRequest[]) => {
-  return requests.map((request) => ({
-    id: request.id, // Include the id here
-    client: `${request.client.first_name} ${request.client.last_name}`,
-    appointmentTime: formatTimeRange(request.start_time, request.end_time),
-    appointmentDate: formatDate(request.start_time),
-    location: request.service.name,
-  }));
-};
+interface RenderTabContentProps {
+  title: string;
+  data: AppointmentInfo[];
+  dropdownItemsGenerator: (
+    appointmentId: string,
+    openSuccess: (message: { title: string; subtitle: string }) => void
+  ) => DropdownItem[];
+  loading: boolean;
+}
 
 const AppointmentScreen = () => {
   const {
+    fetchAppointments,
     fetchAppointmentRequests,
     fetchWaitlistedAppointments,
     fetchUpcomingAppointments,
     appointmentRequests,
     waitlistedAppointments,
     upcomingAppointments,
-    loading, // Use the loading state from the store
+    loading,
   } = useAppointmentsStore();
 
-  // Load the correct data based on the default tab when the component mounts
   useEffect(() => {
-    fetchAppointmentRequests(); // Default tab is "Appointment Request", so fetch it on mount
+    fetchAppointmentRequests();
   }, [fetchAppointmentRequests]);
 
   const handleTabChange = (value: string) => {
-    if (value === "new") {
-      fetchAppointmentRequests(); // Fetch appointment requests for "Appointment Request" tab
-    } else if (value === "accepted") {
-      fetchUpcomingAppointments(); // Fetch upcoming appointments for "Upcoming Appointment" tab
-    } else if (value === "waitlist") {
-      fetchWaitlistedAppointments(); // Fetch waitlisted appointments for "Waitlisted Appointment" tab
+    switch (value) {
+      case "request":
+        fetchAppointmentRequests();
+        break;
+      case "accepted":
+        fetchUpcomingAppointments();
+        break;
+      case "waitlist":
+        fetchWaitlistedAppointments();
+        break;
+      case "all":
+        fetchAppointments();
+        break;
     }
   };
+
+  const renderTabContent = ({
+    title,
+    data,
+    dropdownItemsGenerator,
+    loading,
+  }: RenderTabContentProps) => (
+    <>
+      <div className="flex md:justify-between justify-around py-5 items-center">
+        <Title
+          title={title}
+          className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
+        />
+        <DatePickerWithRange />
+      </div>
+      <AppointmentSearch />
+      <div className="min-w-[687px] w-full">
+        <AppointmentTable
+          dropdownItemsGenerator={dropdownItemsGenerator} // This passes the generator function
+          data={mapToAppointmentTableFormat(data)}
+          loading={loading}
+        />
+      </div>
+    </>
+  );
 
   return (
     <div className="my-7">
       <DialogCard />
       <Tabs
-        defaultValue="new" // Default tab is "Upcoming Appointments"
+        defaultValue="request"
         className="w-full"
-        onValueChange={handleTabChange} // Call when tab changes
+        onValueChange={handleTabChange}
       >
-        <TabsList className="h-[50px] lg:w-[546px] w-[318px] font-medium mx-auto">
+        <TabsList className="h-[50px] lg:w-[80%] w-[318px] font-medium mx-auto">
           <TabsTrigger
-            value="new"
+            value="request"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Appointment Request
           </TabsTrigger>
           <TabsTrigger
             value="accepted"
-            className="w-full lg:text-sm text-[10px] md:text-[12px] bg-white"
+            className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Upcoming Appointment
           </TabsTrigger>
           <TabsTrigger
             value="waitlist"
-            className="w-full lg:text-sm text-[10px] md:text-[12px] bg-white"
+            className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Waitlisted Appointment
           </TabsTrigger>
+          <TabsTrigger
+            value="all"
+            className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
+          >
+            All Appointment
+          </TabsTrigger>
         </TabsList>
 
-        {/* Appointment Requests */}
         <TabsContent
-          value="new"
+          value="request"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          <div className="flex md:justify-between justify-around py-5 items-center">
-            <Title
-              title="Appointment Requests"
-              className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
-            />
-            <DatePickerWithRange />
-          </div>
-          <div className="min-w-[687px] w-full">
-            <AppointmentTable
-              dropdownItemsGenerator={getDropdownItemsOne} // Pass as dropdownItemsGenerator
-              data={mapToAppointmentRequestFormat(appointmentRequests)}
-              loading={loading}
-            />
-          </div>
+          {renderTabContent({
+            title: "Appointment Requests",
+            data: appointmentRequests,
+            dropdownItemsGenerator: getDropdownItemsOne,
+            loading,
+          })}
         </TabsContent>
 
-        {/* Upcoming Appointments */}
         <TabsContent
           value="accepted"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          <div className="py-3">
-            <Title
-              title="Upcoming Appointments"
-              className="text-[14.2px] lg:text-2xl font-medium md:text-xl"
-            />
-          </div>
-          <div className="w-full border rounded-full">
-            <SearchInput
-              className="focus:ring-transparent text-base text-[#BDBDBD] h-[44px] lg:h-[62px]"
-              placeholder="Search for clients"
-            />
-          </div>
-          <div className="min-w-[687px] w-full my-4">
-            <AppointmentTable
-              dropdownItemsGenerator={getDropdownItemsTwo} // Pass as dropdownItemsGenerator
-              data={mapToAppointmentRequestFormat(upcomingAppointments)}
-              loading={loading}
-            />
-          </div>
+          {renderTabContent({
+            title: "Upcoming Appointments",
+            data: upcomingAppointments,
+            dropdownItemsGenerator: getDropdownItemsTwo,
+            loading,
+          })}
         </TabsContent>
 
-        {/* Waitlisted Appointments */}
         <TabsContent
           value="waitlist"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
+          {renderTabContent({
+            title: "Waitlisted Appointments",
+            data: waitlistedAppointments,
+            dropdownItemsGenerator: getDropdownItemsOne,
+            loading,
+          })}
+        </TabsContent>
+
+        <TabsContent
+          value="all"
+          className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
+        >
           <div className="flex md:justify-between justify-around py-5 items-center">
             <Title
-              title="Waitlisted Appointments"
+              title="All Appointments"
               className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
             />
+            <DatePickerWithRange />
           </div>
-          <div className="min-w-[687px] w-full">
-            <AppointmentTable
-              dropdownItemsGenerator={getDropdownItemsOne} // Pass as dropdownItemsGenerator
-              data={mapToAppointmentRequestFormat(waitlistedAppointments)}
-              loading={loading}
-            />
-          </div>
+          <AllAppointmentSearch />
         </TabsContent>
       </Tabs>
     </div>

@@ -244,7 +244,7 @@ export interface FetchedBusinessPeriod {
   }> | null;
 }
 
-export type AppointmentRequest = {
+export type AppointmentInfo = {
   id: string;
   client: {
     first_name: string;
@@ -254,4 +254,18 @@ export type AppointmentRequest = {
   service: Service;
   start_time: string;
   end_time: string;
+};
+export type DropdownItem = {
+  label: string;
+  color: string;
+  onClick: () => void | Promise<void>;
+  icons?: React.ReactNode;
+};
+
+export type Appointment = {
+  id: string;
+  client: string;
+  appointmentTime: string;
+  appointmentDate: string;
+  location?: string;
 };

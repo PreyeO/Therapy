@@ -6,16 +6,16 @@ import {
   getUpcomingAppointments,
   getWaitlistedAppointments,
 } from "@/services/api/clinicians/appointment"; // Ensure to import getUnavailableSlots
-import { AppointmentRequest, Event } from "@/types/formSchema";
+import { AppointmentInfo, Event } from "@/types/formSchema";
 
 interface AppointmentsState {
   appointments: Event[];
   unavailableSlots: { start: Date; end: Date; reason: string }[]; // Store unavailable slots here
   fetchAppointments: () => Promise<void>;
   fetchUnavailableSlots: () => Promise<void>;
-  appointmentRequests: AppointmentRequest[];
-  waitlistedAppointments: AppointmentRequest[];
-  upcomingAppointments: AppointmentRequest[];
+  appointmentRequests: AppointmentInfo[];
+  waitlistedAppointments: AppointmentInfo[];
+  upcomingAppointments: AppointmentInfo[];
   fetchAppointmentRequests: () => Promise<void>;
   fetchWaitlistedAppointments: () => Promise<void>; // Ensure this is defined
   fetchUpcomingAppointments: () => Promise<void>;
@@ -63,7 +63,7 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
     set({ loading: true });
     try {
       const requests = await getAppointmentRequests();
-      const parsedRequests: AppointmentRequest[] = requests.map((request) => ({
+      const parsedRequests: AppointmentInfo[] = requests.map((request) => ({
         id: request.id,
         client: {
           first_name: request.client.first_name,

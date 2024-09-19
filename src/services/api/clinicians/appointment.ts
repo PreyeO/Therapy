@@ -55,6 +55,17 @@ export const getAppointmentRequests = async () => {
     handleError(error);
   }
 };
+export const getUpcomingAppointments = async () => {
+  try {
+    console.log("Fetching filtered appointments...");
+    const response = await api.get(
+      `/api/appointments?detail=true&status=null&acceptance_status=Accepted`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
 
 export const getWaitlistedAppointments = async () => {
   try {
@@ -67,11 +78,22 @@ export const getWaitlistedAppointments = async () => {
     handleError(error);
   }
 };
-export const getUpcomingAppointments = async () => {
+export const getNameSearched = async (name: string) => {
   try {
-    console.log("Fetching filtered appointments...");
+    console.log(`Searching for clients with name: ${name}`);
     const response = await api.get(
-      `/api/appointments?detail=true&acceptance_status=Accepted`
+      `/api/appointments/?detail=true&search=${name}`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const getDateSearched = async (start: string, end: string) => {
+  try {
+    console.log(`Searching for appointments from ${start} to ${end}`);
+    const response = await api.get(
+      `/api/appointments/?detail=true&start_time=${start},${end}`
     );
     return response.data;
   } catch (error) {
@@ -81,12 +103,27 @@ export const getUpcomingAppointments = async () => {
 
 export const updateAppointmentStatus = async (
   appointmentId: string,
-  status: string
+  data: {
+    service?: string;
+    start_time?: string;
+    status?: string;
+    acceptance_status?: string;
+  }
 ) => {
   try {
-    const response = await api.patch(`/api/appointments/${appointmentId}/`, {
-      acceptance_status: status,
-    });
+    const payload: Record<string, string | undefined> = {};
+
+    if (data.service) payload.service = data.service;
+    if (data.start_time) payload.start_time = data.start_time;
+    if (data.status) payload.status = data.status;
+    if (data.acceptance_status)
+      payload.acceptance_status = data.acceptance_status;
+
+    const response = await api.patch(
+      `/api/appointments/${appointmentId}/`,
+      payload
+    );
+
     return response.data;
   } catch (error) {
     handleError(error);

@@ -1,6 +1,5 @@
 import {
   AlarmCheck,
-  Bell,
   CalendarCheck,
   CalendarDays,
   Coins,
@@ -47,12 +46,12 @@ export const sidebarLinks = [
 ];
 
 export const sidebarLinksTwo = [
-  {
-    label: "Notifications",
-    icon: <Bell strokeWidth={2} color="#868686" size={24} />,
-    href: "/dashboard/empty",
-    // auth: false,
-  },
+  // {
+  //   label: "Notifications",
+  //   icon: <Bell strokeWidth={2} color="#868686" size={24} />,
+  //   href: "/dashboard/empty",
+  //   // auth: false,
+  // },
 
   {
     label: "Profile Settings",
@@ -64,7 +63,7 @@ export const sidebarLinksTwo = [
   {
     label: "Support",
     icon: <Headset strokeWidth={2} color="#868686" size={24} />,
-    href: "support",
+    href: "/dashboard/empty",
   },
 ];
 

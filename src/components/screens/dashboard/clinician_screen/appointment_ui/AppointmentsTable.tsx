@@ -6,36 +6,27 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
-import { PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Ellipsis } from "lucide-react";
 import EllipsisDropdown from "@/components/common/EllipsisDropdown";
 import { useNavigate } from "react-router-dom";
-import useDropdown from "@/hooks/useDropdown";
-import { useDialogState, usePaginationStore } from "@/store/index";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
-
-// Define the type for appointment data
-interface Appointment {
-  id: string;
-  client: string;
-  appointmentTime: string;
-  appointmentDate: string;
-  location?: string;
-}
-
-interface DropdownItem {
-  label: string;
-  color: string;
-  onClick: () => void | Promise<void>; // Allow async functions
-  icons?: React.ReactNode;
-}
+import { useDialogState, useDropdownStore, usePaginationStore } from "@/store";
+import { Appointment, DropdownItem } from "@/types/formSchema"; // Import the type from the type file
 
 interface AppointmentTableProps {
   dropdownItemsGenerator: (
     appointmentId: string,
     openSuccess: (message: { title: string; subtitle: string }) => void
   ) => DropdownItem[];
-  data: Appointment[];
+  data: Appointment[]; // Use the imported Appointment type here
   loading: boolean;
 }
 
@@ -50,9 +41,11 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     setTotalItems,
     goToNextPage,
     goToPreviousPage,
+    setCurrentPage,
   } = usePaginationStore();
-  const { openDropdownIndex, toggleDropdown, closeDropdown } = useDropdown();
-  const { openSuccess } = useDialogState(); // For success dialog
+  const { openDropdownIndex, toggleDropdown, closeDropdown } =
+    useDropdownStore();
+  const { openSuccess } = useDialogState();
   const navigate = useNavigate();
 
   // Calculate paginated data
@@ -61,31 +54,41 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     currentPage * itemsPerPage
   );
 
-  // Update the total number of items in the pagination store
   useEffect(() => {
     setTotalItems(data.length);
   }, [data, setTotalItems]);
 
+  if (loading) {
+    return (
+      <div className="relative w-full h-[300px] flex justify-center items-center">
+        <SmallLoader />
+      </div>
+    );
+  }
+
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
   return (
-    <div className="overflow-x-auto w-full">
-      {loading ? (
-        <div className="relative w-full h-[300px] flex justify-center items-center">
-          <SmallLoader />
-        </div>
-      ) : (
-        <>
+    <div className="w-full h-auto flex flex-col justify-between">
+      {/* Scrollable Table */}
+      <div className="overflow-x-auto">
+        <div className="h-[300px] overflow-y-auto">
           <Table className="w-full table-auto bg-white pt-5">
             <thead>
               <TableRow className="text-sm">
-                <TableHead className="px-4 py-3 font-semibold">
+                <TableHead className="px-4 py-3 font-semibold pt-8">
                   Client Name
                 </TableHead>
-                <TableHead className="px-4 py-3 font-semibold">Time</TableHead>
-                <TableHead className="px-4 py-3 font-semibold">Date</TableHead>
-                <TableHead className="px-4 py-3 font-semibold">
+                <TableHead className="px-4 py-3 font-semibold pt-8">
+                  Time
+                </TableHead>
+                <TableHead className="px-4 py-3 font-semibold pt-8">
+                  Date
+                </TableHead>
+                <TableHead className="px-4 py-3 font-semibold pt-8">
                   Location
                 </TableHead>
-                <TableHead className="px-4 py-3 font-semibold">
+                <TableHead className="px-4 py-3 font-semibold pt-8">
                   Action
                 </TableHead>
               </TableRow>
@@ -119,7 +122,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                       <Ellipsis size={24} />
                     </button>
                     <EllipsisDropdown
-                      items={dropdownItemsGenerator(item.id, openSuccess)} // Dynamically generate dropdown items
+                      items={dropdownItemsGenerator(item.id, openSuccess)}
                       isOpen={openDropdownIndex === index}
                       onClose={closeDropdown}
                     />
@@ -128,13 +131,34 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               ))}
             </TableBody>
           </Table>
+        </div>
+      </div>
 
-          <div className="flex justify-between mt-4">
-            <PaginationPrevious onClick={goToPreviousPage} />
-            <PaginationNext onClick={goToNextPage} />
-          </div>
-        </>
-      )}
+      {/* Pagination Section */}
+      <div className="py-3 mt-4 ">
+        <div className="border p-[0.1px] w-[100%]"></div>
+        <Pagination className="flex justify-center">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious onClick={goToPreviousPage} />
+            </PaginationItem>
+            {/* Dynamically render page links */}
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={currentPage === index + 1 ? "active" : ""}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext onClick={goToNextPage} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 };
