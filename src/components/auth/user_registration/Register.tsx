@@ -147,7 +147,11 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
               className="flex flex-col gap-[30px]"
             >
               <RegisterForm passwordMatchError={passwordMatchError} />
-              <ButtonLoader loading={loading} text="Create Account" />
+              <ButtonLoader
+                loading={loading}
+                text="Create Account"
+                className="h-14"
+              />
               <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
                 Already have an account?
                 <Link to="/signin">

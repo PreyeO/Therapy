@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
@@ -7,38 +7,31 @@ import { useAppointmentsStore } from "@/store/useAppointment";
 import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
 import DialogCard from "../components/DialogCard";
 import AppointmentSearch from "./AppointmentSearch";
-import AllAppointmentSearch from "./AllAppointmentSearch";
 import { mapToAppointmentTableFormat } from "@/lib/utils";
-import { AppointmentInfo, DropdownItem } from "@/types/formSchema"; // Assuming types exist
-
-interface RenderTabContentProps {
-  title: string;
-  data: AppointmentInfo[];
-  dropdownItemsGenerator: (
-    appointmentId: string,
-    openSuccess: (message: { title: string; subtitle: string }) => void
-  ) => DropdownItem[];
-  loading: boolean;
-}
+import AllAppointmentSearch from "./AllAppointmentSearch";
 
 const AppointmentScreen = () => {
+  const [activeTab, setActiveTab] = useState("request");
+  const [searchPerformed, setSearchPerformed] = useState(false); // Track if search is performed
+
   const {
-    fetchAppointments,
     fetchAppointmentRequests,
     fetchWaitlistedAppointments,
     fetchUpcomingAppointments,
+    fetchFullAppointments,
     appointmentRequests,
-    waitlistedAppointments,
     upcomingAppointments,
+    waitlistedAppointments,
+    fullAppointments,
+    filteredAppointmentRequests,
+    filteredUpcomingAppointments,
+    filteredWaitlistedAppointments,
+    filteredFullAppointments,
     loading,
   } = useAppointmentsStore();
 
   useEffect(() => {
-    fetchAppointmentRequests();
-  }, [fetchAppointmentRequests]);
-
-  const handleTabChange = (value: string) => {
-    switch (value) {
+    switch (activeTab) {
       case "request":
         fetchAppointmentRequests();
         break;
@@ -49,17 +42,34 @@ const AppointmentScreen = () => {
         fetchWaitlistedAppointments();
         break;
       case "all":
-        fetchAppointments();
+        fetchFullAppointments();
         break;
     }
+    setSearchPerformed(false); // Reset searchPerformed when the tab changes
+  }, [
+    activeTab,
+    fetchAppointmentRequests,
+    fetchUpcomingAppointments,
+    fetchWaitlistedAppointments,
+    fetchFullAppointments,
+  ]);
+
+  // Define handleSearch to track when a search is performed
+  const handleSearch = () => {
+    setSearchPerformed(true); // Set this to true when a search is triggered
+  };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
   };
 
   const renderTabContent = ({
     title,
     data,
+    filteredData,
     dropdownItemsGenerator,
-    loading,
-  }: RenderTabContentProps) => (
+    isAllTab = false,
+  }) => (
     <>
       <div className="flex md:justify-between justify-around py-5 items-center">
         <Title
@@ -68,12 +78,23 @@ const AppointmentScreen = () => {
         />
         <DatePickerWithRange />
       </div>
-      <AppointmentSearch />
+
+      {/* Render the search bar differently for the "All" tab */}
+      {isAllTab ? (
+        <div className="flex gap-6 my-4 w-full items-center justify-between">
+          <AllAppointmentSearch />
+          <AppointmentSearch activeTab={activeTab} onSearch={handleSearch} />
+        </div>
+      ) : (
+        <AppointmentSearch activeTab={activeTab} onSearch={handleSearch} />
+      )}
+
       <div className="min-w-[687px] w-full">
         <AppointmentTable
-          dropdownItemsGenerator={dropdownItemsGenerator} // This passes the generator function
-          data={mapToAppointmentTableFormat(data)}
+          dropdownItemsGenerator={dropdownItemsGenerator}
+          data={mapToAppointmentTableFormat(filteredData || data)}
           loading={loading}
+          searchPerformed={searchPerformed} // Pass searchPerformed to the table
         />
       </div>
     </>
@@ -121,8 +142,8 @@ const AppointmentScreen = () => {
           {renderTabContent({
             title: "Appointment Requests",
             data: appointmentRequests,
+            filteredData: filteredAppointmentRequests,
             dropdownItemsGenerator: getDropdownItemsOne,
-            loading,
           })}
         </TabsContent>
 
@@ -133,8 +154,8 @@ const AppointmentScreen = () => {
           {renderTabContent({
             title: "Upcoming Appointments",
             data: upcomingAppointments,
+            filteredData: filteredUpcomingAppointments,
             dropdownItemsGenerator: getDropdownItemsTwo,
-            loading,
           })}
         </TabsContent>
 
@@ -145,8 +166,8 @@ const AppointmentScreen = () => {
           {renderTabContent({
             title: "Waitlisted Appointments",
             data: waitlistedAppointments,
+            filteredData: filteredWaitlistedAppointments,
             dropdownItemsGenerator: getDropdownItemsOne,
-            loading,
           })}
         </TabsContent>
 
@@ -154,14 +175,13 @@ const AppointmentScreen = () => {
           value="all"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          <div className="flex md:justify-between justify-around py-5 items-center">
-            <Title
-              title="All Appointments"
-              className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
-            />
-            <DatePickerWithRange />
-          </div>
-          <AllAppointmentSearch />
+          {renderTabContent({
+            title: "All Appointments",
+            data: fullAppointments,
+            filteredData: filteredFullAppointments,
+            dropdownItemsGenerator: getDropdownItemsTwo,
+            isAllTab: true, // Indicate that this is the "All" tab
+          })}
         </TabsContent>
       </Tabs>
     </div>

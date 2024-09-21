@@ -1,7 +1,6 @@
 import Title from "@/components/ui/Titles/Title";
-
 import ClientTable from "./ClientTable";
-import { Input } from "@/components/ui/input";
+
 import SearchInput from "@/components/ui/search";
 import {
   Select,
@@ -10,45 +9,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 
 const ClientScreen = () => {
+  // const {
+  //   searchQuery,
+
+  //   setSearchQuery,
+
+  //   handleSearch,
+  // } = useAppointmentSearch();
+
   return (
     <div className="my-7">
-      <div className="bg-white px-[2%] mt-6 w-full overflow-x-auto ">
-        <Title title="clients" className="text-2xl font-medium py-10" />
-
+      <div className="bg-white px-[2%] mt-6 w-full overflow-x-auto">
         <div className="flex justify-between">
-          <Input
-            placeholder="Pateint ID"
-            readOnly
-            className="h-14 text-placeholder_text text-[11.28px] font-normal w-[260.56px] rounded-md"
-            autoComplete="false"
+          <Title title="Clients" className="text-2xl font-medium py-10" />
+
+          <DatePickerWithRange />
+        </div>
+
+        <div className="flex justify-between gap-4">
+          <SearchInput
+            placeholder="Search by client name"
+            className="h-14 text-placeholder_text w-full rounded-md border"
           />
-          <Input
-            placeholder="Pateint Name"
-            className="h-14 text-placeholder_text text-[11.28px]  font-normal w-[260.56px] rounded-md"
-            autoComplete="false"
-          />
-          <div>
-            <Select>
-              <SelectTrigger className="h-14 text-placeholder_text text-[11.28px] font-normal w-[260.56px] rounded-md">
-                <SelectValue placeholder="status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">All</SelectItem>
-                <SelectItem value="dark">Pending</SelectItem>
-                <SelectItem value="system">Attended</SelectItem>
-                <SelectItem value="system">Missed</SelectItem>
-                <SelectItem value="system">Canceled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="border rounded-md w-[260.56px]  text-[11.28px] ">
-            <SearchInput
-              className="h-14 text-placeholder_text font-normal bg-transparent"
-              placeholder="Search clients"
-            />
-          </div>
+
+          <Select>
+            <SelectTrigger className="h-14 text-placeholder_text text-[11.28px] font-normal w-full rounded-md">
+              <SelectValue placeholder="Filter by Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="Pending">Pending</SelectItem>
+              <SelectItem value="Accepted">Accepted</SelectItem>
+              <SelectItem value="Canceled">Canceled</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Button className="bg-army_green rounded-md w-full h-14">
+            Search
+          </Button>
         </div>
 
         <div className="min-w-[687px] w-full mt-10">

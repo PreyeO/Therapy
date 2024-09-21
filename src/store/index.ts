@@ -131,7 +131,7 @@ interface PaginationState {
 
 export const usePaginationStore = create<PaginationState>((set) => ({
   currentPage: 1,
-  itemsPerPage: 5, // Default items per page
+  itemsPerPage: 8,
   totalItems: 0,
   setCurrentPage: (page) => set({ currentPage: page }),
   setTotalItems: (total) => set({ totalItems: total }),
@@ -158,4 +158,25 @@ export const useDropdownStore = create<DropdownState>((set) => ({
       openDropdownIndex: state.openDropdownIndex === index ? null : index,
     })),
   closeDropdown: () => set({ openDropdownIndex: null }),
+}));
+
+interface SearchState {
+  searchQuery: string;
+  dateRange: { start: string; end: string } | null;
+  statusFilter: string | null;
+  setSearchQuery: (query: string) => void;
+  setDateRange: (range: { start: string; end: string }) => void;
+  setStatusFilter: (status: string | null) => void;
+  resetFilters: () => void;
+}
+
+export const useSearchStore = create<SearchState>((set) => ({
+  searchQuery: "",
+  dateRange: null,
+  statusFilter: null,
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setDateRange: (range) => set({ dateRange: range }),
+  setStatusFilter: (status) => set({ statusFilter: status }),
+  resetFilters: () =>
+    set({ searchQuery: "", dateRange: null, statusFilter: null }),
 }));

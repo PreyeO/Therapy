@@ -87,7 +87,11 @@ export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
                 )}
               />
 
-              <ButtonLoader loading={loading} text="Continue" />
+              <ButtonLoader
+                loading={loading}
+                text="Continue"
+                className="h-14"
+              />
             </form>
           </Form>
         </CardContent>

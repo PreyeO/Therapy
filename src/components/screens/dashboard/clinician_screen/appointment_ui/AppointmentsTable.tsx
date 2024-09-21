@@ -26,14 +26,16 @@ interface AppointmentTableProps {
     appointmentId: string,
     openSuccess: (message: { title: string; subtitle: string }) => void
   ) => DropdownItem[];
-  data: Appointment[]; // Use the imported Appointment type here
+  data: Appointment[];
   loading: boolean;
+  searchPerformed: boolean;
 }
 
 const AppointmentTable: React.FC<AppointmentTableProps> = ({
   dropdownItemsGenerator,
   data,
   loading,
+  searchPerformed,
 }) => {
   const {
     currentPage,
@@ -66,83 +68,81 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
     );
   }
 
+  if (searchPerformed && data.length === 0) {
+    return (
+      <div className="relative w-full h-[300px] flex justify-center items-center">
+        <p>No appointments found</p>
+      </div>
+    );
+  }
+
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   return (
-    <div className="w-full h-auto flex flex-col justify-between">
-      {/* Scrollable Table */}
-      <div className="overflow-x-auto">
-        <div className="h-[300px] overflow-y-auto">
-          <Table className="w-full table-auto bg-white pt-5">
-            <thead>
-              <TableRow className="text-sm">
-                <TableHead className="px-4 py-3 font-semibold pt-8">
-                  Client Name
-                </TableHead>
-                <TableHead className="px-4 py-3 font-semibold pt-8">
-                  Time
-                </TableHead>
-                <TableHead className="px-4 py-3 font-semibold pt-8">
-                  Date
-                </TableHead>
-                <TableHead className="px-4 py-3 font-semibold pt-8">
-                  Location
-                </TableHead>
-                <TableHead className="px-4 py-3 font-semibold pt-8">
-                  Action
-                </TableHead>
-              </TableRow>
-            </thead>
-            <TableBody>
-              {paginatedData.map((item, index) => (
-                <TableRow
-                  key={item.id}
-                  className="text-[#575757] font-normal text-sm"
+    <div className="w-full min-h-[500px] flex flex-col justify-between ">
+      <Table className="w-full table-auto bg-white pt-5 ">
+        <thead className="">
+          <TableRow className="text-sm ">
+            <TableHead className="px-4 py-3 font-semibold pt-8">
+              Client Name
+            </TableHead>
+            <TableHead className="px-4 py-3 font-semibold pt-8">Time</TableHead>
+            <TableHead className="px-4 py-3 font-semibold pt-8">Date</TableHead>
+            <TableHead className="px-4 py-3 font-semibold pt-8">
+              Location
+            </TableHead>
+            <TableHead className="px-4 py-3 font-semibold pt-8">
+              Action
+            </TableHead>
+          </TableRow>
+        </thead>
+        <TableBody>
+          {paginatedData.map((item, index) => (
+            <TableRow
+              key={item.id}
+              className="text-[#575757] font-normal text-sm"
+            >
+              <TableCell
+                className="px-4 py-3 text-left align-middle cursor-pointer"
+                onClick={() => navigate("/dashboard/clientoverview")}
+              >
+                {item.client}
+              </TableCell>
+              <TableCell className="px-4 py-3 text-left align-middle">
+                {item.appointmentTime}
+              </TableCell>
+              <TableCell className="px-4 py-3 text-left align-middle">
+                {item.appointmentDate}
+              </TableCell>
+              <TableCell className="px-4 py-3 text-left align-middle">
+                {item.location || "N/A"}
+              </TableCell>
+              <TableCell className="px-4 py-3 text-left align-middle">
+                <button
+                  className="bg-transparent"
+                  onClick={() => toggleDropdown(index)}
                 >
-                  <TableCell
-                    className="px-4 py-3 text-left align-middle cursor-pointer"
-                    onClick={() => navigate("/dashboard/clientoverview")}
-                  >
-                    {item.client}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-left align-middle">
-                    {item.appointmentTime}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-left align-middle">
-                    {item.appointmentDate}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-left align-middle">
-                    {item.location || "N/A"}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-left align-middle">
-                    <button
-                      className="bg-transparent"
-                      onClick={() => toggleDropdown(index)}
-                    >
-                      <Ellipsis size={24} />
-                    </button>
-                    <EllipsisDropdown
-                      items={dropdownItemsGenerator(item.id, openSuccess)}
-                      isOpen={openDropdownIndex === index}
-                      onClose={closeDropdown}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+                  <Ellipsis size={24} />
+                </button>
+                <EllipsisDropdown
+                  items={dropdownItemsGenerator(item.id, openSuccess)}
+                  isOpen={openDropdownIndex === index}
+                  onClose={closeDropdown}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       {/* Pagination Section */}
-      <div className="py-3 mt-4 ">
+      <div className="py-3 mt-4">
         <div className="border p-[0.1px] w-[100%]"></div>
         <Pagination className="flex justify-center">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious onClick={goToPreviousPage} />
             </PaginationItem>
-            {/* Dynamically render page links */}
             {Array.from({ length: totalPages }, (_, index) => (
               <PaginationItem key={index}>
                 <PaginationLink

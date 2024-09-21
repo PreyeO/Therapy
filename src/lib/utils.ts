@@ -77,3 +77,19 @@ export const mapToAppointmentTableFormat = (requests: AppointmentInfo[]) => {
     location: request.service.name,
   }));
 };
+
+export const mapAppointmentResponse = (
+  appointments: AppointmentInfo[]
+): AppointmentInfo[] => {
+  return appointments.map((appointment) => ({
+    id: appointment.id,
+    client: {
+      first_name: appointment.client.first_name,
+      last_name: appointment.client.last_name,
+      email: appointment.client.email,
+    },
+    service: appointment.service,
+    start_time: appointment.start_time,
+    end_time: appointment.end_time,
+  }));
+};

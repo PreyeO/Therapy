@@ -44,9 +44,21 @@ export const getAppointments = async () => {
   }
 };
 
+export const getFullAppointments = async () => {
+  try {
+    const queryParams = new URLSearchParams({
+      detail: "true", // Only passing detail=true
+    }).toString();
+
+    const response = await api.get(`/api/appointments?${queryParams}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const getAppointmentRequests = async () => {
   try {
-    console.log("Fetching filtered appointments...");
     const response = await api.get(
       `/api/appointments?detail=true&acceptance_status=null`
     );
@@ -55,9 +67,9 @@ export const getAppointmentRequests = async () => {
     handleError(error);
   }
 };
+
 export const getUpcomingAppointments = async () => {
   try {
-    console.log("Fetching filtered appointments...");
     const response = await api.get(
       `/api/appointments?detail=true&status=null&acceptance_status=Accepted`
     );
@@ -69,31 +81,8 @@ export const getUpcomingAppointments = async () => {
 
 export const getWaitlistedAppointments = async () => {
   try {
-    console.log("Fetching filtered appointments...");
     const response = await api.get(
       `/api/appointments?detail=true&acceptance_status=Waitlisted`
-    );
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
-export const getNameSearched = async (name: string) => {
-  try {
-    console.log(`Searching for clients with name: ${name}`);
-    const response = await api.get(
-      `/api/appointments/?detail=true&search=${name}`
-    );
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
-export const getDateSearched = async (start: string, end: string) => {
-  try {
-    console.log(`Searching for appointments from ${start} to ${end}`);
-    const response = await api.get(
-      `/api/appointments/?detail=true&start_time=${start},${end}`
     );
     return response.data;
   } catch (error) {
@@ -124,6 +113,28 @@ export const updateAppointmentStatus = async (
       payload
     );
 
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getNameSearch = async (name: string) => {
+  try {
+    const response = await api.get(
+      `/api/appointments/?detail=true&search=${name}`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getDateSearch = async (startDate: string, endDate: string) => {
+  try {
+    const response = await api.get(
+      `/api/appointments/?detail=true&start_time=${startDate},${endDate}`
+    );
     return response.data;
   } catch (error) {
     handleError(error);

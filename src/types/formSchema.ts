@@ -269,3 +269,10 @@ export type Appointment = {
   appointmentDate: string;
   location?: string;
 };
+export type AppointmentFilters = {
+  status?: string | null;
+  acceptance_status?: string | null;
+  start_time?: string;
+  end_time?: string;
+  search?: string;
+};

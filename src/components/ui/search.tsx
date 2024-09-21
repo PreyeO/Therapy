@@ -5,14 +5,16 @@ import { FC } from "react";
 interface SearchInputProps {
   className?: string;
   placeholder: string;
+  value?: string; // Add value prop for controlled input
   borderClass?: string;
   readOnly?: boolean;
-  onChange?: (value: string) => void; // Add onChange prop
+  onChange?: (value: string) => void;
 }
 
 const SearchInput: FC<SearchInputProps> = ({
   className,
   placeholder,
+  value, // Destructure value prop
   onChange,
 }) => {
   return (
@@ -24,9 +26,10 @@ const SearchInput: FC<SearchInputProps> = ({
         className="cursor-pointer"
       />
       <Input
+        value={value} // Pass value to Input for controlled behavior
         placeholder={placeholder}
         className="focus:ring-transparent border-none"
-        onChange={(e) => onChange && onChange(e.target.value)} // Pass input value to parent
+        onChange={(e) => onChange && onChange(e.target.value)} // Handle change event
       />
     </div>
   );
