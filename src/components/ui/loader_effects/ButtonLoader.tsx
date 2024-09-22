@@ -20,7 +20,7 @@ const ButtonLoader: FC<ButtonLoaderProps> = ({
   return (
     <Button
       type="submit"
-      className={`${className} w-full rounded-full bg-army_green font-semibold text-white hover:bg-army_green  text-base ${
+      className={`${className} w-full bg-army_green font-semibold text-white hover:bg-army_green  text-base ${
         loading ? "cursor-not-allowed" : ""
       }`}
       disabled={loading || disabled}

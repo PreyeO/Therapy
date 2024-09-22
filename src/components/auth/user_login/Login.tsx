@@ -69,7 +69,11 @@ const Login = () => {
               className="flex flex-col gap-[30px]"
             >
               <LoginForm />
-              <ButtonLoader loading={loading} text="Login" className="h-14" />
+              <ButtonLoader
+                loading={loading}
+                text="Login"
+                className="h-14 rounded-full "
+              />
 
               <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
                 New to R&R Therapy?

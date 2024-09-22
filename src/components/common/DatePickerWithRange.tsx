@@ -11,21 +11,42 @@ import {
 import React from "react";
 import { useAppointmentSearch } from "@/hooks/useAppointmentSearch";
 
-export const DatePickerWithRange: React.FC = () => {
-  const { dateRange, setDateRange } = useAppointmentSearch();
+interface DatePickerWithRangeProps {
+  activeTab: string; // Accept activeTab as a prop
+}
+
+export const DatePickerWithRange: React.FC<DatePickerWithRangeProps> = ({
+  activeTab,
+}) => {
+  const { dateRange, setDateRange, handleSearch } =
+    useAppointmentSearch(activeTab); // Pass activeTab
   const today = new Date();
+
+  // Safely handle potentially null/undefined dateRange
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: dateRange?.start ? new Date(dateRange.start) : today,
     to: dateRange?.end ? new Date(dateRange.end) : addDays(today, 20),
   });
 
   React.useEffect(() => {
+    // Only proceed if dateRange and selected dates are not null
     if (date?.from && date?.to) {
       const formattedStart = format(date.from, "yyyy-MM-dd");
       const formattedEnd = format(date.to, "yyyy-MM-dd");
-      setDateRange({ start: formattedStart, end: formattedEnd });
+
+      // Check if dateRange exists and has different values before updating
+      if (
+        (!dateRange ||
+          dateRange.start !== formattedStart ||
+          dateRange.end !== formattedEnd) &&
+        setDateRange
+      ) {
+        setDateRange({ start: formattedStart, end: formattedEnd });
+        handleSearch(); // Trigger the search when the range is updated
+      }
     }
-  }, [date, setDateRange]);
+    // Add dateRange and setDateRange to dependencies to avoid infinite loops
+  }, [date, dateRange, setDateRange, handleSearch]);
 
   return (
     <div className={cn("grid gap-2")}>
@@ -36,7 +57,7 @@ export const DatePickerWithRange: React.FC = () => {
               {date?.from && date?.to ? (
                 <div className="flex justify-center items-center">
                   <span className="flex-col">
-                    <p className="text-[5.6px] text-[#6D7C43]">start with</p>
+                    <p className="text-[5.6px] text-[#6D7C43]">Start with</p>
                     <span className="flex md:text-[12.61px] gap-1 text-[7.46px] items-center">
                       {format(date.from, "MM.dd.y")}{" "}
                       <CalendarDays color="#6D7C43" size={15} />
@@ -48,7 +69,7 @@ export const DatePickerWithRange: React.FC = () => {
                     </span>
                   </span>
                   <span className="flex-col">
-                    <p className="text-[5.6px] text-[#6D7C43]">end with</p>
+                    <p className="text-[5.6px] text-[#6D7C43]">End with</p>
                     <span className="flex md:text-[12.61px] text-[7.46px] gap-1 items-center">
                       {format(date.to, "MM.dd.y")}
                       <CalendarDays color="#6D7C43" size={15} />

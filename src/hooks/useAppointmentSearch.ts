@@ -16,11 +16,23 @@ export const useAppointmentSearch = (activeTab: string) => {
     setFilteredUpcomingAppointments,
     setFilteredWaitlistedAppointments,
     setFilteredFullAppointments,
+    appointmentRequests,
+    upcomingAppointments,
+    waitlistedAppointments,
+    fullAppointments,
   } = useAppointmentsStore();
 
   const { searchQuery, dateRange, setSearchQuery, setDateRange } =
     useSearchStore();
   const { setLoading } = useAuthState(); // Use setLoading
+
+  // Store original data
+  const originalData = {
+    request: appointmentRequests,
+    accepted: upcomingAppointments,
+    waitlist: waitlistedAppointments,
+    all: fullAppointments,
+  };
 
   const handleSearch = async () => {
     setLoading(true); // Start loading
@@ -93,11 +105,32 @@ export const useAppointmentSearch = (activeTab: string) => {
     );
   };
 
+  const clearSearch = () => {
+    setSearchQuery(""); // Clear the search input
+    switch (activeTab) {
+      case "request":
+        setFilteredAppointmentRequests(originalData.request);
+        break;
+      case "accepted":
+        setFilteredUpcomingAppointments(originalData.accepted);
+        break;
+      case "waitlist":
+        setFilteredWaitlistedAppointments(originalData.waitlist);
+        break;
+      case "all":
+        setFilteredFullAppointments(originalData.all);
+        break;
+      default:
+        break;
+    }
+  };
+
   return {
     searchQuery,
     dateRange,
     setSearchQuery,
     setDateRange,
     handleSearch,
+    clearSearch,
   };
 };

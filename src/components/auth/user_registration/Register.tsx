@@ -150,7 +150,7 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
               <ButtonLoader
                 loading={loading}
                 text="Create Account"
-                className="h-14"
+                className="h-14 rounded-full "
               />
               <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
                 Already have an account?

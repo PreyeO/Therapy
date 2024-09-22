@@ -9,10 +9,12 @@ import DialogCard from "../components/DialogCard";
 import AppointmentSearch from "./AppointmentSearch";
 import { mapToAppointmentTableFormat } from "@/lib/utils";
 import AllAppointmentSearch from "./AllAppointmentSearch";
+import { useSearchStore } from "@/store";
 
 const AppointmentScreen = () => {
   const [activeTab, setActiveTab] = useState("request");
   const [searchPerformed, setSearchPerformed] = useState(false); // Track if search is performed
+  const { resetFilters } = useSearchStore();
 
   const {
     fetchAppointmentRequests,
@@ -45,13 +47,18 @@ const AppointmentScreen = () => {
         fetchFullAppointments();
         break;
     }
-    setSearchPerformed(false); // Reset searchPerformed when the tab changes
+    setSearchPerformed(false);
+    return () => {
+      // Reset search state when component unmounts (i.e., when navigating away)
+      resetFilters();
+    };
   }, [
     activeTab,
     fetchAppointmentRequests,
     fetchUpcomingAppointments,
     fetchWaitlistedAppointments,
     fetchFullAppointments,
+    resetFilters,
   ]);
 
   // Define handleSearch to track when a search is performed
@@ -76,7 +83,7 @@ const AppointmentScreen = () => {
           title={title}
           className="text-[14.2px] lg:text-2xl md:text-xl font-medium"
         />
-        <DatePickerWithRange />
+        <DatePickerWithRange activeTab={activeTab} />
       </div>
 
       {/* Render the search bar differently for the "All" tab */}

@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAppointmentsStore } from "@/store/useAppointment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import {
@@ -20,9 +19,8 @@ import {
 } from "@/components/ui/pagination";
 import { usePaginationStore } from "@/store"; // Ensure your custom pagination logic store is used
 
-const ClientTable = () => {
-  const { fullAppointments, loading, filteredAppointments } =
-    useAppointmentsStore();
+// Accept appointments and loading state as props
+const ClientTable = ({ appointments, loading }) => {
   const {
     currentPage,
     itemsPerPage,
@@ -32,17 +30,15 @@ const ClientTable = () => {
     setCurrentPage,
   } = usePaginationStore();
 
-  const data = filteredAppointments || fullAppointments;
-
   // Calculate paginated data
-  const paginatedData = data.slice(
+  const paginatedData = appointments.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   useEffect(() => {
-    setTotalItems(data.length);
-  }, [data, setTotalItems]);
+    setTotalItems(appointments.length);
+  }, [appointments, setTotalItems]);
 
   if (loading) {
     return (
@@ -52,7 +48,7 @@ const ClientTable = () => {
     );
   }
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   return (
     <div className="overflow-x-auto w-full">

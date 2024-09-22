@@ -90,7 +90,7 @@ export const ResetForm: FC<handleNextPropsTwo> = ({ handleNext }) => {
               <ButtonLoader
                 loading={loading}
                 text="Continue"
-                className="h-14"
+                className="h-14 rounded-full "
               />
             </form>
           </Form>
