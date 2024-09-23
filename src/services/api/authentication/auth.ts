@@ -67,7 +67,10 @@ export const verifyEmailOTP = async (userId, otp) => {
 
 // api to login users
 
-export const loginUser = async (loginData) => {
+export const loginUser = async (loginData: {
+  email: string;
+  password: string;
+}) => {
   try {
     const response = await api.post("/api/users/login/", loginData);
     const userData = response.data;

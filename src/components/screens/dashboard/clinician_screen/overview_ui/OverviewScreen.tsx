@@ -1,4 +1,3 @@
-import WandIcon from "@/assets/icon/Wand";
 import AppointmentCard from "./cards/AppointmentCard";
 import { BriefcaseMedical, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,29 +6,13 @@ import RequestCard from "./cards/RequestCard";
 import GraphCard from "./cards/GraphCard";
 import UpcomingCard from "./cards/UpcomingCard";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getUserData } from "@/services/api/authentication/auth";
+import Advert from "../../components/Advert";
 
 const OverviewScreen = () => {
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    const userData = getUserData();
-    if (userData) {
-      const { first_name } = userData.user;
-      setName(`${first_name}`);
-    }
-  }, []);
   return (
-    <div className="">
+    <div className="mb-10">
       <div className=" py-6 bg-white my-7 flex justify-between rounded-lg max-w-full items-center ">
-        <div className="flex lg:gap-3 gap-1 pl-3">
-          <WandIcon width={24} height={24} className="hidden lg:block" />
-          <WandIcon width={18} height={18} className="block lg:hidden" />
-          <p className="md:text-[17px] text-army_green font-normal text-[12px] ">
-            Hello! {name} you can now setup your account
-          </p>
-        </div>
+        <Advert />
         <div className="mr-3 ">
           <Link to="/accountsetup">
             <Button className="rounded-full md:text-base font-normal text-[7px] w-[74px] md:w-full h-[29px] md:h-full">

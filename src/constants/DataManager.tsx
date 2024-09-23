@@ -1,7 +1,7 @@
 import Image1 from "@/assets/image/HeroImage1.svg";
 import Image2 from "@/assets/image/HeroImage2.svg";
 import Image3 from "@/assets/image/HeroImage3.svg";
-import { Check, X } from "lucide-react";
+import { Check, Download, Trash2, X } from "lucide-react";
 import Avatar from "@/assets/icon/Avater.svg";
 
 export const imageData = [
@@ -101,6 +101,72 @@ export const requestsData = [
     rejectIcon: (
       <div className="w-6 h-6 border border-[#0418274D] rounded-full bg-[#EA43354D] flex flex-col justify-center items-center ">
         <X size={20} strokeWidth={2} color="#EA43354D" />
+      </div>
+    ),
+  },
+];
+
+export const documentData = [
+  {
+    name: "Medical checkup report.pdf",
+    src: Avatar,
+    time: "Today . 10:00am",
+    acceptIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Trash2 size={13} color="red" />
+      </div>
+    ),
+    rejectIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Download size={13} color="#8BA05F" />
+      </div>
+    ),
+  },
+
+  {
+    name: "Psychological history report.pdf",
+    src: Avatar,
+    time: "Today . 10:00am",
+    acceptIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Trash2 size={13} color="red" />
+      </div>
+    ),
+    rejectIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Download size={13} color="#8BA05F" />
+      </div>
+    ),
+  },
+
+  {
+    name: "Consent Form report.pdf",
+    src: Avatar,
+    time: "Today . 10:00am",
+    acceptIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Trash2 size={13} color="red" />
+      </div>
+    ),
+    rejectIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Download size={13} color="#8BA05F" />
+      </div>
+    ),
+  },
+
+  {
+    name: "Substance use report.pdf",
+    src: Avatar,
+    time: "Today . 10:00am",
+    acceptIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Trash2 size={13} color="red" />
+      </div>
+    ),
+    rejectIcon: (
+      <div className="w-[30px] h-[30px] rounded-md bg-[#F9F9F9] flex flex-col justify-center items-center">
+        <Download size={13} color="#8BA05F" />
       </div>
     ),
   },

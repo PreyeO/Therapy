@@ -18,7 +18,7 @@ const UpcomingCard: React.FC = () => {
       <div className="flex justify-between">
         <Title
           title="Upcoming Appointments"
-          className="text-[#3A5334] font-bold lg:text-lg py-4 px-4 text-[12.63px]"
+          className="text-[#3A5334] font-bold lg:text-lg py-4 px-4 "
         />
         <Button
           variant="link"

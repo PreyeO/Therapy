@@ -9,6 +9,7 @@ import BusinessPeriods from "./pages/DashboardPage/clinician/ProfileScreen/Busin
 import AppointmentProfile from "./pages/DashboardPage/clinician/ProfileScreen/AppointmentProfile";
 import Profile from "./pages/DashboardPage/clinician/ProfileScreen/Profile";
 import ProfileLayout from "./components/screens/dashboard/clinician_screen/profile_ui/ProfileLayout";
+import ClientDashboard from "./components/layouts/ClientDashboard";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -18,6 +19,9 @@ const PasswordReset = lazy(
   () => import("@/pages/PasswordResetPage/PasswordReset")
 );
 const Overview = lazy(() => import("@/pages/DashboardPage/clinician/Overview"));
+const ClientOverview = lazy(
+  () => import("@/pages/DashboardPage/client/ClientOverview")
+);
 const Schedule = lazy(() => import("@/pages/DashboardPage/clinician/Schedule"));
 const DashboardLayout = lazy(
   () => import("./components/layouts/DashboardLayout")
@@ -46,7 +50,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/accountsetup" element={<AccountSetup />} />
             <Route path="passwordreset" element={<PasswordReset />} />
-            <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="/clinician_dashboard" element={<DashboardLayout />}>
               <Route path="" element={<Overview />} />
               <Route path="schedule" element={<Schedule />} />
               <Route path="clients" element={<Clients />} />
@@ -67,6 +71,9 @@ function App() {
               <Route path="clientoverview" element={<ClientsOverview />} />
 
               <Route path="empty" element={<Empty />} />
+            </Route>
+            <Route path="/client_dashboard" element={<ClientDashboard />}>
+              <Route path="" element={<ClientOverview />} />
             </Route>
           </Routes>
         </Suspense>

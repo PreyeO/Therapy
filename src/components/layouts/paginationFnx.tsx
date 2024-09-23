@@ -1,32 +1,32 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+// import {
+//   Pagination,
+//   PaginationContent,
+//   PaginationEllipsis,
+//   PaginationItem,
+//   PaginationLink,
+//   PaginationNext,
+//   PaginationPrevious,
+// } from "@/components/ui/pagination";
 
-const PaginationFnx = () => {
-  return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-  );
-};
+// const PaginationFnx = () => {
+//   return (
+//     <Pagination>
+//       <PaginationContent>
+//         <PaginationItem>
+//           <PaginationPrevious href="#" />
+//         </PaginationItem>
+//         <PaginationItem>
+//           <PaginationLink href="#">1</PaginationLink>
+//         </PaginationItem>
+//         <PaginationItem>
+//           <PaginationEllipsis />
+//         </PaginationItem>
+//         <PaginationItem>
+//           <PaginationNext href="#" />
+//         </PaginationItem>
+//       </PaginationContent>
+//     </Pagination>
+//   );
+// };
 
-export default PaginationFnx;
+// export default PaginationFnx;

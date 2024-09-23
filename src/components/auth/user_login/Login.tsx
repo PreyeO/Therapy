@@ -30,10 +30,24 @@ const Login = () => {
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     setLoading(true);
     try {
-      const response = await loginUser(data);
+      const response = await loginUser(data); // Get user data including token and userType
       const token = response.token;
+
+      // Set the auth token after login
       setAuthToken(token);
-      navigate("/dashboard");
+
+      if (response && response.user) {
+        const { is_client, is_clinician } = response.user;
+
+        // Redirect based on is_client and is_clinician
+        if (is_client) {
+          navigate("/client_dashboard");
+        } else if (is_clinician) {
+          navigate("/clinician_dashboard");
+        } else {
+          toast.error("Unknown user type");
+        }
+      }
     } catch (error) {
       console.error("Login error:", error);
       if (error instanceof Error) {
