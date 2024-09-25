@@ -20,7 +20,7 @@ const AppointmentSearch: React.FC<{
 
   return (
     <div className="flex gap-6 my-4 w-full items-center justify-end">
-      <div className={`w-[419px] border rounded-full${className}`}>
+      <div className={`w-[419px] border rounded-full ${className}`}>
         <SearchInput
           className="focus:ring-transparent text-base text-[#BDBDBD] h-[44px]"
           placeholder="Search for clients"

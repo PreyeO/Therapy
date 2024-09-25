@@ -19,7 +19,7 @@ import EllipsisDropdown from "@/components/common/EllipsisDropdown";
 import { useNavigate } from "react-router-dom";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import { useDialogState, useDropdownStore, usePaginationStore } from "@/store";
-import { Appointment, DropdownItem } from "@/types/formSchema"; // Import the type from the type file
+import { Appointment, DropdownItem } from "@/types/formSchema";
 
 interface AppointmentTableProps {
   dropdownItemsGenerator: (
@@ -29,6 +29,7 @@ interface AppointmentTableProps {
   data: Appointment[];
   loading: boolean;
   searchPerformed: boolean;
+  showActionColumn?: boolean; // New prop to control visibility of the "Action" column
 }
 
 const AppointmentTable: React.FC<AppointmentTableProps> = ({
@@ -36,6 +37,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   data,
   loading,
   searchPerformed,
+  showActionColumn = true, // Default to true to show the action column
 }) => {
   const {
     currentPage,
@@ -50,7 +52,6 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   const { openSuccess } = useDialogState();
   const navigate = useNavigate();
 
-  // Calculate paginated data
   const paginatedData = data.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -79,10 +80,10 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   return (
-    <div className="w-full min-h-[500px] flex flex-col justify-between ">
-      <Table className="w-full table-auto bg-white pt-5 ">
+    <div className="w-full min-h-[500px] flex flex-col justify-between">
+      <Table className="w-full table-auto bg-white pt-5">
         <thead className="">
-          <TableRow className="text-sm ">
+          <TableRow className="text-sm">
             <TableHead className="px-4 py-3 font-semibold pt-8">
               Client Name
             </TableHead>
@@ -91,9 +92,11 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
             <TableHead className="px-4 py-3 font-semibold pt-8">
               Location
             </TableHead>
-            <TableHead className="px-4 py-3 font-semibold pt-8">
-              Action
-            </TableHead>
+            {showActionColumn && (
+              <TableHead className="px-4 py-3 font-semibold pt-8">
+                Action
+              </TableHead>
+            )}
           </TableRow>
         </thead>
         <TableBody>
@@ -117,19 +120,21 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               <TableCell className="px-4 py-3 text-left align-middle">
                 {item.location || "N/A"}
               </TableCell>
-              <TableCell className="px-4 py-3 text-left align-middle">
-                <button
-                  className="bg-transparent"
-                  onClick={() => toggleDropdown(index)}
-                >
-                  <Ellipsis size={24} />
-                </button>
-                <EllipsisDropdown
-                  items={dropdownItemsGenerator(item.id, openSuccess)}
-                  isOpen={openDropdownIndex === index}
-                  onClose={closeDropdown}
-                />
-              </TableCell>
+              {showActionColumn && (
+                <TableCell className="px-4 py-3 text-left align-middle">
+                  <button
+                    className="bg-transparent"
+                    onClick={() => toggleDropdown(index)}
+                  >
+                    <Ellipsis size={24} />
+                  </button>
+                  <EllipsisDropdown
+                    items={dropdownItemsGenerator(item.id, openSuccess)}
+                    isOpen={openDropdownIndex === index}
+                    onClose={closeDropdown}
+                  />
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

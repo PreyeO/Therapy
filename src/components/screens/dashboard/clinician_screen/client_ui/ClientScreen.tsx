@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import Title from "@/components/ui/Titles/Title";
 import ClientTable from "./ClientTable";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { useAppointmentsStore } from "@/store/useAppointment"; // Import the store
 import { useSearchStore } from "@/store"; // Import search store to reset search state
@@ -52,25 +45,7 @@ const ClientScreen = () => {
           <Title title="Clients" className="text-2xl font-medium py-10" />
         </div>
 
-        <div className="flex justify-between gap-4 items-center">
-          <Select>
-            <SelectTrigger className="h-14 text-placeholder_text text-[11.28px] font-normal w-full rounded-md">
-              <SelectValue placeholder="Filter by Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="Pending">Pending</SelectItem>
-              <SelectItem value="Accepted">Accepted</SelectItem>
-              <SelectItem value="Canceled">Canceled</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <AppointmentSearch
-            activeTab="all" // Use the "all" tab for full appointments
-            onSearch={handleSearch} // Track when the search is performed
-            className="rounded-none h-14"
-          />
-        </div>
+        <AppointmentSearch activeTab="all" onSearch={handleSearch} />
 
         <div className="min-w-[687px] w-full mt-10">
           {/* Pass appointments data to the ClientTable */}

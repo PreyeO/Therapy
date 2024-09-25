@@ -28,12 +28,14 @@ type ScheduleSheetProps = {
   events: Event[];
   unavailableSlots: UnavailableSlot[];
   weekStartDate: Date;
+  renderAvailableTime?: (day: Date, timeSlot: string) => React.ReactNode;
 };
 
 const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
   events,
   unavailableSlots,
   weekStartDate,
+  renderAvailableTime,
 }) => {
   const daysOfWeek = Array.from({ length: 7 }).map((_, index) =>
     addDays(startOfWeek(weekStartDate, { weekStartsOn: 0 }), index)
@@ -199,6 +201,9 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                           </Popover>
                         );
                       })
+                    ) : // Empty cell case, renderAvailableTime is passed by the parent component
+                    renderAvailableTime ? (
+                      renderAvailableTime(day, slot)
                     ) : (
                       <div className="h-full bg-transparent"></div>
                     )}

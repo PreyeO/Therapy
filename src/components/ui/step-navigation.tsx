@@ -7,7 +7,7 @@ const StepNavigation = ({
   handleNext,
   handleFinishSetup,
 }) => (
-  <div className="flex gap-3 justify-end items-end mx-[4%] mb-6">
+  <div className="flex gap-3 justify-end items-end mx-[4%] mb-10">
     {!isFirstStep && (
       <Button
         onClick={prev}

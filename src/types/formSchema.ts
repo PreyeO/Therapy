@@ -276,3 +276,56 @@ export type AppointmentFilters = {
   end_time?: string;
   search?: string;
 };
+
+// CLIENTS
+
+export const clientSetupFormSchema = z.object({
+  preferred_name: z.string().email({
+    message: "Please provide a valid email",
+  }),
+  birth_date: z.string({
+    message: "Please provide a valid password",
+  }),
+  phone_number: z.string({
+    message: "Please provide a valid password",
+  }),
+  pronoun: z.string({
+    message: "Please provide a valid password",
+  }),
+  gender: z.string({
+    message: "Please provide a valid password",
+  }),
+  state: z.string({
+    message: "Please provide a valid password",
+  }),
+  street: z.string({
+    message: "Please provide a valid password",
+  }),
+  city: z.string({
+    message: "Please provide a valid password",
+  }),
+  postal_code: z.string({
+    message: "Please provide a valid password",
+  }),
+});
+
+export const ApointmentBookingFormSchema = z.object({
+  date: z.string().email({
+    message: "Please provide a valid email",
+  }),
+  time: z.string({
+    message: "Please provide a valid password",
+  }),
+  location: z.string({
+    message: "Please provide a valid password",
+  }),
+  service: z.string({
+    message: "Please provide a valid password",
+  }),
+  duration: z.string({
+    message: "Please provide a valid password",
+  }),
+  rate: z.string({
+    message: "Please provide a valid password",
+  }),
+});

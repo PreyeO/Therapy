@@ -107,13 +107,13 @@ export const clientSidebarLinks = [
   {
     label: "Appointments",
     icon: <AlarmCheck strokeWidth={2} color="#868686" size={24} />,
-    href: "/client_dashboard/appointment",
+    href: "/client_dashboard/client_appointment",
   },
 
   {
     label: "Clinicians",
     icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "/client_dashboard/clients",
+    href: "/client_dashboard/clinicians",
   },
   {
     label: "Reports",

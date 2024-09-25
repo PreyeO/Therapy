@@ -18,7 +18,7 @@ const SearchInput: FC<SearchInputProps> = ({
   onChange,
 }) => {
   return (
-    <div className={`flex items-center px-6 ${className}`}>
+    <div className={`flex items-center px-6  ${className}`}>
       <Search
         strokeWidth={2}
         color="#868686"
@@ -26,7 +26,7 @@ const SearchInput: FC<SearchInputProps> = ({
         className="cursor-pointer"
       />
       <Input
-        value={value} // Pass value to Input for controlled behavior
+        value={value}
         placeholder={placeholder}
         className="focus:ring-transparent border-none"
         onChange={(e) => onChange && onChange(e.target.value)} // Handle change event

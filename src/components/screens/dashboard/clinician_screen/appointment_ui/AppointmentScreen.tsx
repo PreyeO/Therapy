@@ -101,7 +101,8 @@ const AppointmentScreen = () => {
           dropdownItemsGenerator={dropdownItemsGenerator}
           data={mapToAppointmentTableFormat(filteredData || data)}
           loading={loading}
-          searchPerformed={searchPerformed} // Pass searchPerformed to the table
+          searchPerformed={searchPerformed}
+          showActionColumn={!isAllTab}
         />
       </div>
     </>

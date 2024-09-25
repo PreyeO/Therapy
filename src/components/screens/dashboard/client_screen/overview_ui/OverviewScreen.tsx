@@ -16,7 +16,7 @@ const OverviewScreen = () => {
       <div className=" py-6 bg-white my-7 flex justify-between rounded-lg max-w-full items-center ">
         <Advert />
         <div className="mr-3 ">
-          <Link to="/accountsetup">
+          <Link to="/clientsetup">
             <Button className="rounded-full md:text-base font-normal text-[7px] w-[74px] md:w-full h-[29px] md:h-full">
               Setup Account
             </Button>
