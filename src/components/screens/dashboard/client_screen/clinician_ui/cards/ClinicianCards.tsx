@@ -1,26 +1,31 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { clinicianData } from "@/constants/DataManager";
 import { CalendarClock, Eye } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogOverlay,
-  DialogPortal,
-} from "@/components/ui/dialog";
-
+import { Link, useNavigate } from "react-router-dom";
 import Schedule from "../../booking_ui/Schedule";
 import BookingReview from "../../booking_ui/BookingReview";
-import { Link } from "react-router-dom";
+import { useDialogState } from "@/store";
+import DialogCard from "../../../components/DialogCard";
 
 const ClinicianCards = () => {
-  const [open, setOpen] = useState(false);
-  const [showReview, setShowReview] = useState(false);
+  const { showReview, openSchedule, openReview, openSuccess } =
+    useDialogState();
+  const navigate = useNavigate();
 
   const handleContinue = () => {
-    setShowReview(true);
+    openReview();
+  };
+
+  const handleBookNow = () => {
+    openSuccess({
+      title: "You have successfully booked your appointment",
+      subtitle: "You can now proceed to view your appointment.",
+    });
+  };
+  const handleViewAppointment = () => {
+    navigate("/client_dashboard/client_appointment"); // Navigate to the appointment page
   };
 
   return (
@@ -39,7 +44,7 @@ const ClinicianCards = () => {
               <div className="flex-1 min-w-0">
                 <CardTitle
                   className="pt-3 font-bold text-lg truncate"
-                  style={{ maxWidth: "200px" }} // This restricts the name to 200px width
+                  style={{ maxWidth: "200px" }}
                 >
                   {item.fullname}
                 </CardTitle>
@@ -49,7 +54,6 @@ const ClinicianCards = () => {
               </div>
             </div>
 
-            {/* Border and Button Section */}
             <div className="mt-7 flex-shrink-0">
               <div className="border w-full"></div>
             </div>
@@ -58,10 +62,7 @@ const ClinicianCards = () => {
               <div className="flex gap-3 pt-5">
                 <Button
                   className="flex gap-3 rounded-full w-[190px] text-[12px] font-medium flex-shrink-0"
-                  onClick={() => {
-                    setOpen(true);
-                    setShowReview(false);
-                  }}
+                  onClick={() => openSchedule()}
                 >
                   <CalendarClock size={18} />
                   Book Appointment
@@ -77,21 +78,17 @@ const ClinicianCards = () => {
         </Card>
       ))}
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogPortal>
-          <DialogOverlay className="bg-black bg-opacity-50 fixed inset-0 z-50" />
-          <DialogContent
-            className="w-full max-w-6xl bg-white rounded-lg shadow-lg mx-auto overflow-auto"
-            style={{ maxHeight: "90vh" }}
-          >
-            {showReview ? (
-              <BookingReview />
-            ) : (
-              <Schedule onContinue={handleContinue} />
-            )}
-          </DialogContent>
-        </DialogPortal>
-      </Dialog>
+      <DialogCard
+        buttonLabel="View Appointment"
+        className={showReview ? "w-[649px]" : "max-w-6xl scale-90"}
+        buttonAction={handleViewAppointment}
+      >
+        {showReview ? (
+          <BookingReview onBookNow={handleBookNow} />
+        ) : (
+          <Schedule onContinue={handleContinue} />
+        )}
+      </DialogCard>
     </div>
   );
 };

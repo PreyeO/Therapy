@@ -9,7 +9,7 @@ const ClientDashboard = () => {
         <ClientSideBar />
       </div>
       <div className="flex-1 flex flex-col lg:px-[1.5%] px-[2%] lg:my-[1%] bg-[#FAFAFB] rounded-[20px] lg:ml-[20%] max-w-[100%]">
-        <div className="mt-7">
+        <div className="mt-10">
           <Header />
         </div>
         <main className="flex-1 overflow-auto ">

@@ -33,10 +33,10 @@ const ClientAppointmentTable = () => {
   //   const totalPages = Math.ceil(appointments.length / itemsPerPage);
 
   return (
-    <div className="overflow-x-auto w-full">
-      <Table className="bg-white pt-5">
+    <div className="overflow-x-auto w-full py-12 ">
+      <Table className="bg-white w-full table-auto ">
         <TableHeader>
-          <TableRow className="text-xl text-[#212121]">
+          <TableRow className="text-xl text-[#212121] ">
             <TableHead className="font-bold">Client Name</TableHead>
             <TableHead className="font-bold">Email</TableHead>
             <TableHead className="font-bold">Booked Date</TableHead>
@@ -50,7 +50,7 @@ const ClientAppointmentTable = () => {
               key={index}
               className="text-[#212121] font-normal text-base"
             >
-              <TableCell className="flex items-center gap-1">
+              <TableCell className="flex items-center gap-3">
                 <Avatar className="w-[40px] h-[40px]">
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>Avater</AvatarFallback>
@@ -59,7 +59,7 @@ const ClientAppointmentTable = () => {
               </TableCell>
 
               <TableCell>{item.email}</TableCell>
-              <TableCell>{item.date}</TableCell>
+              <TableCell className="">{item.date}</TableCell>
               <TableCell>{item.service}</TableCell>
               <TableCell>
                 <Ellipsis />
@@ -69,9 +69,8 @@ const ClientAppointmentTable = () => {
         </TableBody>
       </Table>
 
-      {/* Pagination Section */}
-      <div className="py-3 mt-4">
-        {/* <div className="border p-[0.1px] w-[100%]" />
+      {/* <div className="py-3 mt-4">
+      <div className="border p-[0.1px] w-[100%]" />
         <Pagination className="flex justify-center">
           <PaginationContent>
             <PaginationItem>
@@ -92,8 +91,8 @@ const ClientAppointmentTable = () => {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div> */}
       </div>
+      </div> */}
     </div>
   );
 };

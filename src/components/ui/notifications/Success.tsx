@@ -26,7 +26,7 @@ const Success: FC<MyComponentProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col mx-auto min-h-screen justify-center max-w-[829px] ${className} `}
+      className={`flex flex-col mx-auto max-h-screen justify-center max-w-[829px] ${className} `}
     >
       <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg">
         <motion.div
@@ -52,10 +52,10 @@ const Success: FC<MyComponentProps> = ({
             >
               <Check className="text-[50px] text-white bg-army_green rounded-full h-[100px] w-[100px] p-3 " />
             </motion.div>
-            <CardTitle className="pt-8 md:text-[25.03px] text-base font-bold text-primary_black_text text-center">
+            <CardTitle className="pt-8 md:text-[25.03px] text-base font-bold text-primary_black_text text-center leading-7">
               {title}
             </CardTitle>
-            <CardDescription className=" pt-3 font-normal md:text-[16.93px] text-[9.55px] text-placeholder_text">
+            <CardDescription className=" pt-3 font-normal md:text-[16.93px] text-[9.55px] text-placeholder_text text-center">
               {subtitle}
             </CardDescription>
           </CardHeader>

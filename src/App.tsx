@@ -6,7 +6,7 @@ import Empty from "./pages/DashboardPage/clinician/Empty";
 import EmailProfile from "./pages/DashboardPage/clinician/ProfileScreen/EmailUpdates";
 import BusinessServices from "./pages/DashboardPage/clinician/ProfileScreen/BusinessServices";
 import BusinessPeriods from "./pages/DashboardPage/clinician/ProfileScreen/BusinessPeriods";
-import AppointmentProfile from "./pages/DashboardPage/clinician/ProfileScreen/AppointmentProfile";
+
 import Profile from "./pages/DashboardPage/clinician/ProfileScreen/Profile";
 import ProfileLayout from "./components/screens/dashboard/clinician_screen/profile_ui/ProfileLayout";
 import ClientDashboard from "./components/layouts/ClientDashboard";
@@ -65,10 +65,7 @@ function App() {
               <Route path="appointment" element={<Appointment />} />
               <Route path="profile" element={<ProfileLayout />}>
                 <Route path="" element={<Profile />} />
-                <Route
-                  path="appointmentinfo"
-                  element={<AppointmentProfile />}
-                />
+
                 <Route
                   path="businessperiodinfo"
                   element={<BusinessPeriods />}

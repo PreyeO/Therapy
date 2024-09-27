@@ -29,7 +29,7 @@ interface AppointmentTableProps {
   data: Appointment[];
   loading: boolean;
   searchPerformed: boolean;
-  showActionColumn?: boolean; // New prop to control visibility of the "Action" column
+  showActionColumn?: boolean;
 }
 
 const AppointmentTable: React.FC<AppointmentTableProps> = ({
@@ -37,7 +37,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   data,
   loading,
   searchPerformed,
-  showActionColumn = true, // Default to true to show the action column
+  showActionColumn = true,
 }) => {
   const {
     currentPage,

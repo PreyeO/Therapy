@@ -1,3 +1,4 @@
+// ScheduleSheet.tsx
 import * as React from "react";
 import {
   format,
@@ -37,6 +38,7 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
   weekStartDate,
   renderAvailableTime,
 }) => {
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false); // Track popover state
   const daysOfWeek = Array.from({ length: 7 }).map((_, index) =>
     addDays(startOfWeek(weekStartDate, { weekStartsOn: 0 }), index)
   );
@@ -56,9 +58,17 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
     });
   };
 
+  const handlePopoverOpenChange = (isOpen: boolean) => {
+    setIsPopoverOpen(isOpen); // Set the state when the popover is open
+  };
+
   return (
-    <div className="w-full h-full overflow-x-auto">
-      <div className="min-w-[800px]">
+    <div className="relative w-full h-full overflow-x-auto">
+      {isPopoverOpen && (
+        // Overlay to block interactions when the popover is open
+        <div className="absolute inset-0 z-10 bg-transparent pointer-events-auto"></div>
+      )}
+      <div className="min-w-[1000px]">
         <div className="grid grid-cols-8 border-b">
           <div className="col-span-1 p-2 border-r text-center text-[#71717A] text-sm flex flex-col items-center justify-center">
             EST GMT-5
@@ -130,7 +140,10 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                         const topOffset = (startMinutes % 60) / 60;
 
                         return (
-                          <Popover key={slot.reason}>
+                          <Popover
+                            key={slot.reason}
+                            onOpenChange={handlePopoverOpenChange} // Track popover state change
+                          >
                             <PopoverTrigger asChild>
                               <div
                                 className="absolute inset-0 bg-gray-400 rounded flex items-center justify-center cursor-pointer"
@@ -143,7 +156,9 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                               </div>
                             </PopoverTrigger>
 
-                            <PopoverContent>
+                            <PopoverContent
+                              onClick={(e) => e.stopPropagation()} // Stop click propagation
+                            >
                               <UnavailableInfo
                                 reason={slot.reason}
                                 start={new Date(slot.start)}
@@ -168,7 +183,10 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                         );
 
                         return (
-                          <Popover key={event.title}>
+                          <Popover
+                            key={event.title}
+                            onOpenChange={handlePopoverOpenChange} // Track popover state change
+                          >
                             <PopoverTrigger asChild>
                               <div
                                 className="absolute inset-0 rounded cursor-pointer"
@@ -188,7 +206,9 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                                 </p>
                               </div>
                             </PopoverTrigger>
-                            <PopoverContent>
+                            <PopoverContent
+                              onClick={(e) => e.stopPropagation()} // Stop click propagation
+                            >
                               <ScheduleInfo
                                 title={event.service.name}
                                 first_name={event.client}
@@ -201,8 +221,7 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                           </Popover>
                         );
                       })
-                    ) : // Empty cell case, renderAvailableTime is passed by the parent component
-                    renderAvailableTime ? (
+                    ) : renderAvailableTime ? (
                       renderAvailableTime(day, slot)
                     ) : (
                       <div className="h-full bg-transparent"></div>

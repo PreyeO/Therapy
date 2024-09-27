@@ -276,6 +276,12 @@ export type AppointmentFilters = {
   end_time?: string;
   search?: string;
 };
+export type Services = {
+  name: string;
+  code: string;
+  duration: number;
+  price: number;
+};
 
 // CLIENTS
 

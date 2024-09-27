@@ -4,9 +4,9 @@ import ClientAppointmentTable from "./ClientAppointmentTable";
 
 const ClientAppointmentScreen = () => {
   return (
-    <div>
-      <Tabs defaultValue="upcoming" className="w-full py-6">
-        <TabsList className="h-[50px] lg:w-[80%] w-[318px] font-medium mx-auto">
+    <div className="">
+      <Tabs defaultValue="upcoming" className="w-full ">
+        <TabsList className="h-[50px] lg:w-[40%] w-[318px] font-medium mx-auto my-6 mt-10">
           <TabsTrigger
             value="upcoming"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"

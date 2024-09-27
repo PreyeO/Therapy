@@ -26,8 +26,15 @@ const handleError = (error) => {
 
 export const getUnavailableSlots = async () => {
   try {
-    console.log("Fetching unavaialable slots...");
     const response = await api.get(`/api/clinician-unavailable-slots/`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const getServices = async () => {
+  try {
+    const response = await api.get(`/api/clinical-services`);
     return response.data;
   } catch (error) {
     handleError(error);

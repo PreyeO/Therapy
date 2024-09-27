@@ -102,20 +102,32 @@ export const usePasswordResetState = create<PasswordResetState>((set) => ({
 
 interface DialogState {
   isOpen: boolean;
+  showReview: boolean;
   success: boolean;
   successMessage?: { title: string; subtitle: string } | null;
-  openSuccess: (message: { title: string; subtitle: string }) => void;
+  openSchedule: () => void;
   closeDialog: () => void;
+  openReview: () => void;
+  openSuccess: (message: { title: string; subtitle: string }) => void;
 }
 
 export const useDialogState = create<DialogState>((set) => ({
   isOpen: false,
+  showReview: false,
   success: false,
   successMessage: null,
+
+  openSchedule: () => set({ isOpen: true, showReview: false }),
+  openReview: () => set({ showReview: true }),
   openSuccess: (message) =>
     set({ isOpen: true, success: true, successMessage: message }),
   closeDialog: () =>
-    set({ isOpen: false, success: false, successMessage: null }),
+    set({
+      isOpen: false,
+      showReview: false,
+      success: false,
+      successMessage: null,
+    }),
 }));
 
 interface PaginationState {

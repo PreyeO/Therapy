@@ -9,7 +9,7 @@ const Header = () => {
     <header>
       {/* w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex rounded-xl */}
       <div className="flex justify-between">
-        <div className="w-[446px] h-[72px] bg-white  px-6 hidden lg:flex rounded-xl ">
+        <div className="w-[50%] h-[72px] bg-white  px-6 hidden lg:flex rounded-xl ">
           <SearchInput
             className="text-base text-[#BDBDBD] border-none focus:ring-transparents focus:ring-transparent "
             placeholder="search for a client"

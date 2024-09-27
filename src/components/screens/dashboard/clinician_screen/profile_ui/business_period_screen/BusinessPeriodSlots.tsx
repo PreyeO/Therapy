@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore"; // Zustand store
 import TimeSelect from "../../components/TimeSelect";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
-import { Switch } from "@/components/ui/switch";
+
+import { Edit, Trash2 } from "lucide-react";
+import { truncateToFirstTwoWords } from "@/lib/utils";
+import BusinessPeriodsHeader from "../../../components/BusinessPeriodHeader";
 
 const BusinessPeriodSlots = () => {
   const {
@@ -31,16 +34,10 @@ const BusinessPeriodSlots = () => {
 
   return (
     <form>
-      <div className="flex flex-col mt-6">
+      <div className="flex flex-col mt-6 gap-10">
         {/* Header */}
 
-        <div className="flex items-center justify-center md:gap-20 pb-10 pt-3 md:text-base text-[9.19px] font-normal text-[#444444B2]">
-          <h3 className="w-1/4 text-center">Day</h3>
-          <h3 className="w-1/4 text-center">Open hour</h3>
-          <h3 className="w-1/4 text-center">Close hour</h3>
-          <h3 className="w-1/4 text-center">Location</h3>
-          <h3 className="w-1/4 text-center">Action</h3>
-        </div>
+        <BusinessPeriodsHeader showActions={true} />
 
         <div className="flex flex-col gap-5">
           {fetchedBusinessPeriods.map((item, index) => (
@@ -51,7 +48,7 @@ const BusinessPeriodSlots = () => {
                   {item.day_of_week}
                 </h3>
 
-                <div className="w-1/4">
+                <div className="w-[30%]">
                   <TimeSelect
                     placeholder={item.opening_hour || "08:00"}
                     value={item.opening_hour}
@@ -61,7 +58,7 @@ const BusinessPeriodSlots = () => {
                   />
                 </div>
 
-                <div className="w-1/4">
+                <div className="w-[30%]">
                   <TimeSelect
                     placeholder={item.closing_hour || "18:00"}
                     value={item.closing_hour}
@@ -70,38 +67,30 @@ const BusinessPeriodSlots = () => {
                     }
                   />
                 </div>
-                <div className="w-1/4 text-center">
-                  {item.business_locations?.length ? (
-                    <p className="text-[9px] md:text-[12px] text-gray-600">
-                      {item.business_locations
-                        .map(
-                          (location) =>
-                            `${location.location.street_address}, ${location.location.city}, ${location.location.state}, ${location.location.postal_code}`
-                        )
-                        .join("; ")}
-                    </p>
-                  ) : (
-                    <p className="text-[9px] md:text-[12px] text-gray-500 italic">
-                      No locations available
-                    </p>
-                  )}
+                <div className="w-[30%]">
+                  <div className="border h-12 flex items-center justify-center rounded-xl gap-3">
+                    {item.business_locations?.length ? (
+                      <p className="text-[9px] md:text-[14px] text-[#041827B2] text-center">
+                        {item.business_locations
+                          .map((location) =>
+                            truncateToFirstTwoWords(
+                              `${location.location.street_address}, ${location.location.city}, ${location.location.state}, ${location.location.postal_code}`
+                            )
+                          )
+                          .join("; ")}
+                      </p>
+                    ) : (
+                      <p className="text-[9px] md:text-[12px] text-gray-500 italic">
+                        No locations available
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                <div className="w-1/4 flex justify-center">
-                  <div className="border md:w-[103px] w-[59.17px] h-[56px] flex items-center justify-center rounded-xl">
-                    <Switch
-                      checked={!!item.opening_hour && !!item.closing_hour}
-                      onChange={(checked) =>
-                        updateBusinessPeriod(index, {
-                          opening_hour: checked
-                            ? item.opening_hour || "09:00"
-                            : "",
-                          closing_hour: checked
-                            ? item.closing_hour || "17:00"
-                            : "",
-                        })
-                      }
-                    />
+                <div className="w-[15%] flex justify-center">
+                  <div className="border md:w-[103px] w-[59.17px] h-12 flex items-center justify-center rounded-xl gap-3">
+                    <Edit color="#8BA05F" size={20} />
+                    <Trash2 color="red" size={20} />
                   </div>
                 </div>
               </div>

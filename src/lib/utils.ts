@@ -93,3 +93,9 @@ export const mapAppointmentResponse = (
     end_time: appointment.end_time,
   }));
 };
+
+// Utility function to truncate to the first two words of the address
+export const truncateToFirstTwoWords = (str: string) => {
+  const words = str.split(" ");
+  return words.length > 2 ? words.slice(0, 2).join(" ") + "..." : str;
+};

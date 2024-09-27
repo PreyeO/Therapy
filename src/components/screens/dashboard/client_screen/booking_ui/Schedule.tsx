@@ -1,20 +1,13 @@
-import React from "react";
-import ScheduleSheet from "@/components/screens/dashboard/clinician_screen/schedule_ui/ScheduleSheet";
+import React, { useState } from "react";
 import { useAppointmentsStore } from "@/store/useAppointment";
 import DateNavigator from "@/components/common/DateNavigator";
-import AvailableTime from "./AvailableTime";
-import { Button } from "@/components/ui/button";
+import BookingScheduleSheet from "./BookingScheduleSheet";
 
 const Schedule = ({ onContinue }: { onContinue: () => void }) => {
   const today = new Date();
-  const [currentDate, setCurrentDate] = React.useState<Date>(today);
+  const [currentDate, setCurrentDate] = useState<Date>(today);
 
-  const {
-    appointments,
-    unavailableSlots,
-    fetchAppointments,
-    fetchUnavailableSlots,
-  } = useAppointmentsStore();
+  const { fetchAppointments, fetchUnavailableSlots } = useAppointmentsStore();
 
   React.useEffect(() => {
     fetchAppointments();
@@ -33,22 +26,11 @@ const Schedule = ({ onContinue }: { onContinue: () => void }) => {
         </span>
       </div>
 
-      {/* Pass AvailableTime into the ScheduleSheet via renderAvailableTime prop */}
-      <ScheduleSheet
-        events={appointments}
-        unavailableSlots={unavailableSlots}
+      {/* Render BookingScheduleSheet directly */}
+      <BookingScheduleSheet
         weekStartDate={currentDate}
-        renderAvailableTime={(day, timeSlot) => (
-          <AvailableTime day={day} timeSlot={timeSlot} />
-        )}
+        onContinue={onContinue} // Pass the onContinue handler
       />
-
-      {/* Continue button to go to BookingReview */}
-      <div className="flex justify-end mt-4">
-        <Button onClick={onContinue} className="rounded-full w-[195px]">
-          Continue
-        </Button>
-      </div>
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
 import { clinicianProfileBusinessAddressSchema } from "@/types/formSchema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import OverlayHeading from "../../components/OverlayHeading";
+import OverlayHeading from "../../screens/dashboard/clinician_screen/components/OverlayHeading";
 
 import { FC } from "react";
 

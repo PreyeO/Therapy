@@ -5,7 +5,7 @@ import Title from "@/components/ui/Titles/Title";
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { useAppointmentsStore } from "@/store/useAppointment";
 import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
-import DialogCard from "../components/DialogCard";
+import DialogCard from "../../components/DialogCard";
 import AppointmentSearch from "./AppointmentSearch";
 import { mapToAppointmentTableFormat } from "@/lib/utils";
 import AllAppointmentSearch from "./AllAppointmentSearch";

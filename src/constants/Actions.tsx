@@ -141,3 +141,17 @@ export const dropdownItemsProfile = [
     icons: <Trash2 size={18} strokeWidth={1.5} color="#E25D1A" />,
   },
 ];
+export const bookingsData = [
+  {
+    label: "View",
+    color: "text-[#8BA05F]",
+    onClick: () => alert("Edit"),
+    icons: <EditIcon width={18} height={18} />,
+  },
+  {
+    label: "Cancel",
+    color: "text-[#E25D1A]",
+    onClick: () => alert("Delete"),
+    icons: <Trash2 size={18} strokeWidth={1.5} color="#E25D1A" />,
+  },
+];

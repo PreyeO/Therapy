@@ -1,15 +1,13 @@
-import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/Titles/Title";
+import ServiceSlots from "./ServiceSlots";
 // import RateForm from "./RateForm";
 
 const ServiceInfo = () => {
   return (
     <div className="pt-9 mx-6">
-      <div className="flex justify-between">
-        <Title title="Session Rate" className="text-xl font-medium  " />
-        <Button className="w-[198px] rounded-full bg-army_green">Update</Button>
-      </div>
-      {/* <RateForm /> */}
+      <Title title="Clinical Services" className="text-xl font-medium  " />
+
+      <ServiceSlots />
     </div>
   );
 };

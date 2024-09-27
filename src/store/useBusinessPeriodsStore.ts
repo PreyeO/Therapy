@@ -3,8 +3,13 @@ import {
   getclinicianBusinessPeriods,
   setupclinicianBusinessPeriods,
 } from "@/services/api/clinicians/account_setup";
-import { BusinessPeriod, FetchedBusinessPeriod } from "@/types/formSchema"; // For setting up
+import {
+  BusinessPeriod,
+  FetchedBusinessPeriod,
+  Service,
+} from "@/types/formSchema"; // For setting up
 import { getUserData } from "@/services/api/authentication/auth";
+import { getServices } from "@/services/api/clinicians/appointment";
 
 // Utility functions to manage localStorage
 const getLocalStorage = (key: string) => {
@@ -24,12 +29,14 @@ const clearLocalStorage = (key: string) => {
 interface BusinessPeriodsState {
   businessPeriods: BusinessPeriod[]; // For setting up periods
   fetchedBusinessPeriods: FetchedBusinessPeriod[]; // For fetched periods from backend
+  services: Service[];
   loading: boolean;
   profileLoading: boolean; // Loading state for profile data
   error: string | null;
   isSetupComplete: boolean;
   profile: { firstName: string; lastName: string; email: string } | null; // Profile data
   fetchBusinessPeriods: () => Promise<void>; // Fetching business periods
+  fetchServices: () => Promise<void>; // Fetching services
   setupBusinessPeriods: () => Promise<void>; // Setup method
   fetchProfileData: () => Promise<void>; // Fetching profile data
   setBusinessPeriods: (periods: BusinessPeriod[]) => void; // Setting up business periods
@@ -92,6 +99,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>((set) => ({
   profileLoading: false, // Profile loading state
   error: null,
   isSetupComplete: false,
+  services: [],
 
   // Fetch business periods from the backend and sync with state
   fetchBusinessPeriods: async () => {
@@ -102,6 +110,16 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>((set) => ({
       set({ fetchedBusinessPeriods: periods, loading: false });
     } catch (error) {
       set({ error: "Error fetching business periods", loading: false });
+    }
+  },
+  // Fetch services from the backend and sync with state
+  fetchServices: async () => {
+    set({ loading: true, error: null });
+    try {
+      const fetchedServices = await getServices(); // Fetch services from API
+      set({ services: fetchedServices, loading: false }); // Update state with services
+    } catch (error) {
+      set({ error: "Error fetching services", loading: false });
     }
   },
   fetchProfileData: async () => {

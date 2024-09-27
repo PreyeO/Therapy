@@ -3,11 +3,9 @@ import {
   CalendarCheck,
   CalendarDays,
   ClipboardPlus,
-  Coins,
   CreditCard,
   HandCoins,
   Headset,
-  Hospital,
   LayoutDashboard,
   MessageSquareDot,
   ReceiptText,
@@ -15,6 +13,7 @@ import {
   User,
   Users,
 } from "lucide-react";
+import Coins from "@/assets/icon/Coins.svg";
 
 export const sidebarLinks = [
   {
@@ -70,12 +69,7 @@ export const miniSidebarLinks = [
     icon: <User strokeWidth={2} color="#868686" size={20} />,
     href: "/clinician_dashboard/profile",
   },
-  {
-    label: "Clinincal Information",
-    subtitle: "Clinical location",
-    icon: <Hospital strokeWidth={2} color="#868686" size={20} />,
-    href: "/clinician_dashboard/profile/appointmentinfo",
-  },
+
   {
     label: "Business Period",
     subtitle: "Daily updates about your schedule ",
@@ -85,7 +79,7 @@ export const miniSidebarLinks = [
   {
     label: "Clinic Service",
     subtitle: "List of clinic services",
-    icon: <Coins strokeWidth={2} color="#868686" size={20} />,
+    icon: <img src={Coins} width={20} height={20} />,
     href: "/clinician_dashboard/profile/businessservices",
   },
 
@@ -103,6 +97,11 @@ export const clientSidebarLinks = [
     icon: <LayoutDashboard strokeWidth={2} color="#868686" size={24} />,
     href: "/client_dashboard",
   },
+  {
+    label: "Clinicians",
+    icon: <Users strokeWidth={2} color="#868686" size={24} />,
+    href: "/client_dashboard/clinicians",
+  },
 
   {
     label: "Appointments",
@@ -110,11 +109,6 @@ export const clientSidebarLinks = [
     href: "/client_dashboard/client_appointment",
   },
 
-  {
-    label: "Clinicians",
-    icon: <Users strokeWidth={2} color="#868686" size={24} />,
-    href: "/client_dashboard/clinicians",
-  },
   {
     label: "Reports",
     icon: <ClipboardPlus strokeWidth={2} color="#868686" size={24} />,
