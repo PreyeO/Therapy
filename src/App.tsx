@@ -6,13 +6,10 @@ import Empty from "./pages/DashboardPage/clinician/Empty";
 import EmailProfile from "./pages/DashboardPage/clinician/ProfileScreen/EmailUpdates";
 import BusinessServices from "./pages/DashboardPage/clinician/ProfileScreen/BusinessServices";
 import BusinessPeriods from "./pages/DashboardPage/clinician/ProfileScreen/BusinessPeriods";
-
 import Profile from "./pages/DashboardPage/clinician/ProfileScreen/Profile";
 import ProfileLayout from "./components/screens/dashboard/clinician_screen/profile_ui/ProfileLayout";
 import ClientDashboard from "./components/layouts/ClientDashboard";
-import Clinicians from "./pages/DashboardPage/client/Clinicians";
 import ClinicianProfile from "./pages/DashboardPage/client/ClinicainProfile";
-import ClientAppointments from "./pages/DashboardPage/client/ClientAppointments";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -43,7 +40,13 @@ const AccountSetup = lazy(
 const ClientSetup = lazy(
   () => import("@/pages/DashboardPage/client/account_setup_page/ClientSetup")
 );
-const Clients = lazy(() => import("./pages/DashboardPage/clinician/Clients"));
+const Clients = lazy(() => import("@/pages/DashboardPage/clinician/Clients"));
+const ClientAppointments = lazy(
+  () => import("@/pages/DashboardPage/client/ClientAppointments")
+);
+const Clinicians = lazy(
+  () => import("@/pages/DashboardPage/client/Clinicians")
+);
 
 function App() {
   return (

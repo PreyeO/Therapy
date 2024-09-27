@@ -232,6 +232,7 @@ export const bookingData = [
     email: "p@billionaire.com",
     service: "psychology",
     src: Avatar,
+    status: "canceled",
   },
   {
     name: "Preye Omusuku",
@@ -239,6 +240,7 @@ export const bookingData = [
     email: "p@billionaire.com",
     service: "psychology",
     src: Avatar,
+    status: "Attented",
   },
   {
     name: "Preye Omusuku",
@@ -246,6 +248,7 @@ export const bookingData = [
     email: "p@billionaire.com",
     service: "psychology",
     src: Avatar,
+    status: "Waitlisted",
   },
   {
     name: "Preye Omusuku",
@@ -253,6 +256,7 @@ export const bookingData = [
     email: "p@billionaire.com",
     service: "psychology",
     src: Avatar,
+    status: "Clinician canceled",
   },
   {
     name: "Preye Omusuku",
@@ -260,6 +264,7 @@ export const bookingData = [
     email: "p@billionaire.com",
     service: "psychology",
     src: Avatar,
+    status: "Clinician canceled",
   },
 ];
 
@@ -311,73 +316,73 @@ export const clinicianProfileData = [
 export const clinicianData = [
   {
     fullname: "Elon Musk",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Jeff Bezos",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Preye Omusuku",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Oprah Winfrey",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$85",
   },
   {
     fullname: "Aliko Dangote",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Bola Shagaya",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Mark Zuckerberg",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Mike Adenuga ",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Alice Walton ",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Warren Buffett",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Daisy Danjuma",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
   {
     fullname: "Dr. Stella Okoli",
-    service: "Psychologist",
+    email: "p@yahoo.com",
     city: "New York",
     rate: "$50",
   },
@@ -411,3 +416,41 @@ export const TimesData = [
     location: "Virtual",
   },
 ];
+
+// DataManager.ts
+
+// Define color mapping for each service
+export const calendarSheetColors = {
+  "Psychiatric Evaluation": {
+    bgColor: "#E6F0F6",
+    textColor: "#0369A1",
+  },
+  "Psychotherapy 1": {
+    bgColor: "#F4EFFF",
+    textColor: "#8B5CF6",
+  },
+  "Psychotherapy 2": {
+    bgColor: "#E8F8F3",
+    textColor: "#047857",
+  },
+  "Psychotherapy 3": {
+    bgColor: "#FFE4E6",
+    textColor: "#BE123C",
+  },
+  "Family Therapy": {
+    bgColor: "#FEF6E7",
+    textColor: "#B45309",
+  },
+  "Group Therapy": {
+    bgColor: "#FEC3FF",
+    textColor: "#A1039B",
+  },
+  "Crisis Therapy": {
+    bgColor: "#C9D5FF",
+    textColor: "#1A4ED5",
+  },
+  Unavailable: {
+    bgColor: "#F9F9F9",
+    textColor: "#868686",
+  },
+};

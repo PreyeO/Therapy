@@ -2,6 +2,7 @@ import * as React from "react";
 import ScheduleSheet from "@/components/screens/dashboard/clinician_screen/schedule_ui/ScheduleSheet";
 import { useAppointmentsStore } from "@/store/useAppointment";
 import DateNavigator from "@/components/common/DateNavigator";
+import MonthYearNavigator from "@/components/common/MonthYearNavigator";
 
 const ScheduleScreen = () => {
   const today = new Date();
@@ -27,9 +28,10 @@ const ScheduleScreen = () => {
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}
         />
-        <span className="bg-army_green rounded-full w-[100px] text-center text-white text-sm font-medium flex flex-col items-center justify-center">
-          Weekly
-        </span>
+        <MonthYearNavigator
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+        />
       </div>
       {/* Pass the fetched appointments and unavailable slots to the ScheduleSheet */}
       <ScheduleSheet

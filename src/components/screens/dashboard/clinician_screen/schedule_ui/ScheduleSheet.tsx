@@ -1,4 +1,3 @@
-// ScheduleSheet.tsx
 import * as React from "react";
 import {
   format,
@@ -136,8 +135,9 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                         const cellsToFill = Math.ceil(
                           slotDurationInMinutes / 20
                         );
-
                         const topOffset = (startMinutes % 60) / 60;
+                        const { bgColor, textColor } =
+                          getStylesForTimeSlot("Unavailable");
 
                         return (
                           <Popover
@@ -146,13 +146,16 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                           >
                             <PopoverTrigger asChild>
                               <div
-                                className="absolute inset-0 bg-gray-400 rounded flex items-center justify-center cursor-pointer"
+                                className="absolute inset-0 rounded flex items-center justify-center cursor-pointer"
                                 style={{
+                                  backgroundColor: bgColor,
+                                  borderLeft: `4px solid ${textColor}`,
+                                  color: textColor,
                                   height: `${cellsToFill * 33.33}%`,
                                   top: `${topOffset * 100}%`,
                                 }}
                               >
-                                <p className="text-white">{slot.reason}</p>
+                                <p className="">{slot.reason}</p>
                               </div>
                             </PopoverTrigger>
 
@@ -170,7 +173,9 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
                       })
                     ) : eventsForHour.length > 0 ? (
                       eventsForHour.map((event) => {
-                        const { bgColor, textColor } = getStylesForTimeSlot();
+                        const { bgColor, textColor } = getStylesForTimeSlot(
+                          event.service.name
+                        );
 
                         const eventDurationInMinutes =
                           (new Date(event.end).getTime() -

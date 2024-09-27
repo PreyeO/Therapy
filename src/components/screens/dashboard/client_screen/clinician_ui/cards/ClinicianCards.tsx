@@ -49,7 +49,7 @@ const ClinicianCards = () => {
                   {item.fullname}
                 </CardTitle>
                 <p className="text-[#041827B2] text-[14px] pt-2">
-                  {item.service}
+                  {item.email}
                 </p>
               </div>
             </div>

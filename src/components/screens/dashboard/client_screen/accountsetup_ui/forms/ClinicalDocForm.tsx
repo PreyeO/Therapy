@@ -7,7 +7,7 @@ const ClinicalDocForm = () => {
       <div className="text-center py-6 mt-6">
         <SetupHeader
           title="Upload Clinical Documents"
-          subtitle="Update your medical reports. You can still update or remove it in
+          subtitle="Upload your medical reports. You can still update or remove it in
 profile"
         />
       </div>

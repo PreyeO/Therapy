@@ -18,8 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 
-const PersonalInfoForm = () => {
+const EmergencyForm = () => {
   const form = useForm({
     resolver: zodResolver(clientSetupFormSchema),
   });
@@ -28,20 +35,20 @@ const PersonalInfoForm = () => {
     <div className="flex flex-col lg:gap-20 gap-10 items-center py-2">
       <div className="text-center py-6 mt-6">
         <SetupHeader
-          title="Let's setup your personal information"
-          subtitle="Fill in your details to proceed."
+          title="Emergency Contact"
+          subtitle="Please share the information of someone we can contact in case of an emergency."
         />
       </div>
       <Form {...form}>
-        <form id="step-1-form" className="flex flex-col gap-5 w-full mb-3">
+        <form id="step-3-form" className="flex flex-col gap-5 w-full mb-3">
           <div className="flex gap-4 flex-wrap w-full">
             <FormField
               control={form.control}
-              name="preferred_name"
+              name="first_name"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
-                    Preferred name
+                    First name
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -55,31 +62,35 @@ const PersonalInfoForm = () => {
                 </FormItem>
               )}
             />
-            <FormItem className="flex-grow w-[25%]">
-              <FormLabel className="text-base font-medium text-primary_black_text">
-                Pronoun
-              </FormLabel>
-              <Select>
-                <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                  <SelectValue placeholder="Select your pronoun" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Female">She/Her</SelectItem>
-                  <SelectItem value="Male">Him/His</SelectItem>
-                  <SelectItem value="Other">Them/They</SelectItem>
-                  <SelectItem value="Other">Prefer not to say</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="text-base font-medium text-primary_black_text">
+                    Last name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      autoComplete="off"
+                      placeholder="Enter your pronouns"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                </FormItem>
+              )}
+            />
           </div>
           <div className="flex gap-4 flex-wrap w-full items-center">
             <FormField
               control={form.control}
-              name="birth_date"
+              name="email"
               render={({ field }) => (
-                <FormItem className="flex-grow">
+                <FormItem className="flex-grow ">
                   <FormLabel className="text-base font-medium text-primary_black_text">
-                    Date of Birth
+                    Email
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -97,17 +108,38 @@ const PersonalInfoForm = () => {
               <FormLabel className="text-base font-medium text-primary_black_text">
                 Gender
               </FormLabel>
+
               <Select>
-                <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full  rounded-xl">
+                <SelectTrigger className="h-16 text-placeholder_text text-[11.28px] font-normal w-full  rounded-xl flex-grow">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Female">Female</SelectItem>
                   <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Male">Other</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
+            {/* <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="text-base font-medium text-primary_black_text">
+                    Gender
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      autoComplete="off"
+                      placeholder="Enter your gender"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                </FormItem>
+              )}
+            /> */}
           </div>
           <FormField
             control={form.control}
@@ -135,4 +167,4 @@ const PersonalInfoForm = () => {
   );
 };
 
-export default PersonalInfoForm;
+export default EmergencyForm;

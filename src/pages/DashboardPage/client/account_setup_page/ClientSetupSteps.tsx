@@ -5,13 +5,17 @@ import { ToastContainer } from "react-toastify";
 import PersonalInfoForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/PersonalInfoForm";
 import AddressForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/AddressForm";
 import ClinicalDocForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/ClinicalDocForm";
+import EmergencyForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/EmergencyForm";
+import Review from "@/components/screens/dashboard/client_screen/accountsetup_ui/Review";
 
 const ClientSetupSteps = () => {
   // Array of form step components
   const steps = [
     <PersonalInfoForm key="personal-info" />,
     <AddressForm key="address-info" />,
+    <EmergencyForm key="emergency-info" />,
     <ClinicalDocForm key="clinical-docs" />,
+    <Review key="review-info" />,
   ];
 
   const { currentStep, step, next, prev, isFirstStep, isLastStep } =

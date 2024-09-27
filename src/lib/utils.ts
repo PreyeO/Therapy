@@ -1,8 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import chroma from "chroma-js";
+
 import { isSameDay, getHours } from "date-fns";
 import { Event, AppointmentInfo } from "@/types/formSchema";
+import { calendarSheetColors } from "@/constants/DataManager";
 
 // Utility for class names
 export function cn(...inputs: ClassValue[]) {
@@ -21,23 +22,18 @@ export const getEventsForDayAndTime = (
   });
 };
 
-// Generate a random background color
-const getRandomColor = (): string => {
-  return chroma.random().hex();
-};
-
-// Generate a contrast color for readable text
-const getContrastColor = (bgColor: string): string => {
-  return chroma.contrast(bgColor, "white") > 4.5 ? "white" : "black";
-};
-
 // Generate styles for a time slot
-export const getStylesForTimeSlot = (): {
+export const getStylesForTimeSlot = (
+  serviceName: string
+): {
   bgColor: string;
   textColor: string;
 } => {
-  const bgColor = getRandomColor();
-  const textColor = getContrastColor(bgColor);
+  // Use the predefined colors for the service name, or fallback to default values
+  const { bgColor, textColor } = calendarSheetColors[serviceName] || {
+    bgColor: "#FFFFFF", // Default bg color
+    textColor: "#000000", // Default text color
+  };
   return { bgColor, textColor };
 };
 

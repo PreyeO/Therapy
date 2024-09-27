@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { DropdownItem } from "@/types/formSchema"; // Importing DropdownItem from your type file
-
+import { DropdownItem } from "@/types/formSchema";
 interface EllipsisDropdownProps {
   items: DropdownItem[];
   isOpen: boolean;
