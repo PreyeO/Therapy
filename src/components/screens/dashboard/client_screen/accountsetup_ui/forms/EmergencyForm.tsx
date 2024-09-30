@@ -1,3 +1,4 @@
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -10,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
-import { clientSetupFormSchema } from "@/types/formSchema";
+import { ClientSetup, clientSetupFormSchema } from "@/types/formSchema";
 import {
   Select,
   SelectContent,
@@ -18,18 +19,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
-const EmergencyForm = () => {
-  const form = useForm({
+// Wrap the component with forwardRef to make use of the ref
+const EmergencyForm = forwardRef((_, ref) => {
+  const { setClientProfileData, clientProfileData } = useBusinessPeriodsStore();
+
+  const form = useForm<ClientSetup>({
     resolver: zodResolver(clientSetupFormSchema),
+    defaultValues: clientProfileData,
   });
+
+  // Extract necessary properties from form
+  const { watch, handleSubmit, setValue } = form;
+
+  useEffect(() => {
+    const subscription = watch((data) => {
+      setClientProfileData(data);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setClientProfileData]); // Include only necessary dependencies
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () => handleSubmit((data) => data)(),
+  }));
 
   return (
     <div className="flex flex-col lg:gap-20 gap-10 items-center py-2">
@@ -44,7 +57,7 @@ const EmergencyForm = () => {
           <div className="flex gap-4 flex-wrap w-full">
             <FormField
               control={form.control}
-              name="first_name"
+              name="emergency.first_name"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -64,7 +77,7 @@ const EmergencyForm = () => {
             />
             <FormField
               control={form.control}
-              name="last_name"
+              name="emergency.last_name"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -72,7 +85,7 @@ const EmergencyForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      className="h-16 text-placeholder_text text-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="Enter your pronouns"
                       {...field}
@@ -86,7 +99,7 @@ const EmergencyForm = () => {
           <div className="flex gap-4 flex-wrap w-full items-center">
             <FormField
               control={form.control}
-              name="email"
+              name="emergency.email"
               render={({ field }) => (
                 <FormItem className="flex-grow ">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -96,7 +109,7 @@ const EmergencyForm = () => {
                     <Input
                       className="h-16 text-placeholder_text text-sm  font-normal w-full"
                       autoComplete="off"
-                      placeholder="DD/MM/YYYY"
+                      placeholder="Enter email address"
                       {...field}
                     />
                   </FormControl>
@@ -108,42 +121,23 @@ const EmergencyForm = () => {
               <FormLabel className="text-base font-medium text-primary_black_text">
                 Gender
               </FormLabel>
-
-              <Select>
+              <Select
+                onValueChange={(value) => setValue("gender", value)} // Update form value on select change
+              >
                 <SelectTrigger className="h-16 text-placeholder_text text-[11.28px] font-normal w-full  rounded-xl flex-grow">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Female">Female</SelectItem>
                   <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Male">Other</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
-            {/* <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="text-base font-medium text-primary_black_text">
-                    Gender
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter your gender"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
-            /> */}
           </div>
           <FormField
             control={form.control}
-            name="phone_number"
+            name="emergency.phone_number"
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel className="text-base font-medium text-primary_black_text">
@@ -165,6 +159,7 @@ const EmergencyForm = () => {
       </Form>
     </div>
   );
-};
+});
 
+// This export is necessary for ref functionality
 export default EmergencyForm;

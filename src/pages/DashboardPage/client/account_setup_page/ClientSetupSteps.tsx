@@ -7,8 +7,20 @@ import AddressForm from "@/components/screens/dashboard/client_screen/accountset
 import ClinicalDocForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/ClinicalDocForm";
 import EmergencyForm from "@/components/screens/dashboard/client_screen/accountsetup_ui/forms/EmergencyForm";
 import Review from "@/components/screens/dashboard/client_screen/accountsetup_ui/Review";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { useDialogState } from "@/store";
+import { useEffect } from "react";
+import { getUserData } from "@/services/api/authentication/auth";
+import DialogCard from "@/components/screens/dashboard/components/DialogCard";
+import { useNavigate } from "react-router-dom";
 
 const ClientSetupSteps = () => {
+  // Get methods and data from Zustand store
+  const { completeClientSetup, fetchProfileData } = useBusinessPeriodsStore();
+  const { openSuccess } = useDialogState(); // Access dialog methods
+
+  const navigate = useNavigate();
+
   // Array of form step components
   const steps = [
     <PersonalInfoForm key="personal-info" />,
@@ -21,17 +33,51 @@ const ClientSetupSteps = () => {
   const { currentStep, step, next, prev, isFirstStep, isLastStep } =
     useMultiStepForm(steps);
 
+  // Function to handle form navigation
   const handleNext = () => {
     next(); // Move to next step
   };
+  useEffect(() => {
+    fetchProfileData();
+  }, [fetchProfileData]);
 
-  const handleFinishSetup = () => {
-    // Logic to handle the last step submission
-    console.log("Setup Finished!");
+  // Function to handle final form submission
+  const getClientProfileId = () => {
+    const userData = getUserData(); // Retrieve user data from local storage or state
+    return userData?.user?.client_profile?.id; // Ensure you are accessing client_profile.id
+  };
+
+  // Function to handle form submission
+  const handleFinishSetup = async () => {
+    const clientProfileId = getClientProfileId(); // Use the utility function to get the client profile ID
+
+    console.log("Client Profile ID:", clientProfileId); // Log the client profile ID for debugging purposes
+
+    if (!clientProfileId) {
+      console.error("Client Profile ID is missing!");
+      return; // Exit if the ID is not found
+    }
+
+    try {
+      await completeClientSetup(clientProfileId); // Use clientProfileId when calling completeClientSetup
+      openSuccess({
+        title: "Setup Complete",
+        subtitle: "Your profile setup has been completed successfully!",
+      });
+    } catch (error) {
+      console.error("Failed to complete setup:", error);
+    }
+  };
+  const handleViewAppointment = () => {
+    navigate("/client_dashboard"); // Navigate to the appointment page
   };
 
   return (
     <div className="w-full flex flex-col items-center scale-75">
+      <DialogCard
+        buttonLabel="Go to your dashboard"
+        buttonAction={handleViewAppointment}
+      />
       <div className="xl:w-[60%] w-full bg-white rounded-3xl shadow-md flex flex-col">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between px-[4%] py-4">

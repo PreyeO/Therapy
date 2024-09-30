@@ -1,15 +1,6 @@
-// src/components/screens/dashboard/clinician_screen/accountsetup_ui/ReviewStep.tsx
 import React from "react";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
-
-const formatTime = (time: string) => {
-  if (!time) return "";
-  const [hours, minutes] = time.split(":");
-  const formattedHours = parseInt(hours, 10) % 12 || 12;
-  const period = parseInt(hours, 10) < 12 ? "AM" : "PM";
-  return `${formattedHours}:${minutes} ${period}`;
-};
 
 interface AppointmentAddress {
   id: string;
@@ -19,28 +10,32 @@ interface AppointmentAddress {
   postal_code: string;
 }
 
-const ReviewStep: React.FC<{
-  appointmentAddresses: AppointmentAddress[];
-}> = ({ appointmentAddresses }) => {
+const formatTime = (time: string) => {
+  if (!time) return "";
+  const [hours, minutes] = time.split(":");
+  const formattedHours = parseInt(hours, 10) % 12 || 12;
+  const period = parseInt(hours, 10) < 12 ? "AM" : "PM";
+  return `${formattedHours}:${minutes} ${period}`;
+};
+
+const ReviewStep: React.FC<{ appointmentAddresses: AppointmentAddress[] }> = ({
+  appointmentAddresses,
+}) => {
   const { businessPeriods } = useBusinessPeriodsStore();
 
-  // Function to get the location details by appointment_location_ids
   const getLocationDetails = (locationIds: string[]) => {
     return locationIds
       .map((id) => {
-        const location = appointmentAddresses.find(
-          (addr) => addr.id.toString() === id
-        );
+        const location = appointmentAddresses.find((addr) => addr.id === id);
         if (location) {
           return `${location.street_address}, ${location.city}, ${location.state} ${location.postal_code}`;
         }
-        return null;
+        return "Unknown Location";
       })
       .filter(Boolean)
       .join(", ");
   };
 
-  // Filter business periods to only show days with both opening and closing hours
   const filteredPeriods = businessPeriods.filter(
     (period) => period.opening_hour && period.closing_hour
   );
@@ -58,10 +53,10 @@ const ReviewStep: React.FC<{
           Your Availability
         </h3>
         <div className="flex flex-col gap-10">
-          <div className="flex text-[#444444B2] textt-lg font-bold pt-6">
+          <div className="flex text-[#444444B2] text-lg font-bold pt-6">
             <h3 className="text-center w-1/4">Day</h3>
-            <h3 className="text-center  w-1/3">Time</h3>
-            <h3 className="text-center  w-1/3">Location</h3>
+            <h3 className="text-center w-1/3">Time</h3>
+            <h3 className="text-center w-1/3">Location</h3>
           </div>
           {filteredPeriods.length === 0 ? (
             <p>No availability set</p>

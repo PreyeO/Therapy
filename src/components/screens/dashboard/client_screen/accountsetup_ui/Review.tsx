@@ -1,6 +1,9 @@
-import SetupHeader from "../../clinician_screen/accountsetup_ui/SetupHeader";
+import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
 const Review = () => {
+  const { clientProfileData } = useBusinessPeriodsStore();
+
   return (
     <div className="flex flex-col gap-5">
       <div className="text-center py-6 mt-6">
@@ -10,92 +13,67 @@ const Review = () => {
         />
       </div>
       <div>
-        <div className="flex flex-col w-[80%] mx-auto gap-6 text-[17px] font-normal text-[#041827] ">
-          <h3 className="  font-bold   ">Personal Information</h3>
-          <div className="flex  justify-between flex-wrap">
+        <div className="flex flex-col w-[80%] mx-auto gap-6 text-[17px] font-normal text-[#041827]">
+          <h3 className="font-bold">Personal Information</h3>
+          <div className="flex justify-between flex-wrap">
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Preferred name</h4>
-              <p className="text-[#041827]">Dr. Sweetness</p>
+              <h4 className="text-[#041827B2]">Preferred Name</h4>
+              <p className="text-[#041827]">
+                {clientProfileData.preferred_name || "N/A"}
+              </p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">Pronoun</h4>
-              <p>She</p>
+              <p>{clientProfileData.pronouns || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Date of birth</h4>
-              <p>29/09/2024</p>
+              <h4 className="text-[#041827B2]">Date of Birth</h4>
+              <p>{clientProfileData.date_of_birth || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">Gender</h4>
-              <p>Female</p>
+              <p>{clientProfileData.gender || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]"> Phone number</h4>
-              <p>+143785990</p>
+              <h4 className="text-[#041827B2]">Phone Number</h4>
+              <p>{clientProfileData.phone_number || "N/A"}</p>
             </div>
           </div>
-          <h3 className="  font-bold  ">Address</h3>
-          <div className="flex  justify-between flex-wrap">
+
+          <h3 className="font-bold">Address</h3>
+          <div className="flex justify-between flex-wrap">
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">State</h4>
-              <p>California</p>
+              <h4 className="text-[#041827B2]">Street</h4>
+              <p>{clientProfileData.address?.street_address || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">City</h4>
-              <p>Los Angeles</p>
+              <p>{clientProfileData.address?.city || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Street</h4>
-              <p>1234 Sunset Blvd, Los Angeles</p>
+              <h4 className="text-[#041827B2]">State</h4>
+              <p>{clientProfileData.address?.state || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Zip code</h4>
-              <p>CA 90026</p>
+              <h4 className="text-[#041827B2]">Zip Code</h4>
+              <p>{clientProfileData.address?.postal_code || "N/A"}</p>
             </div>
           </div>
-          <h3 className="  font-bold  ">Emergency Contact</h3>
-          <div className="flex  justify-between flex-wrap">
+
+          <h3 className="font-bold">Emergency Contact</h3>
+          <div className="flex justify-between flex-wrap">
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">First name</h4>
-              <p>Preye</p>
+              <h4 className="text-[#041827B2]">First Name</h4>
+              <p>{clientProfileData.emergency?.first_name || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">Last Name</h4>
-              <p>Preye</p>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Gender</h4>
-              <p>Female</p>
+              <p>{clientProfileData.emergency?.last_name || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]"> Phone number</h4>
-              <p>+143785990</p>
+              <h4 className="text-[#041827B2]">Phone Number</h4>
+              <p>{clientProfileData.emergency?.phone_number || "N/A"}</p>
             </div>
-          </div>
-          <h3 className="  font-bold l  ">Uploaded Document</h3>
-          <div className="flex  justify-between flex-wrap">
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">State</h4>
-              <p>California</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">City</h4>
-              <p>Los Angeles</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Street</h4>
-              <p>1234 Sunset Blvd, Los Angeles</p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-[#041827B2]">Zip code</h4>
-              <p>CA 90026</p>
-            </div>
-          </div>
-          <h3 className="  font-bold  ">Emergency Contact</h3>
-          <div className="flex gap-5 flex-wrap">
-            <p>medical report.pdf</p>
-            <p>health report.pdf</p>
           </div>
         </div>
       </div>

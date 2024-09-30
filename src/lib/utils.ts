@@ -95,3 +95,34 @@ export const truncateToFirstTwoWords = (str: string) => {
   const words = str.split(" ");
   return words.length > 2 ? words.slice(0, 2).join(" ") + "..." : str;
 };
+
+/**
+ * Utility functions to manage localStorage operations.
+ */
+
+/**
+ * Get a value from localStorage and parse it as JSON.
+ * @param key - The key to retrieve from localStorage.
+ * @returns Parsed JSON value or null if not found.
+ */
+export const getLocalStorage = <T>(key: string): T | null => {
+  const storedValue = localStorage.getItem(key);
+  return storedValue ? JSON.parse(storedValue) : null;
+};
+
+/**
+ * Set a value in localStorage as a JSON string.
+ * @param key - The key to set in localStorage.
+ * @param value - The value to store.
+ */
+export const setLocalStorage = <T>(key: string, value: T): void => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+/**
+ * Remove an item from localStorage.
+ * @param key - The key to remove from localStorage.
+ */
+export const clearLocalStorage = (key: string): void => {
+  localStorage.removeItem(key);
+};

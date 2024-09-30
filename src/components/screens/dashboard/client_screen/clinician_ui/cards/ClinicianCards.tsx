@@ -1,20 +1,39 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { clinicianData } from "@/constants/DataManager";
 import { CalendarClock, Eye } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Link, useNavigate } from "react-router-dom";
-import Schedule from "../../booking_ui/Schedule";
-import BookingReview from "../../booking_ui/BookingReview";
+import { useAppointmentsStore } from "@/store/useAppointment";
 import { useDialogState } from "@/store";
 import DialogCard from "../../../components/DialogCard";
+import Schedule from "../../booking_ui/Schedule";
+import BookingReview from "../../booking_ui/BookingReview";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
+
+// Import the BookingData interface
+import { BookingData } from "@/types/formSchema"; // Adjust the path as needed
 
 const ClinicianCards = () => {
+  const { clinicians, loading, fetchClinicianList, fetchIndividualClinician } =
+    useAppointmentsStore();
   const { showReview, openSchedule, openReview, openSuccess } =
     useDialogState();
   const navigate = useNavigate();
 
-  const handleContinue = () => {
+  const [bookingData, setBookingData] = useState<BookingData | null>(null); // Use BookingData type
+
+  useEffect(() => {
+    fetchClinicianList();
+  }, [fetchClinicianList]);
+
+  const handleViewClinician = async (clinicianId: string) => {
+    await fetchIndividualClinician(clinicianId);
+    navigate(`/client_dashboard/clinician_profile`);
+  };
+
+  const handleContinue = (data: BookingData) => {
+    setBookingData(data); // Store booking data
     openReview();
   };
 
@@ -24,32 +43,39 @@ const ClinicianCards = () => {
       subtitle: "You can now proceed to view your appointment.",
     });
   };
+
   const handleViewAppointment = () => {
-    navigate("/client_dashboard/client_appointment"); // Navigate to the appointment page
+    navigate("/client_dashboard/client_appointment");
   };
 
+  if (loading) {
+    return (
+      <div className="relative w-full h-[300px] flex justify-center items-center">
+        <SmallLoader />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-4 gap-6 pt-[60px]">
-      {clinicianData.slice(0, 12).map((item, index) => (
+    <div className="grid grid-cols-4 gap-6 pt-[60px] h-[196px]">
+      {clinicians.slice(0, 12).map((clinician, index) => (
         <Card className="w-full rounded-xl pt-6" key={index}>
           <CardContent>
-            <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-4">
               <Avatar className="w-[76px] h-[76px] rounded-md">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
-                  alt="@shadcn"
+                  alt={`${clinician.first_name} ${clinician.last_name}`}
                 />
                 <AvatarFallback>Clinician</AvatarFallback>
               </Avatar>
-              <div className="flex-1 min-w-0">
-                <CardTitle
-                  className="pt-3 font-bold text-lg truncate"
-                  style={{ maxWidth: "200px" }}
-                >
-                  {item.fullname}
+
+              <div className="flex flex-col justify-between min-w-0 max-w-[250px]">
+                <CardTitle className="font-bold text-lg break-words whitespace-normal">
+                  {clinician.first_name}
                 </CardTitle>
-                <p className="text-[#041827B2] text-[14px] pt-2">
-                  {item.email}
+                <p className="text-[#041827B2] text-[14px] break-words whitespace-normal">
+                  {clinician.email}
                 </p>
               </div>
             </div>
@@ -67,11 +93,15 @@ const ClinicianCards = () => {
                   <CalendarClock size={18} />
                   Book Appointment
                 </Button>
-                <Link to="/client_dashboard/clinician_profile">
-                  <div className="rounded-full w-[38px] h-[38px] border-2 border-army_green flex items-center justify-center">
-                    <Eye color="#6D7C43" />
-                  </div>
-                </Link>
+
+                <div
+                  className="rounded-full w-[38px] h-[38px] border-2 border-army_green flex items-center justify-center cursor-pointer"
+                  onClick={() =>
+                    handleViewClinician(clinician.clinician_profile?.id || "")
+                  }
+                >
+                  <Eye color="#6D7C43" />
+                </div>
               </div>
             </CardFooter>
           </CardContent>
@@ -83,8 +113,8 @@ const ClinicianCards = () => {
         className={showReview ? "w-[649px]" : "max-w-6xl scale-90"}
         buttonAction={handleViewAppointment}
       >
-        {showReview ? (
-          <BookingReview onBookNow={handleBookNow} />
+        {showReview && bookingData ? ( // Conditionally render BookingReview when bookingData is not null
+          <BookingReview bookingData={bookingData} onBookNow={handleBookNow} />
         ) : (
           <Schedule onContinue={handleContinue} />
         )}

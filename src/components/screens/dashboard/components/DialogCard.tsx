@@ -7,6 +7,7 @@ import {
 import React from "react";
 import Success from "@/components/ui/notifications/Success";
 import { useDialogState } from "@/store";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface DialogCardProps {
   buttonLabel?: string;
@@ -49,6 +50,9 @@ const DialogCard: React.FC<DialogCardProps> = ({
           ) : (
             children
           )}
+          <div className="hidden">
+            <DialogTitle></DialogTitle>
+          </div>
         </DialogContent>
       </DialogPortal>
     </Dialog>

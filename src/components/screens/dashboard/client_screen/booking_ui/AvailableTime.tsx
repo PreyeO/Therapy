@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import {
   Select,
@@ -18,13 +18,14 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ApointmentBookingFormSchema } from "@/types/formSchema";
+import { ApointmentBookingFormSchema, BookingData } from "@/types/formSchema";
 import { Button } from "@/components/ui/button";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
 type AvailableTimeProps = {
   day: Date;
   timeSlot: string;
-  onContinue: () => void;
+  onContinue: (data: BookingData) => void; // Pass BookingData to parent component
 };
 
 const AvailableTime: React.FC<AvailableTimeProps> = ({
@@ -36,8 +37,58 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
     resolver: zodResolver(ApointmentBookingFormSchema),
   });
 
-  // State to track the selected service
+  const {
+    appointmentAddresses,
+    fetchAppointmentAddresses,
+    fetchServices,
+    services,
+  } = useBusinessPeriodsStore();
+
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [serviceDetails, setServiceDetails] = useState<{
+    duration: number;
+    rate: number;
+  } | null>(null);
+
+  useEffect(() => {
+    fetchAppointmentAddresses();
+    fetchServices();
+  }, [fetchAppointmentAddresses, fetchServices]);
+
+  const handleServiceSelection = (value: string) => {
+    setSelectedService(value);
+    const selectedServiceDetails = services.find(
+      (service) => service.id === value
+    );
+    if (selectedServiceDetails) {
+      setServiceDetails({
+        duration: selectedServiceDetails.duration,
+        rate: selectedServiceDetails.price,
+      });
+    } else {
+      setServiceDetails(null);
+    }
+  };
+
+  const handleContinue = () => {
+    const formData: BookingData = {
+      date: format(day, "yyyy-MM-dd"),
+      time: timeSlot,
+      location: selectedLocation
+        ? appointmentAddresses.find(
+            (loc) => loc.id.toString() === selectedLocation
+          )?.street_address || null
+        : null,
+      service: selectedService
+        ? services.find((service) => service.id === selectedService)?.name ||
+          null
+        : null,
+      duration: serviceDetails ? `${serviceDetails.duration} mins` : null,
+      rate: serviceDetails ? `$${serviceDetails.rate}` : null,
+    };
+    onContinue(formData);
+  };
 
   return (
     <div className="w-[394px] ">
@@ -56,7 +107,7 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
                   <Input
                     className="text-sm font-normal w-full cursor-not-allowed"
                     autoComplete="off"
-                    {...field}
+                    {...field} // Use field in Input
                     readOnly
                     value={format(day, "yyyy-MM-dd")}
                   />
@@ -74,9 +125,9 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    className="text-sm font-normal w-full  cursor-not-allowed"
+                    className="text-sm font-normal w-full cursor-not-allowed"
                     autoComplete="off"
-                    {...field}
+                    {...field} // Use field in Input
                     value={timeSlot}
                     readOnly
                   />
@@ -84,47 +135,73 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
               </FormItem>
             )}
           />
-          {/* Interactive Select */}
-          <div className="my-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Select Location
-            </label>
-            <Select>
-              <SelectTrigger className="w-full rounded-md border cursor-pointer">
-                <SelectValue placeholder="Select location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="location1">Location 1</SelectItem>
-                <SelectItem value="location2">Location 2</SelectItem>
-                <SelectItem value="location3">Location 3</SelectItem>
-                <SelectItem value="location4">Location 4</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="">
-            <label className="block text-sm font-medium text-gray-700">
-              Select Service
-            </label>
-            <Select
-              onValueChange={(value) => {
-                setSelectedService(value); // Update state when a service is selected
-              }}
-            >
-              <SelectTrigger className="w-full rounded-md border cursor-pointer">
-                <SelectValue placeholder="Select Service type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="service1">Service 1</SelectItem>
-                <SelectItem value="service2">Service 2</SelectItem>
-                <SelectItem value="service3">Service 3</SelectItem>
-                <SelectItem value="service4">Service 4</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
+          {/* Location Select Component */}
+          <FormField
+            control={form.control}
+            name="location"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-sm font-medium text-gray-700">
+                  Select location
+                </FormLabel>
+                <Select
+                  value={selectedLocation || ""}
+                  onValueChange={(value) => {
+                    setSelectedLocation(value);
+                    field.onChange(value); // Call field.onChange when value changes
+                  }}
+                >
+                  <SelectTrigger className="w-full rounded-md border cursor-pointer">
+                    <SelectValue placeholder="Choose location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {appointmentAddresses.map((location) => (
+                      <SelectItem
+                        key={location.id}
+                        value={location.id.toString()}
+                      >
+                        {`${location.street_address}, ${location.city}, ${location.state}, ${location.postal_code}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+              </FormItem>
+            )}
+          />
+          {/* Service Select Component */}
+          <FormField
+            control={form.control}
+            name="service"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-sm font-medium text-gray-700">
+                  Select service
+                </FormLabel>
+                <Select
+                  value={selectedService || ""}
+                  onValueChange={(value) => {
+                    handleServiceSelection(value);
+                    field.onChange(value); // Call field.onChange when value changes
+                  }}
+                >
+                  <SelectTrigger className="w-full rounded-md border cursor-pointer">
+                    <SelectValue placeholder="Choose service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {services.map((service) => (
+                      <SelectItem key={service.id} value={service.id}>
+                        {service.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+              </FormItem>
+            )}
+          />
           {/* Conditionally render the rate, duration, and continue button */}
-          {selectedService && (
+          {serviceDetails && (
             <>
               <div className="flex w-full gap-2">
                 <FormField
@@ -137,10 +214,10 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="text-sm font-normal w-full  cursor-not-allowed"
+                          className="text-sm font-normal w-full cursor-not-allowed"
                           autoComplete="off"
-                          {...field}
-                          placeholder="58mins"
+                          {...field} // Attach field to the input
+                          value={`${serviceDetails.duration} mins`}
                           readOnly
                         />
                       </FormControl>
@@ -158,10 +235,10 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="text-sm font-normal w-full  cursor-not-allowed"
+                          className="text-sm font-normal w-full cursor-not-allowed"
                           autoComplete="off"
-                          {...field}
-                          placeholder="$132"
+                          {...field} // Attach field to the input
+                          value={`$${serviceDetails.rate}`}
                           readOnly
                         />
                       </FormControl>
@@ -173,8 +250,9 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
 
               <div className="flex justify-end">
                 <Button
+                  type="button"
                   className="rounded-full w-[195px] cursor-pointer"
-                  onClick={onContinue}
+                  onClick={handleContinue}
                 >
                   Continue
                 </Button>

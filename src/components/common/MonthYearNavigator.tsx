@@ -22,7 +22,7 @@ const MonthYearNavigator: React.FC<MonthYearNavigatorProps> = ({
   const handlePreviousYear = () => setCurrentDate(subYears(currentDate, 1));
 
   return (
-    <div className="flex items-center space-x-4 bg-army_green rounded-xl">
+    <div className="flex items-center space-x-4  rounded-xl">
       {/* Year navigation */}
 
       {/* Popover with Calendar for quick date and month selection */}

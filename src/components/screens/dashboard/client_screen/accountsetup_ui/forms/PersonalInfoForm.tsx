@@ -1,3 +1,4 @@
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -10,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
-import { clientSetupFormSchema } from "@/types/formSchema";
+import { ClientSetup, clientSetupFormSchema } from "@/types/formSchema";
 import {
   Select,
   SelectContent,
@@ -18,12 +19,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
-const PersonalInfoForm = () => {
-  const form = useForm({
+// Wrap the component with forwardRef to pass the ref from the parent
+const PersonalInfoForm = forwardRef((_, ref) => {
+  const { setClientProfileData, clientProfileData } = useBusinessPeriodsStore();
+
+  const form = useForm<ClientSetup>({
     resolver: zodResolver(clientSetupFormSchema),
+    defaultValues: clientProfileData,
   });
 
+  // Extract necessary properties from form
+  const { watch, handleSubmit, setValue } = form;
+
+  useEffect(() => {
+    const subscription = watch((data) => {
+      setClientProfileData(data);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setClientProfileData]); // Include only necessary dependencies
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () => handleSubmit((data) => data)(),
+  }));
   return (
     <div className="flex flex-col lg:gap-20 gap-10 items-center py-2">
       <div className="text-center py-6 mt-6">
@@ -59,15 +78,19 @@ const PersonalInfoForm = () => {
               <FormLabel className="text-base font-medium text-primary_black_text">
                 Pronoun
               </FormLabel>
-              <Select>
+              <Select
+                onValueChange={(value) => setValue("pronouns", value)} // Update form value on select change
+              >
                 <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
                   <SelectValue placeholder="Select your pronoun" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Female">She/Her</SelectItem>
-                  <SelectItem value="Male">Him/His</SelectItem>
-                  <SelectItem value="Other">Them/They</SelectItem>
-                  <SelectItem value="Other">Prefer not to say</SelectItem>
+                  <SelectItem value="she/her">She/Her</SelectItem>
+                  <SelectItem value="him/his">Him/His</SelectItem>
+                  <SelectItem value="them/they">Them/They</SelectItem>
+                  <SelectItem value="prefer not to say">
+                    Prefer not to say
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </FormItem>
@@ -75,7 +98,7 @@ const PersonalInfoForm = () => {
           <div className="flex gap-4 flex-wrap w-full items-center">
             <FormField
               control={form.control}
-              name="birth_date"
+              name="date_of_birth"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -87,6 +110,7 @@ const PersonalInfoForm = () => {
                       autoComplete="off"
                       placeholder="DD/MM/YYYY"
                       {...field}
+                      type="date"
                     />
                   </FormControl>
                   <FormMessage className="text-[#E75F51] text-[13px] font-light" />
@@ -97,7 +121,9 @@ const PersonalInfoForm = () => {
               <FormLabel className="text-base font-medium text-primary_black_text">
                 Gender
               </FormLabel>
-              <Select>
+              <Select
+                onValueChange={(value) => setValue("gender", value)} // Update form value on select change
+              >
                 <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full  rounded-xl">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
@@ -133,6 +159,7 @@ const PersonalInfoForm = () => {
       </Form>
     </div>
   );
-};
+});
 
+// This is necessary to make the ref work correctly
 export default PersonalInfoForm;

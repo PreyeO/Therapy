@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export const logoutUser = () => {
   localStorage.removeItem("user");
   delete api.defaults.headers.common["Authorization"];
 };
-const handleError = (error) => {
+export const handleError = (error) => {
   if (axios.isAxiosError(error)) {
     const message = error.response?.data?.detail || "Unknown error occurred";
     throw new Error(message);

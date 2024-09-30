@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -8,13 +9,25 @@ import BookingReview from "../../booking_ui/BookingReview";
 import { useDialogState } from "@/store";
 import DialogCard from "../../../components/DialogCard";
 import { useNavigate } from "react-router-dom";
+import { useAppointmentsStore } from "@/store/useAppointment";
+import { BookingData } from "@/types/formSchema";
+import { useState } from "react";
+import LoadingOverlay from "@/components/ui/loader_effects/LoadingOverlay";
 
 const ProfileInfo = () => {
+  const { selectedClinician, loading } = useAppointmentsStore(); // Added loading state
   const { showReview, openSchedule, openReview, openSuccess } =
     useDialogState();
   const navigate = useNavigate();
 
-  const handleContinue = () => {
+  const [bookingData, setBookingData] = useState<BookingData | null>(null); // Use BookingData type
+
+  useEffect(() => {
+    console.log("Selected Clinician:", selectedClinician); // Log the selected clinician data
+  }, [selectedClinician]);
+
+  const handleContinue = (data: BookingData) => {
+    setBookingData(data); // Store booking data
     openReview();
   };
 
@@ -24,18 +37,30 @@ const ProfileInfo = () => {
       subtitle: "You can now proceed to view your appointment.",
     });
   };
+
   const handleViewAppointment = () => {
     navigate("/client_dashboard/client_appointment"); // Navigate to the appointment page
   };
+
+  if (loading) {
+    return <LoadingOverlay />;
+  }
+
+  // Return a message if no clinician is selected or data is missing
+  if (!selectedClinician) {
+    return <p>No clinician selected. Please select a clinician.</p>;
+  }
 
   return (
     <Card className="w-full flex justify-between px-[3%] rounded-lg py-9 pb-12">
       <div className="w-full flex flex-col gap-2">
         <Avatar className="w-[152px] h-[152px] rounded-md">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarImage src="https://github.com/shadcn.png" alt="Clinician" />
           <AvatarFallback>Clinician</AvatarFallback>
         </Avatar>
-        <CardTitle className="text-3xl font-bold">Dr. Preye</CardTitle>
+        <CardTitle className="text-3xl font-bold">
+          {`${selectedClinician.first_name} ${selectedClinician.last_name}`}
+        </CardTitle>
         <p className="text-base font-normal text-[#041827B2]">Psychologist</p>
 
         <Button
@@ -51,36 +76,35 @@ const ProfileInfo = () => {
       <div className="flex flex-col gap-4">
         <Title title="Clinician Info" className="text-xl font-bold" />
         <div className="flex flex-col gap-3 text-lg font-medium">
-          <div className="">
+          <div>
             <p>
               First Name:{" "}
-              <span className="font-normal text-[#041827B2] pl-4">preye</span>
+              <span className="font-normal text-[#041827B2] pl-4">
+                {selectedClinician.first_name}
+              </span>
             </p>
           </div>
-          <div className="">
+          <div>
             <p>
               Last Name:{" "}
               <span className="font-normal text-[#041827B2] pl-4">
-                preye@gmail.com
+                {selectedClinician.last_name}
               </span>
             </p>
           </div>
         </div>
-        <div className="">
+        <div>
           <p>
             Email Address:
             <span className="font-normal text-[#041827B2] pl-4">
-              preye@gmail.com
+              {selectedClinician.email}
             </span>
           </p>
         </div>
         <div className="flex flex-col gap-4 w-[570px] pt-6">
           <Title title="BIO" className="text-xl font-bold" />
           <p className="text-lg font-normal leading-9 text-primary_black_text opacity-[0.7]">
-            Lorem ipsum dolor sit amet consectetur. Leo est dignissim curabitur
-            nisl. Vel vitae commodo aliquam elementum molestie urna convallis
-            egestas. Libero quisque iaculis volutpat viverra feugiat aliquet.
-            Ornare aliquet vitae nec nibh odio lorem.
+            {selectedClinician.clinician_profile?.bio || "No bio available"}
           </p>
         </div>
       </div>
@@ -90,8 +114,8 @@ const ProfileInfo = () => {
         className={showReview ? "w-[649px]" : "max-w-6xl scale-90"}
         buttonAction={handleViewAppointment}
       >
-        {showReview ? (
-          <BookingReview onBookNow={handleBookNow} />
+        {showReview && bookingData ? (
+          <BookingReview bookingData={bookingData} onBookNow={handleBookNow} />
         ) : (
           <Schedule onContinue={handleContinue} />
         )}

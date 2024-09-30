@@ -243,6 +243,13 @@ export interface FetchedBusinessPeriod {
     };
   }> | null;
 }
+export type AppointmentAddress = {
+  id: number;
+  street_address: string;
+  city: string;
+  state: string;
+  postal_code: string;
+};
 
 export type AppointmentInfo = {
   id: string;
@@ -285,53 +292,73 @@ export type Services = {
 
 // CLIENTS
 
+// Update the schema to include nested address and emergency objects
 export const clientSetupFormSchema = z.object({
-  preferred_name: z.string().email({
-    message: "Please provide a valid email",
-  }),
-  birth_date: z.string({
-    message: "Please provide a valid password",
-  }),
-  phone_number: z.string({
-    message: "Please provide a valid password",
-  }),
-  pronoun: z.string({
-    message: "Please provide a valid password",
-  }),
-  gender: z.string({
-    message: "Please provide a valid password",
-  }),
-  state: z.string({
-    message: "Please provide a valid password",
-  }),
-  street: z.string({
-    message: "Please provide a valid password",
-  }),
-  city: z.string({
-    message: "Please provide a valid password",
-  }),
-  postal_code: z.string({
-    message: "Please provide a valid password",
-  }),
+  id: z.string().optional(),
+  preferred_name: z.string().optional(),
+  date_of_birth: z.string().optional(),
+  phone_number: z.string().optional(),
+  pronouns: z.string().optional(),
+  gender: z.string().optional(),
+  address: z
+    .object({
+      street_address: z.string().optional(),
+      city: z.string().optional(),
+      state: z.string().optional(),
+      postal_code: z.string().optional(),
+    })
+    .optional(),
+  emergency: z
+    .object({
+      first_name: z.string().optional(),
+      last_name: z.string().optional(),
+      email: z.string().optional(),
+      phone_number: z.string().optional(),
+      gender: z.string().optional(),
+    })
+    .optional(),
 });
 
+// Infer the ClientSetup type from the schema
+export type ClientSetup = z.infer<typeof clientSetupFormSchema>;
+
 export const ApointmentBookingFormSchema = z.object({
-  date: z.string().email({
-    message: "Please provide a valid email",
-  }),
-  time: z.string({
-    message: "Please provide a valid password",
-  }),
+  date: z.string().optional(),
+  time: z.string().optional(),
   location: z.string({
     message: "Please provide a valid password",
   }),
   service: z.string({
     message: "Please provide a valid password",
   }),
-  duration: z.string({
-    message: "Please provide a valid password",
-  }),
-  rate: z.string({
-    message: "Please provide a valid password",
-  }),
+  duration: z.string().optional(),
+  rate: z.string().optional(),
 });
+export type Clinician = {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  clinician_profile: {
+    id: string;
+    bio: string | null;
+    professional_license_number: string | null;
+    specialty: string | null;
+    practice_name: string | null;
+  } | null;
+};
+export type BookAppointment = {
+  clinician_profile: string;
+  service: string;
+  start_time: string;
+  location: string;
+};
+// Define the structure of your booking data
+export type BookingData = {
+  date: string;
+  time: string;
+  location: string | null;
+  service: string | null;
+  duration: string | null;
+  rate: string | null;
+};

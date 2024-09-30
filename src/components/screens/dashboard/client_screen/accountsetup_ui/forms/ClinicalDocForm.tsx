@@ -17,12 +17,6 @@ profile"
           <p>Upload Report</p>
         </button>
       </div>
-
-      {/* <form id="step-3-form">
-        <button type="submit" className="hidden">
-          Submit
-        </button>
-      </form> */}
     </div>
   );
 };

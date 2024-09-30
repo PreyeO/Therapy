@@ -1,3 +1,4 @@
+import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -10,12 +11,30 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SetupHeader from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/SetupHeader";
-import { clientSetupFormSchema } from "@/types/formSchema";
+import { ClientSetup, clientSetupFormSchema } from "@/types/formSchema";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
-const AddressForm = () => {
-  const form = useForm({
+const AddressForm = forwardRef((_, ref) => {
+  const { setClientProfileData, clientProfileData } = useBusinessPeriodsStore();
+
+  const form = useForm<ClientSetup>({
     resolver: zodResolver(clientSetupFormSchema),
+    defaultValues: clientProfileData,
   });
+
+  // Extract necessary properties from form
+  const { watch, handleSubmit } = form;
+
+  useEffect(() => {
+    const subscription = watch((data) => {
+      setClientProfileData(data);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setClientProfileData]); // Include only necessary dependencies
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () => handleSubmit((data) => data)(),
+  }));
 
   return (
     <div className="flex flex-col lg:gap-20 gap-10 items-center my-10">
@@ -30,7 +49,7 @@ const AddressForm = () => {
           <div className="flex gap-6 flex-wrap w-full">
             <FormField
               control={form.control}
-              name="state"
+              name="address.state"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -38,9 +57,9 @@ const AddressForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      className="h-16 text-placeholder_text text-sm font-normal w-full"
                       autoComplete="off"
-                      placeholder="Entter the state you live in"
+                      placeholder="Enter the state you live in"
                       {...field}
                     />
                   </FormControl>
@@ -50,7 +69,7 @@ const AddressForm = () => {
             />
             <FormField
               control={form.control}
-              name="city"
+              name="address.city"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -58,7 +77,7 @@ const AddressForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      className="h-16 text-placeholder_text text-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="Enter the city you live in"
                       {...field}
@@ -72,7 +91,7 @@ const AddressForm = () => {
           <div className="flex gap-6 flex-wrap w-full">
             <FormField
               control={form.control}
-              name="street"
+              name="address.street_address"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -90,10 +109,9 @@ const AddressForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="postal_code"
+              name="address.postal_code"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -101,7 +119,7 @@ const AddressForm = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text ftext-sm  font-normal w-full"
+                      className="h-16 text-placeholder_text text-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="Enter your postal code"
                       {...field}
@@ -116,6 +134,6 @@ const AddressForm = () => {
       </Form>
     </div>
   );
-};
+});
 
 export default AddressForm;

@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/popover";
 import AvailableTime from "./AvailableTime"; // Import the AvailableTime component
 import { Plus } from "lucide-react"; // Assuming you are using Lucide icons
+import { BookingData } from "@/types/formSchema";
 
 type SimpleScheduleSheetProps = {
   weekStartDate: Date;
-  onContinue: () => void;
+  onContinue: (data: BookingData) => void;
 };
 
 const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
@@ -140,9 +141,9 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                       <AvailableTime
                         day={day}
                         timeSlot={slot}
-                        onContinue={() => {
-                          handleClosePopover(); // Close popover on continue
-                          onContinue();
+                        onContinue={(data) => {
+                          handleClosePopover();
+                          onContinue(data); // Pass the data up
                         }}
                       />
                     </PopoverContent>

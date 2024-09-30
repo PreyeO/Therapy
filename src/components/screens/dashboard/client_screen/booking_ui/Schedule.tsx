@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import { useAppointmentsStore } from "@/store/useAppointment";
 import DateNavigator from "@/components/common/DateNavigator";
 import BookingScheduleSheet from "./BookingScheduleSheet";
+import { BookingData } from "@/types/formSchema"; // Import the BookingData type
 
-const Schedule = ({ onContinue }: { onContinue: () => void }) => {
+// Update onContinue type to accept BookingData as a parameter
+const Schedule = ({
+  onContinue,
+}: {
+  onContinue: (data: BookingData) => void;
+}) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(today);
 
@@ -26,7 +32,7 @@ const Schedule = ({ onContinue }: { onContinue: () => void }) => {
         </span>
       </div>
 
-      {/* Render BookingScheduleSheet directly */}
+      {/* Render BookingScheduleSheet directly and pass onContinue correctly */}
       <BookingScheduleSheet
         weekStartDate={currentDate}
         onContinue={onContinue} // Pass the onContinue handler

@@ -1,3 +1,7 @@
+import {
+  getCliniciansList,
+  getIndividualClinician,
+} from "./../services/api/clients/appointments";
 import { create } from "zustand";
 import {
   getAppointmentRequests,
@@ -7,7 +11,7 @@ import {
   getUpcomingAppointments,
   getWaitlistedAppointments,
 } from "@/services/api/clinicians/appointment"; // Ensure to import getUnavailableSlots
-import { AppointmentInfo, Event } from "@/types/formSchema";
+import { AppointmentInfo, Clinician, Event } from "@/types/formSchema";
 import { mapAppointmentResponse } from "@/lib/utils";
 
 interface AppointmentsState {
@@ -17,6 +21,8 @@ interface AppointmentsState {
   appointmentRequests: AppointmentInfo[];
   waitlistedAppointments: AppointmentInfo[];
   upcomingAppointments: AppointmentInfo[];
+  clinicians: Clinician[];
+  selectedClinician: Clinician | null;
 
   filteredAppointmentRequests: AppointmentInfo[] | null;
   filteredUpcomingAppointments: AppointmentInfo[] | null;
@@ -40,6 +46,8 @@ interface AppointmentsState {
   fetchWaitlistedAppointments: () => Promise<void>; // Ensure this is defined
   fetchUpcomingAppointments: () => Promise<void>;
   fetchFullAppointments: () => Promise<void>;
+  fetchClinicianList: () => Promise<void>;
+  fetchIndividualClinician: (clinicianId: string) => Promise<void>;
 
   loading: boolean;
 }
@@ -51,6 +59,8 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
   appointmentRequests: [],
   waitlistedAppointments: [],
   upcomingAppointments: [],
+  clinicians: [],
+  selectedClinician: null,
 
   filteredAppointmentRequests: null,
   filteredUpcomingAppointments: null,
@@ -146,6 +156,29 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
       set({ upcomingAppointments: parsedUpcoming });
     } catch (error) {
       console.error("Failed to fetch upcoming appointments:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+  // Fetch clinicians and set the state
+  fetchClinicianList: async () => {
+    set({ loading: true });
+    try {
+      const clinicians = await getCliniciansList();
+      set({ clinicians });
+    } catch (error) {
+      console.error("Failed to fetch clinicians:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+  fetchIndividualClinician: async (clinicianId: string) => {
+    set({ loading: true });
+    try {
+      const clinician = await getIndividualClinician(clinicianId);
+      set({ selectedClinician: clinician }); // Set the fetched clinician in the state
+    } catch (error) {
+      console.error("Failed to fetch individual clinician:", error);
     } finally {
       set({ loading: false });
     }
