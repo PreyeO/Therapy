@@ -12,16 +12,26 @@ import BookingReview from "../../booking_ui/BookingReview";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 // Import the BookingData interface
-import { BookingData } from "@/types/formSchema"; // Adjust the path as needed
+import { BookingData, BusinessPeriod } from "@/types/formSchema"; // Adjust the path as needed
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 
 const ClinicianCards = () => {
-  const { clinicians, loading, fetchClinicianList, fetchIndividualClinician } =
-    useAppointmentsStore();
+  const {
+    clinicians,
+    loading,
+    fetchClinicianList,
+    fetchIndividualClinician,
+    setSelectedClinician,
+  } = useAppointmentsStore();
+
   const { showReview, openSchedule, openReview, openSuccess } =
     useDialogState();
   const navigate = useNavigate();
+  const { fetchBusinessPeriodsByClinicianId, fetchedBusinessPeriods } =
+    useBusinessPeriodsStore();
 
-  const [bookingData, setBookingData] = useState<BookingData | null>(null); // Use BookingData type
+  const [bookingData, setBookingData] = useState<BookingData | null>(null);
+  const [businessPeriods, setBusinessPeriods] = useState<BusinessPeriod[]>([]);
 
   useEffect(() => {
     fetchClinicianList();
@@ -48,6 +58,20 @@ const ClinicianCards = () => {
     navigate("/client_dashboard/client_appointment");
   };
 
+  const handleBookAppointment = async (clinician) => {
+    // Step 1: Set the selected clinician in the global store
+    setSelectedClinician(clinician);
+
+    // Step 2: Fetch business periods for the selected clinician
+    if (clinician.clinician_profile?.id) {
+      await fetchBusinessPeriodsByClinicianId(clinician.clinician_profile.id);
+      setBusinessPeriods(fetchedBusinessPeriods); // Set the fetched business periods to local state
+    }
+
+    // Step 3: Open the schedule dialog after setting the clinician and fetching periods
+    openSchedule();
+  };
+
   if (loading) {
     return (
       <div className="relative w-full h-[300px] flex justify-center items-center">
@@ -72,11 +96,11 @@ const ClinicianCards = () => {
 
               <div className="flex flex-col justify-between min-w-0 max-w-[250px]">
                 <CardTitle className="font-bold text-lg break-words whitespace-normal">
-                  {clinician.first_name}
+                  {`${clinician.first_name} ${clinician.last_name}`}
                 </CardTitle>
-                <p className="text-[#041827B2] text-[14px] break-words whitespace-normal">
+                {/* <p className="text-[#041827B2] text-[14px] break-words whitespace-normal">
                   {clinician.email}
-                </p>
+                </p> */}
               </div>
             </div>
 
@@ -88,7 +112,7 @@ const ClinicianCards = () => {
               <div className="flex gap-3 pt-5">
                 <Button
                   className="flex gap-3 rounded-full w-[190px] text-[12px] font-medium flex-shrink-0"
-                  onClick={() => openSchedule()}
+                  onClick={() => handleBookAppointment(clinician)}
                 >
                   <CalendarClock size={18} />
                   Book Appointment
@@ -116,7 +140,10 @@ const ClinicianCards = () => {
         {showReview && bookingData ? ( // Conditionally render BookingReview when bookingData is not null
           <BookingReview bookingData={bookingData} onBookNow={handleBookNow} />
         ) : (
-          <Schedule onContinue={handleContinue} />
+          <Schedule
+            onContinue={handleContinue}
+            businessPeriods={businessPeriods}
+          />
         )}
       </DialogCard>
     </div>

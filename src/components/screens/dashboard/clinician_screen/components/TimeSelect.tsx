@@ -19,7 +19,7 @@ const generateTimeOptions = (): string[] => {
 interface TimeSelectProps {
   placeholder: string;
   value?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 }
 
 const TimeSelect: React.FC<TimeSelectProps> = ({

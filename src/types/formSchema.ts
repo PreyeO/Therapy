@@ -205,10 +205,13 @@ export type Client = {
   first_name: string;
   last_name: string;
   email: string;
-  // Add any other relevant client fields here
+  client_profile: {
+    phone_number?: string;
+  };
 };
 
 export type Event = {
+  id?: string;
   title: string;
   start: Date;
   end: Date;
@@ -221,7 +224,7 @@ export const businessPeriodSchema = z.object({
   day_of_week: z.string(),
   opening_hour: z.string(),
   closing_hour: z.string(),
-  appointment_location_ids: z.array(z.string()).optional(), // Location IDs
+  appointment_location_ids: z.array(z.string()).optional(),
 });
 
 // Infer the BusinessPeriod type from the schema
@@ -261,7 +264,19 @@ export type AppointmentInfo = {
   service: Service;
   start_time: string;
   end_time: string;
+  location: {
+    id?: number;
+    street_address?: string;
+    city?: string;
+    postal_code?: string;
+  };
+  clinician: {
+    id?: number;
+    first_name?: string;
+    last_name?: string;
+  };
 };
+
 export type DropdownItem = {
   label: string;
   color: string;
@@ -275,6 +290,9 @@ export type Appointment = {
   appointmentTime: string;
   appointmentDate: string;
   location?: string;
+  email?: string;
+  service?: string;
+  clinician?: string;
 };
 export type AppointmentFilters = {
   status?: string | null;
@@ -347,6 +365,7 @@ export type Clinician = {
     practice_name: string | null;
   } | null;
 };
+
 export type BookAppointment = {
   clinician_profile: string;
   service: string;
@@ -361,4 +380,10 @@ export type BookingData = {
   service: string | null;
   duration: string | null;
   rate: string | null;
+};
+
+export type AppointmentCalender = {
+  clinician_id: string;
+  start_date: string;
+  end_date: string;
 };

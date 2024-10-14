@@ -24,12 +24,15 @@ import { Appointment, DropdownItem } from "@/types/formSchema";
 interface AppointmentTableProps {
   dropdownItemsGenerator: (
     appointmentId: string,
-    openSuccess: (message: { title: string; subtitle: string }) => void
+    openSuccess: (message: { title: string; subtitle: string }) => void,
+    refreshTable: () => void
   ) => DropdownItem[];
   data: Appointment[];
   loading: boolean;
   searchPerformed: boolean;
   showActionColumn?: boolean;
+  // New: Prop to set loading state
+  setActionLoading: (loading: boolean) => void;
 }
 
 const AppointmentTable: React.FC<AppointmentTableProps> = ({
@@ -38,6 +41,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   loading,
   searchPerformed,
   showActionColumn = true,
+  setActionLoading, // New prop
 }) => {
   const {
     currentPage,
@@ -117,7 +121,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               <TableCell className="px-4 py-3 text-left align-middle">
                 {item.appointmentDate}
               </TableCell>
-              <TableCell className="px-4 py-3 text-left align-middle">
+              <TableCell className="px-4 py-3 text-left align-middle w-[200px] mx-auto">
                 {item.location || "N/A"}
               </TableCell>
               {showActionColumn && (
@@ -129,7 +133,11 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                     <Ellipsis size={24} />
                   </button>
                   <EllipsisDropdown
-                    items={dropdownItemsGenerator(item.id, openSuccess)}
+                    items={dropdownItemsGenerator(item.id, openSuccess, () => {
+                      setActionLoading(true); // Show loading
+                      // Remove item from state immediately after action (optimistic update)
+                      setTimeout(() => setActionLoading(false), 1000); // Simulate delay
+                    })}
                     isOpen={openDropdownIndex === index}
                     onClose={closeDropdown}
                   />

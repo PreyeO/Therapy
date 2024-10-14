@@ -25,7 +25,7 @@ const BookingReview: React.FC<BookingReviewProps> = ({
     return <p className="text-center">No booking data available</p>;
 
   // Retrieve clinician, service, and location IDs based on bookingData
-  const clinicianId = selectedClinician?.clinician_profile?.id || "";
+  // const clinicianId = selectedClinician?.clinician_profile?.id || "";
   const serviceId =
     services.find((service) => service.name === bookingData.service)?.id || "";
   const locationId =
@@ -34,31 +34,36 @@ const BookingReview: React.FC<BookingReviewProps> = ({
       ?.id.toString() || "";
 
   const handleBookNow = async () => {
-    if (!bookingData || !clinicianId || !serviceId || !locationId) {
+    if (!bookingData || !selectedClinician || !serviceId || !locationId) {
+      console.error("Booking data is incomplete or clinician not selected");
       return;
     }
 
     try {
       setLoading(true);
-      // Combine date and time into the required ISO 8601 format (e.g., "2024-09-24T14:00:00")
-      const formattedStartTime = `${bookingData.date}T${bookingData.time}`;
 
+      // Ensure that the clinician ID matches the selected clinician's ID
+      const clinicianId = selectedClinician.clinician_profile?.id || "";
+      if (!clinicianId) {
+        console.error("Selected clinician has no valid ID");
+        return;
+      }
+
+      // Format the payload for booking
+      const formattedStartTime = `${bookingData.date}T${bookingData.time}`;
       const payload: BookAppointment = {
-        clinician_profile: clinicianId, // Use dynamically retrieved clinician ID
-        service: serviceId, // Use dynamically retrieved service ID
-        start_time: formattedStartTime, // Use combined date and time in ISO 8601 format
-        location: locationId, // Use dynamically retrieved location ID
+        clinician_profile: clinicianId,
+        service: serviceId,
+        start_time: formattedStartTime,
+        location: locationId,
       };
 
-      // Call the bookAppointment API with the formatted payload
       await bookAppointment(payload);
-
-      // Trigger success callback or notification
-      onBookNow();
+      onBookNow(); // Trigger success callback
     } catch (error) {
-      // Handle error, show notification, etc.
+      console.error("Failed to book appointment:", error);
     } finally {
-      setLoading(false); // Reset loading state after the operation
+      setLoading(false);
     }
   };
 

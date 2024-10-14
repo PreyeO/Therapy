@@ -10,8 +10,15 @@ import {
   getUnavailableSlots,
   getUpcomingAppointments,
   getWaitlistedAppointments,
+  getAllClients,
 } from "@/services/api/clinicians/appointment"; // Ensure to import getUnavailableSlots
-import { AppointmentInfo, Clinician, Event } from "@/types/formSchema";
+import {
+  AppointmentInfo,
+  BusinessPeriod,
+  Client,
+  Clinician,
+  Event,
+} from "@/types/formSchema";
 import { mapAppointmentResponse } from "@/lib/utils";
 
 interface AppointmentsState {
@@ -22,7 +29,11 @@ interface AppointmentsState {
   waitlistedAppointments: AppointmentInfo[];
   upcomingAppointments: AppointmentInfo[];
   clinicians: Clinician[];
+  businessPeriods: BusinessPeriod[];
   selectedClinician: Clinician | null;
+  clients: Client[];
+  removeAppointmentFromState: (appointmentId: string) => void;
+  updateAppointmentInState: (updatedAppointment: AppointmentInfo) => void;
 
   filteredAppointmentRequests: AppointmentInfo[] | null;
   filteredUpcomingAppointments: AppointmentInfo[] | null;
@@ -39,20 +50,26 @@ interface AppointmentsState {
     appointments: AppointmentInfo[] | null
   ) => void;
   setFilteredFullAppointments: (appointments: AppointmentInfo[] | null) => void;
+  setSelectedClinician: (clinician: Clinician) => void; // Correct type for the parameter
+  setBusinessPeriods: (periods: BusinessPeriod[]) => void;
 
   fetchAppointments: () => Promise<void>;
   fetchUnavailableSlots: () => Promise<void>;
   fetchAppointmentRequests: () => Promise<void>;
-  fetchWaitlistedAppointments: () => Promise<void>; // Ensure this is defined
+  fetchWaitlistedAppointments: () => Promise<void>;
   fetchUpcomingAppointments: () => Promise<void>;
   fetchFullAppointments: () => Promise<void>;
   fetchClinicianList: () => Promise<void>;
-  fetchIndividualClinician: (clinicianId: string) => Promise<void>;
+
+  fetchIndividualClinician: (
+    clinicianId: string
+  ) => Promise<Clinician | undefined>;
+  fetchAllClients: () => Promise<void>;
 
   loading: boolean;
 }
 
-export const useAppointmentsStore = create<AppointmentsState>((set) => ({
+export const useAppointmentsStore = create<AppointmentsState>((set, get) => ({
   appointments: [],
   unavailableSlots: [],
   fullAppointments: [],
@@ -61,6 +78,8 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
   upcomingAppointments: [],
   clinicians: [],
   selectedClinician: null,
+  businessPeriods: [],
+  clients: [],
 
   filteredAppointmentRequests: null,
   filteredUpcomingAppointments: null,
@@ -75,6 +94,9 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
     set({ filteredWaitlistedAppointments: appointments }),
   setFilteredFullAppointments: (appointments) =>
     set({ filteredFullAppointments: appointments }),
+  setSelectedClinician: (clinician: Clinician) =>
+    set({ selectedClinician: clinician }), // Expect full clinician object
+  setBusinessPeriods: (periods) => set({ businessPeriods: periods }),
   loading: false,
 
   fetchAppointments: async () => {
@@ -93,6 +115,28 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
       console.error("Failed to fetch appointments:", error);
     }
   },
+  updateAppointmentInState: (updatedAppointment: AppointmentInfo) => {
+    const {
+      appointmentRequests,
+      upcomingAppointments,
+      waitlistedAppointments,
+      fullAppointments,
+    } = get();
+
+    // Replace the appointment with the updated one in all relevant state arrays
+    const updateInList = (appointments: AppointmentInfo[]) =>
+      appointments.map((appt) =>
+        appt.id === updatedAppointment.id ? updatedAppointment : appt
+      );
+
+    set({
+      appointmentRequests: updateInList(appointmentRequests),
+      upcomingAppointments: updateInList(upcomingAppointments),
+      waitlistedAppointments: updateInList(waitlistedAppointments),
+      fullAppointments: updateInList(fullAppointments),
+    });
+  },
+
   fetchUnavailableSlots: async () => {
     try {
       const unavailableSlots = await getUnavailableSlots();
@@ -160,6 +204,14 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
       set({ loading: false });
     }
   },
+  removeAppointmentFromState: (appointmentId: string) => {
+    const { appointments } = get(); // Get the current appointments state
+    const updatedAppointments = appointments.filter(
+      (appt) => appt.id !== appointmentId
+    );
+    set({ appointments: updatedAppointments });
+  },
+
   // Fetch clinicians and set the state
   fetchClinicianList: async () => {
     set({ loading: true });
@@ -172,13 +224,28 @@ export const useAppointmentsStore = create<AppointmentsState>((set) => ({
       set({ loading: false });
     }
   },
-  fetchIndividualClinician: async (clinicianId: string) => {
+  fetchIndividualClinician: async (
+    clinicianId: string
+  ): Promise<Clinician | undefined> => {
     set({ loading: true });
     try {
       const clinician = await getIndividualClinician(clinicianId);
-      set({ selectedClinician: clinician }); // Set the fetched clinician in the state
+      set({ selectedClinician: clinician });
+      return clinician; // Return the clinician object
     } catch (error) {
       console.error("Failed to fetch individual clinician:", error);
+    } finally {
+      set({ loading: false });
+    }
+    return undefined; // Return undefined if fetching fails
+  },
+  fetchAllClients: async () => {
+    set({ loading: true });
+    try {
+      const clients = await getAllClients(); // Directly fetch all clients without an ID
+      set({ clients }); // Set the fetched clients to the state
+    } catch (error) {
+      console.error("Failed to fetch clients:", error);
     } finally {
       set({ loading: false });
     }

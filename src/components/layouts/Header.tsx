@@ -1,10 +1,14 @@
 import { Bell, Search, Settings } from "lucide-react";
-
 import FullLogo from "../ui/logos/FullLogo";
 import NavBar from "./NavBar";
 import SearchInput from "../ui/search";
+import { FC } from "react";
 
-const Header = () => {
+interface HeaderProps {
+  message: string;
+}
+
+const Header: FC<HeaderProps> = ({ message }) => {
   return (
     <header>
       {/* w-[446px] h-[72px] bg-white justify-center items-center px-6 hidden lg:flex rounded-xl */}
@@ -12,7 +16,7 @@ const Header = () => {
         <div className="w-[50%] h-[72px] bg-white  px-6 hidden lg:flex rounded-xl ">
           <SearchInput
             className="text-base text-[#BDBDBD] border-none focus:ring-transparents focus:ring-transparent "
-            placeholder="search for a client"
+            placeholder={message}
           />
         </div>
         <div className="lg:hidden block">

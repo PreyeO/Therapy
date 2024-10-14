@@ -1,14 +1,5 @@
-import {
-  getAuthToken,
-  api,
-  handleError,
-} from "@/services/api/authentication/auth";
+import { api, handleError } from "@/services/api/authentication/auth";
 import { BookAppointment } from "@/types/formSchema";
-
-const token = getAuthToken();
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Token ${token}`;
-}
 
 export const bookAppointment = async (appointmentData: BookAppointment) => {
   try {
@@ -31,6 +22,34 @@ export const getIndividualClinician = async (clinician_profile_id: string) => {
   try {
     const response = await api.get(
       `api/clinician-profiles/${clinician_profile_id}/`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getClinicianCalendar = async (
+  clinician_profile_id: string,
+  start_date: string,
+  end_date: string
+) => {
+  try {
+    const response = await api.get(
+      `api/appointments/clinician-calendar/?start_date=${start_date}&end_date=${end_date}&clinician_id=${clinician_profile_id}`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getIndividualClinicianBusinessPeriod = async (
+  clinician_profile_id: string
+) => {
+  try {
+    const response = await api.get(
+      `/api/business-periods/?clinician_profile_id=${clinician_profile_id}`
     );
     return response.data;
   } catch (error) {

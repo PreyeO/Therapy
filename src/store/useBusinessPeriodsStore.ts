@@ -3,6 +3,8 @@ import {
   getclinicianBusinessPeriods,
   setupclinicianBusinessPeriods,
   getAppointmentAddress,
+  deleteclinicianBusinessPeriod,
+  updateclinicianBusinessPeriods,
 } from "@/services/api/clinicians/account_setup";
 import {
   AppointmentAddress,
@@ -14,6 +16,7 @@ import {
 import { getUserData } from "@/services/api/authentication/auth";
 import { getServices } from "@/services/api/clinicians/appointment";
 import { setupClientProfile } from "@/services/api/clients/account_setup";
+import { getIndividualClinicianBusinessPeriod } from "@/services/api/clients/appointments";
 
 // Utility functions to manage localStorage
 const getLocalStorage = (key: string) => {
@@ -40,13 +43,24 @@ interface BusinessPeriodsState {
   profileLoading: boolean; // Loading state for profile data
   error: string | null;
   isSetupComplete: boolean;
-  profile: { firstName: string; lastName: string; email: string } | null; // Profile data
+  profile: { firstName: string; lastName: string; email: string } | null;
+
+  fetchBusinessPeriodsByClinicianId: (
+    clinician_profile_id: string
+  ) => Promise<BusinessPeriod[]>;
+  updateclinicianBusinessPeriods: (
+    periodId: string,
+    updatedPeriod: Partial<BusinessPeriod>
+  ) => Promise<void>;
+
+  deleteBusinessPeriod: (periodId: string) => Promise<void>;
 
   // Fetching business periods
   fetchBusinessPeriods: () => Promise<void>;
   fetchServices: () => Promise<void>;
   fetchAppointmentAddresses: () => Promise<void>;
   setupBusinessPeriods: () => Promise<void>;
+  setupCustomBusinessPeriods: (periods: BusinessPeriod[]) => Promise<void>;
   fetchProfileData: () => Promise<void>;
 
   // Setting business periods and profile data
@@ -63,53 +77,58 @@ interface BusinessPeriodsState {
   completeClientSetup: (clientProfileId: string) => Promise<void>;
 }
 
+const initialBusinessPeriods = [
+  {
+    day_of_week: "Monday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Tuesday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Wednesday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Thursday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Friday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Saturday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+  {
+    day_of_week: "Sunday",
+    opening_hour: "",
+    closing_hour: "",
+    appointment_location_ids: [],
+  },
+];
+
 export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
   (set, get) => ({
-    businessPeriods: getLocalStorage("businessPeriods") || [
-      {
-        day_of_week: "Monday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Tuesday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Wednesday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Thursday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Friday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Saturday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-      {
-        day_of_week: "Sunday",
-        opening_hour: "",
-        closing_hour: "",
-        appointment_location_ids: [],
-      },
-    ],
+    businessPeriods:
+      getLocalStorage("businessPeriods") || initialBusinessPeriods,
+
     fetchedBusinessPeriods: [],
+
     profile: null,
     loading: false,
     profileLoading: false,
@@ -119,18 +138,71 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     appointmentAddresses: [],
     clientProfileData: getLocalStorage("clientProfileData") || {},
 
+    setFetchedBusinessPeriods: (periods: FetchedBusinessPeriod[]) => {
+      set({ fetchedBusinessPeriods: periods });
+    },
+
     // Fetch business periods from the backend and sync with state
+
     fetchBusinessPeriods: async () => {
       set({ loading: true, error: null });
       try {
         const periods = await getclinicianBusinessPeriods();
-        setLocalStorage("fetchedBusinessPeriods", periods);
-        set({ fetchedBusinessPeriods: periods, loading: false });
+
+        // Filter out duplicates based on day_of_week
+        const uniquePeriods = Array.from(
+          new Set(periods.map((period) => period.day_of_week))
+        ).map((uniqueDay) =>
+          periods.find((period) => period.day_of_week === uniqueDay)
+        );
+
+        console.log("Fetched Unique Business Periods:", uniquePeriods); // Log the response
+        setLocalStorage("fetchedBusinessPeriods", uniquePeriods);
+        set({ fetchedBusinessPeriods: uniquePeriods, loading: false });
       } catch (error) {
         set({ error: "Error fetching business periods", loading: false });
       }
     },
 
+    // useBusinessPeriodsStore.ts
+    deleteBusinessPeriod: async (periodId: string) => {
+      set({ loading: true, error: null });
+      try {
+        console.log("Deleting business period with ID:", periodId); // Log the ID being deleted
+        await deleteclinicianBusinessPeriod(periodId); // Call the API to delete
+
+        // Remove the deleted period from the local state
+        const updatedPeriods = get().fetchedBusinessPeriods.filter(
+          (period) => period.id !== periodId
+        );
+        set({ fetchedBusinessPeriods: updatedPeriods, loading: false }); // Update the state
+        console.log(
+          "Business period deleted successfully from state:",
+          updatedPeriods
+        );
+
+        // Optional: Refetch business periods from the backend to ensure sync
+        await get().fetchBusinessPeriods();
+      } catch (error) {
+        console.error("Failed to delete business period:", error);
+        set({ error: "Error deleting business period", loading: false });
+      }
+    },
+    fetchBusinessPeriodsByClinicianId: async (
+      clinician_profile_id: string
+    ): Promise<BusinessPeriod[]> => {
+      set({ loading: true, error: null });
+      try {
+        const periods = await getIndividualClinicianBusinessPeriod(
+          clinician_profile_id
+        );
+        set({ fetchedBusinessPeriods: periods, loading: false });
+        return periods; // Ensure the function returns the periods array
+      } catch (error) {
+        set({ error: "Failed to fetch business periods", loading: false });
+        return []; // Return an empty array if an error occurs
+      }
+    },
     // Fetch appointment addresses from backend
     fetchAppointmentAddresses: async () => {
       set({ loading: true, error: null });
@@ -193,12 +265,11 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
 
     // Update a specific business period and sync with localStorage
     updateBusinessPeriod: (index: number, period: Partial<BusinessPeriod>) => {
-      set((state) => {
-        const updatedPeriods = [...state.businessPeriods];
-        updatedPeriods[index] = { ...updatedPeriods[index], ...period };
-        setLocalStorage("businessPeriods", updatedPeriods); // Update localStorage
-        return { businessPeriods: updatedPeriods };
-      });
+      const { businessPeriods } = get();
+      const updatedPeriods = [...businessPeriods];
+      updatedPeriods[index] = { ...updatedPeriods[index], ...period };
+      setLocalStorage("businessPeriods", updatedPeriods);
+      set({ businessPeriods: updatedPeriods });
     },
 
     // Clear business periods from state and localStorage
@@ -211,19 +282,36 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     setupBusinessPeriods: async () => {
       set({ loading: true, error: null });
       try {
-        const { businessPeriods, appointmentAddresses } = get();
-        const validBusinessPeriods = businessPeriods
+        const { businessPeriods } = get();
+
+        // Filter and format the payload as expected by the backend
+        const payload = businessPeriods
           .filter((period) => period.opening_hour && period.closing_hour)
           .map((period) => ({
-            ...period,
-            appointment_location_ids: period.appointment_location_ids?.filter(
-              (id) => appointmentAddresses.some((address) => address.id)
-            ),
+            day_of_week: period.day_of_week,
+            opening_hour: period.opening_hour,
+            closing_hour: period.closing_hour,
+            appointment_location_ids:
+              period.appointment_location_ids?.map(String), // Ensure IDs are passed as strings
           }));
-        await setupclinicianBusinessPeriods(validBusinessPeriods);
+
+        await setupclinicianBusinessPeriods(payload);
         set({ isSetupComplete: true, loading: false });
       } catch (error) {
         set({ error: "Error setting up business periods", loading: false });
+      }
+    },
+
+    setupCustomBusinessPeriods: async (periods: BusinessPeriod[]) => {
+      set({ loading: true, error: null });
+      try {
+        await setupclinicianBusinessPeriods(periods); // Use the provided periods as payload
+        set({ isSetupComplete: true, loading: false });
+      } catch (error) {
+        set({
+          error: "Error setting up custom business periods",
+          loading: false,
+        });
       }
     },
 
@@ -263,6 +351,20 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
         set({ isSetupComplete: true, loading: false });
       } catch (error) {
         set({ error: "Error completing client setup", loading: false });
+      }
+    },
+    updateclinicianBusinessPeriods: async (
+      periodId: string,
+      updatedPeriod: Partial<BusinessPeriod>
+    ) => {
+      set({ loading: true, error: null });
+      try {
+        // Call the API function with separate arguments (periodId and updatedPeriod)
+        await updateclinicianBusinessPeriods(periodId, updatedPeriod);
+        await get().fetchBusinessPeriods(); // Refresh the business periods list
+        set({ loading: false });
+      } catch (error) {
+        set({ error: "Error updating business period", loading: false });
       }
     },
   })

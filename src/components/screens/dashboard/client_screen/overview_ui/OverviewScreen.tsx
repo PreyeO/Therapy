@@ -3,7 +3,7 @@ import bars from "@/assets/icon/bars.svg";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Advert from "../../components/Advert";
-import Flyer from "@/assets/image/flyer.png";
+import Illustration from "@/assets/image/Illustration.svg";
 import CalenderCard from "../../clinician_screen/overview_ui/cards/CalenderCard";
 import UpcomingCard from "../../clinician_screen/overview_ui/cards/UpcomingCard";
 import TotalAppointment from "./cards/TotalAppointment";
@@ -25,18 +25,34 @@ const OverviewScreen = () => {
       </div>
       <div className="flex gap-5 flex-wrap lg:flex-nowrap">
         <div className="flex flex-col gap-4 w-full lg:w-2/3">
-          <div>
-            <img src={Flyer} alt="image of flyer advert" />
+          <div className="flyer flex text-white items-center justify-around">
+            <div className="flex flex-col gap-5 w-[392px]">
+              <h2 className="text-[25px] font-bold leading-[31px]">
+                Find the Best Clinician for Your Well-being
+              </h2>
+              <p className=" font-medium text-base">
+                Connect with experienced clinicians and receive personalized
+                care for your health needs.
+              </p>
+              <Link to="/client_dashboard/clinicians">
+                <Button className="bg-white w-[153px] rounded-full text-black">
+                  Book a clinician
+                </Button>
+              </Link>
+            </div>
+            <div>
+              <img src={Illustration} alt="image of flyer advert" />
+            </div>
           </div>
           <div className="flex lg:gap-5 gap-2">
             <TotalAppointment
               className="bg-[#6D7C430D]"
-              title="Total Appointment"
+              title="Total Appointments"
               icon={<img src={bars} alt="bars icon" width={40} height={40} />}
             />
             <TotalAppointment
               className=" bg-[#6D7C430D]"
-              title="Upcoming Appointment"
+              title="Upcoming Appointments"
               icon={<CalendarClock size={40} color="#6D7C43" />}
             />
           </div>

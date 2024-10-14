@@ -1,8 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-
-import { isSameDay, getHours } from "date-fns";
-import { Event, AppointmentInfo } from "@/types/formSchema";
+import { isSameDay, getHours, getMinutes, isWithinInterval } from "date-fns";
+import { Event, AppointmentInfo, AppointmentAddress } from "@/types/formSchema";
 import { calendarSheetColors } from "@/constants/DataManager";
 
 // Utility for class names
@@ -64,13 +63,17 @@ export const formatDate = (date: string) => {
 };
 
 // Map AppointmentRequest[] to AppointmentTable format
+
 export const mapToAppointmentTableFormat = (requests: AppointmentInfo[]) => {
   return requests.map((request) => ({
     id: request.id,
     client: `${request.client.first_name} ${request.client.last_name}`,
     appointmentTime: formatTimeRange(request.start_time, request.end_time),
     appointmentDate: formatDate(request.start_time),
-    location: request.service.name,
+    service: request.service.name,
+    email: request.client.email,
+    location: `${request.location.city}${request.location.street_address}${request.location.postal_code}${request.location.id}`,
+    clinician: `${request.clinician.first_name} ${request.clinician.last_name}`,
   }));
 };
 
@@ -87,6 +90,17 @@ export const mapAppointmentResponse = (
     service: appointment.service,
     start_time: appointment.start_time,
     end_time: appointment.end_time,
+    location: {
+      id: appointment.location.id,
+      street_address: appointment.location.street_address,
+      city: appointment.location.city,
+      postal: appointment.location.postal_code,
+    },
+    clinician: {
+      id: appointment.clinician.id,
+      first_name: appointment.clinician.first_name,
+      last_name: appointment.clinician.last_name,
+    },
   }));
 };
 
@@ -94,6 +108,59 @@ export const mapAppointmentResponse = (
 export const truncateToFirstTwoWords = (str: string) => {
   const words = str.split(" ");
   return words.length > 2 ? words.slice(0, 2).join(" ") + "..." : str;
+};
+
+// Get styles for a time slot duration based on start and end time
+export const getSlotStyle = (start: Date, end: Date) => {
+  const startMinutes = getMinutes(start); // Minutes into the hour
+  const slotDurationInMinutes = (end.getTime() - start.getTime()) / 1000 / 60; // Slot duration in minutes
+
+  const slotHeightPercentage = (slotDurationInMinutes / 60) * 100; // Height as percentage of 1 hour
+  const topOffsetPercentage = (startMinutes / 60) * 100; // Offset as percentage of 1 hour
+
+  return {
+    height: `${slotHeightPercentage}%`,
+    top: `${topOffsetPercentage}%`,
+  };
+};
+
+// Check if a slot is blocked based on the list of blocked slots
+export const isSlotBlocked = (
+  day: Date,
+  timeSlot: string,
+  blockedSlots: Array<{ start: Date; end: Date }>
+): boolean => {
+  const [slotHour, slotMinute] = timeSlot.split(":");
+  const slotStart = new Date(day);
+  slotStart.setHours(Number(slotHour), Number(slotMinute), 0, 0); // Set the hours and minutes from the time slot
+
+  return blockedSlots.some(({ start, end }) =>
+    isWithinInterval(slotStart, { start, end })
+  );
+};
+
+// utils.ts
+
+// Utility function to map business hours from API response
+// utils.ts
+
+import { BusinessPeriod } from "@/types/formSchema";
+
+// Utility function to map business hours from API response
+export const mapBusinessHours = (businessPeriods: BusinessPeriod[] = []) => {
+  if (!Array.isArray(businessPeriods) || businessPeriods.length === 0) {
+    // Return an empty object if the input is not a valid array
+    return {};
+  }
+
+  return businessPeriods.reduce((acc, period) => {
+    const day = period.day_of_week.toLowerCase(); // Convert day to lowercase for consistency
+    acc[day] = {
+      openingHour: parseInt(period.opening_hour.split(":")[0]), // Extract opening hour as an integer
+      closingHour: parseInt(period.closing_hour.split(":")[0]), // Extract closing hour as an integer
+    };
+    return acc;
+  }, {} as Record<string, { openingHour: number; closingHour: number }>);
 };
 
 /**
@@ -125,4 +192,41 @@ export const setLocalStorage = <T>(key: string, value: T): void => {
  */
 export const clearLocalStorage = (key: string): void => {
   localStorage.removeItem(key);
+};
+
+export const formatTime = (time: string): string => {
+  if (!time) return "";
+  const [hours, minutes] = time.split(":");
+  const formattedHours = parseInt(hours, 10) % 12 || 12;
+  const period = parseInt(hours, 10) < 12 ? "AM" : "PM";
+  return `${formattedHours}:${minutes} ${period}`;
+};
+
+export const getAddressTextById = (
+  id: string | undefined,
+  appointmentAddresses: AppointmentAddress[]
+): string => {
+  if (!id) return "Location";
+  const address = appointmentAddresses.find(
+    (address) => String(address.id) === id
+  );
+  return address
+    ? `${address.street_address}, ${address.city}, ${address.state} ${address.postal_code}`
+    : "Location";
+};
+
+// utils/timeUtils.ts
+
+/**
+ * Check if the given start time is within the next 24 hours.
+ * @param startTime - The start time of the appointment.
+ * @returns {boolean} - Returns true if within 24 hours, otherwise false.
+ */
+export const isWithinNext24Hours = (startTime: string): boolean => {
+  const now = new Date();
+  const appointmentTime = new Date(startTime);
+  const timeDifferenceInMs = appointmentTime.getTime() - now.getTime();
+
+  // Calculate the time difference in hours and check if it's less than or equal to 24 hours.
+  return timeDifferenceInMs <= 24 * 60 * 60 * 1000 && timeDifferenceInMs >= 0;
 };

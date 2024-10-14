@@ -1,21 +1,26 @@
-import { useState, useEffect } from "react";
+// AppointmentScreen.tsx
+import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AppointmentTable from "./AppointmentsTable";
 import Title from "@/components/ui/Titles/Title";
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { useAppointmentsStore } from "@/store/useAppointment";
-import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
+
 import DialogCard from "../../components/DialogCard";
 import AppointmentSearch from "./AppointmentSearch";
 import { mapToAppointmentTableFormat } from "@/lib/utils";
 import AllAppointmentSearch from "./AllAppointmentSearch";
 import { useSearchStore } from "@/store";
+import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
 
 const AppointmentScreen = () => {
   const [activeTab, setActiveTab] = useState("request");
-  const [searchPerformed, setSearchPerformed] = useState(false); // Track if search is performed
+  const [searchPerformed, setSearchPerformed] = useState(false);
+  const [isActionLoading, setActionLoading] = useState(false);
+
   const { resetFilters } = useSearchStore();
 
+  // Using Zustand store state and actions
   const {
     fetchAppointmentRequests,
     fetchWaitlistedAppointments,
@@ -30,9 +35,11 @@ const AppointmentScreen = () => {
     filteredWaitlistedAppointments,
     filteredFullAppointments,
     loading,
+    updateAppointmentInState, // Zustand action to update state
   } = useAppointmentsStore();
 
-  useEffect(() => {
+  // Refresh table data based on active tab
+  const refreshTable = useCallback(() => {
     switch (activeTab) {
       case "request":
         fetchAppointmentRequests();
@@ -46,24 +53,28 @@ const AppointmentScreen = () => {
       case "all":
         fetchFullAppointments();
         break;
+      default:
+        break;
     }
-    setSearchPerformed(false);
-    return () => {
-      // Reset search state when component unmounts (i.e., when navigating away)
-      resetFilters();
-    };
   }, [
     activeTab,
     fetchAppointmentRequests,
     fetchUpcomingAppointments,
     fetchWaitlistedAppointments,
     fetchFullAppointments,
-    resetFilters,
   ]);
+
+  useEffect(() => {
+    refreshTable(); // Fetch data initially based on active tab
+    setSearchPerformed(false);
+    return () => {
+      resetFilters();
+    };
+  }, [activeTab, resetFilters, refreshTable]);
 
   // Define handleSearch to track when a search is performed
   const handleSearch = () => {
-    setSearchPerformed(true); // Set this to true when a search is triggered
+    setSearchPerformed(true);
   };
 
   const handleTabChange = (value: string) => {
@@ -98,11 +109,19 @@ const AppointmentScreen = () => {
 
       <div className="min-w-[687px] w-full">
         <AppointmentTable
-          dropdownItemsGenerator={dropdownItemsGenerator}
+          dropdownItemsGenerator={(appointmentId, openSuccess, updateLoader) =>
+            dropdownItemsGenerator(
+              appointmentId,
+              openSuccess,
+              updateLoader,
+              updateAppointmentInState // Pass Zustand action for state update
+            )
+          }
           data={mapToAppointmentTableFormat(filteredData || data)}
-          loading={loading}
+          loading={loading || isActionLoading} // Pass action loader state
           searchPerformed={searchPerformed}
           showActionColumn={!isAllTab}
+          setActionLoading={setActionLoading} // Pass loader state setter to child
         />
       </div>
     </>
@@ -121,25 +140,25 @@ const AppointmentScreen = () => {
             value="request"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
-            Appointment Request
+            Appointment Requests
           </TabsTrigger>
           <TabsTrigger
             value="accepted"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
-            Upcoming Appointment
+            Upcoming Appointments
           </TabsTrigger>
           <TabsTrigger
             value="waitlist"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
-            Waitlisted Appointment
+            Waitlisted Appointments
           </TabsTrigger>
           <TabsTrigger
             value="all"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
-            All Appointment
+            All Appointments
           </TabsTrigger>
         </TabsList>
 
@@ -188,7 +207,7 @@ const AppointmentScreen = () => {
             data: fullAppointments,
             filteredData: filteredFullAppointments,
             dropdownItemsGenerator: getDropdownItemsTwo,
-            isAllTab: true, // Indicate that this is the "All" tab
+            isAllTab: true,
           })}
         </TabsContent>
       </Tabs>

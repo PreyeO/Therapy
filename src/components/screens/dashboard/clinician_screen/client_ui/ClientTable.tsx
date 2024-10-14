@@ -1,3 +1,4 @@
+// ClientTable.tsx
 import { useEffect } from "react";
 import {
   Table,
@@ -17,10 +18,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { usePaginationStore } from "@/store"; // Ensure your custom pagination logic store is used
+import { usePaginationStore } from "@/store";
 
-// Accept appointments and loading state as props
-const ClientTable = ({ appointments, loading }) => {
+// Update the prop type to accept clients instead of appointments
+const ClientTable = ({ clients, loading }) => {
   const {
     currentPage,
     itemsPerPage,
@@ -31,14 +32,14 @@ const ClientTable = ({ appointments, loading }) => {
   } = usePaginationStore();
 
   // Calculate paginated data
-  const paginatedData = appointments.slice(
+  const paginatedData = clients.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   useEffect(() => {
-    setTotalItems(appointments.length);
-  }, [appointments, setTotalItems]);
+    setTotalItems(clients.length);
+  }, [clients, setTotalItems]);
 
   if (loading) {
     return (
@@ -48,7 +49,7 @@ const ClientTable = ({ appointments, loading }) => {
     );
   }
 
-  const totalPages = Math.ceil(appointments.length / itemsPerPage);
+  const totalPages = Math.ceil(clients.length / itemsPerPage);
 
   return (
     <div className="overflow-x-auto w-full">
@@ -61,7 +62,7 @@ const ClientTable = ({ appointments, loading }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData.map((item, index) => (
+          {paginatedData.map((client, index) => (
             <TableRow
               key={index}
               className="text-[#212121] font-normal text-base"
@@ -69,14 +70,14 @@ const ClientTable = ({ appointments, loading }) => {
               <TableCell className="flex items-center gap-1">
                 <Avatar className="w-[40px] h-[40px]">
                   <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>
-                    {item.client.first_name.charAt(0)}
-                  </AvatarFallback>
+                  <AvatarFallback>{client.first_name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                {item.client.first_name} {item.client.last_name}
+                {client.first_name} {client.last_name}
               </TableCell>
-              <TableCell>+2345679643</TableCell>
-              <TableCell>{item.client.email}</TableCell>
+              <TableCell>
+                {client.client_profile.phone_number || "N/A"}
+              </TableCell>
+              <TableCell>{client.email}</TableCell>
             </TableRow>
           ))}
         </TableBody>

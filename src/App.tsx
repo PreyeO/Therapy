@@ -10,6 +10,8 @@ import Profile from "./pages/DashboardPage/clinician/ProfileScreen/Profile";
 import ProfileLayout from "./components/screens/dashboard/clinician_screen/profile_ui/ProfileLayout";
 import ClientDashboard from "./components/layouts/ClientDashboard";
 import ClinicianProfile from "./pages/DashboardPage/client/ClinicainProfile";
+import Clinicians from "./pages/DashboardPage/client/Clinicians";
+import Test from "./pages/Test";
 
 // Lazy load the components
 const Landing = lazy(() => import("@/pages/Landing"));
@@ -44,9 +46,6 @@ const Clients = lazy(() => import("@/pages/DashboardPage/clinician/Clients"));
 const ClientAppointments = lazy(
   () => import("@/pages/DashboardPage/client/ClientAppointments")
 );
-const Clinicians = lazy(
-  () => import("@/pages/DashboardPage/client/Clinicians")
-);
 
 function App() {
   return (
@@ -57,6 +56,7 @@ function App() {
             <Route path="/" element={<Landing />} />
 
             <Route path="/signin" element={<Signin />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/accountsetup" element={<AccountSetup />} />
             <Route path="/clientsetup" element={<ClientSetup />} />

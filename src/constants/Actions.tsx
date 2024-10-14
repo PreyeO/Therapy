@@ -3,31 +3,48 @@ import EditIcon from "@/components/icons/EditIcon";
 import { updateAppointmentStatus } from "@/services/api/clinicians/appointment";
 import { DropdownItem } from "@/types/formSchema";
 
-// Function to handle the status update
-
-const handleActionClick = async (
+export const handleActionClick = async (
   appointmentId: string,
   data: { status?: string; acceptance_status?: string },
-  openSuccess: (message: { title: string; subtitle: string }) => void
+  openSuccess: (message: { title: string; subtitle: string }) => void,
+  refreshTable: () => void,
+  updateState: (
+    id: string,
+    updatedData: { status?: string; acceptance_status?: string }
+  ) => void // Add new parameter for state update
 ) => {
   try {
-    await updateAppointmentStatus(appointmentId, data); // Send dynamic data
+    // Call the API to update appointment status
+    await updateAppointmentStatus(appointmentId, data);
+
+    // Determine the key and value for success message
     const key = data.status ? "status" : "acceptance_status";
     const value = data.status || data.acceptance_status;
 
+    // Show success message
     openSuccess({
       title: `Appointment ${value}`,
       subtitle: `The appointment ${key} has been successfully updated to ${value}.`,
     });
+
+    // Update the state immediately after successful action
+    updateState(appointmentId, data);
+
+    // Refresh the table to reflect any changes
+    refreshTable();
   } catch (error) {
     console.error("Failed to update appointment:", error);
   }
 };
-
-// Generate dropdown items
+// Modify `getDropdownItemsOne` to use the new `refreshTable` parameter
 export const getDropdownItemsOne = (
   appointmentId: string,
-  openSuccess: (message: { title: string; subtitle: string }) => void
+  openSuccess: (message: { title: string; subtitle: string }) => void,
+  refreshTable: () => void,
+  updateState: (
+    id: string,
+    updatedData: { status?: string; acceptance_status?: string }
+  ) => void // New parameter for state update
 ): DropdownItem[] => [
   {
     label: "Waitlist",
@@ -36,7 +53,9 @@ export const getDropdownItemsOne = (
       handleActionClick(
         appointmentId,
         { acceptance_status: "Waitlisted" },
-        openSuccess
+        openSuccess,
+        refreshTable,
+        updateState // Pass updateState function
       ),
     icons: (
       <div className="w-5 h-5 rounded-full">
@@ -51,7 +70,9 @@ export const getDropdownItemsOne = (
       handleActionClick(
         appointmentId,
         { acceptance_status: "Accepted" },
-        openSuccess
+        openSuccess,
+        refreshTable,
+        updateState // Pass updateState function
       ),
     icons: (
       <div className="w-5 h-5 border border-army_green rounded-full">
@@ -66,7 +87,9 @@ export const getDropdownItemsOne = (
       handleActionClick(
         appointmentId,
         { acceptance_status: "Declined" },
-        openSuccess
+        openSuccess,
+        refreshTable,
+        updateState // Pass updateState function
       ),
     icons: (
       <div className="w-5 h-5 border border-[#E25D1A] rounded-full">
@@ -76,57 +99,40 @@ export const getDropdownItemsOne = (
   },
 ];
 
-// Dropdown items for upcoming appointments (e.g., already accepted appointments)
 export const getDropdownItemsTwo = (
   appointmentId: string,
-  openSuccess: (message: { title: string; subtitle: string }) => void
+  openSuccess: (message: { title: string; subtitle: string }) => void,
+  refreshTable: () => void,
+  updateState: (
+    id: string,
+    updatedData: { status?: string; acceptance_status?: string }
+  ) => void // New parameter for state update
 ): DropdownItem[] => [
-  {
-    label: "Scheduled",
-    color: "text-[#E25D1A]",
-    onClick: async () =>
-      handleActionClick(appointmentId, { status: "Scheduled" }, openSuccess),
-  },
   {
     label: "No Show",
     color: "text-[#E25D1A]",
     onClick: async () =>
-      handleActionClick(appointmentId, { status: "No Show" }, openSuccess),
+      handleActionClick(
+        appointmentId,
+        { status: "No Show" },
+        openSuccess,
+        refreshTable,
+        updateState // Pass updateState function
+      ),
   },
   {
     label: "Attended",
     color: "text-army_green",
     onClick: async () =>
-      handleActionClick(appointmentId, { status: "Attended" }, openSuccess),
-  },
-  {
-    label: "Late Cancel",
-    color: "text-[#0418274D]",
-    onClick: async () =>
-      handleActionClick(appointmentId, { status: "Late Cancel" }, openSuccess),
-  },
-  {
-    label: "Clinician Canceled",
-    color: "text-[#E25D1A]",
-    onClick: async () =>
       handleActionClick(
         appointmentId,
-        { status: "Clinician Canceled" },
-        openSuccess
-      ),
-  },
-  {
-    label: "Client Canceled",
-    color: "text-[#E25D1A]",
-    onClick: async () =>
-      handleActionClick(
-        appointmentId,
-        { status: "Client Canceled" },
-        openSuccess
+        { status: "Attended" },
+        openSuccess,
+        refreshTable,
+        updateState // Pass updateState function
       ),
   },
 ];
-
 export const dropdownItemsProfile = [
   {
     label: "Edit",
@@ -153,5 +159,16 @@ export const bookingsData = [
     color: "text-[#E25D1A]",
     onClick: () => alert("Delete"),
     icons: <Trash2 size={18} strokeWidth={1.5} color="#E25D1A" />,
+  },
+];
+
+export const historyData = [
+  {
+    label: "Attended",
+    color: "text-[#8BA05F]",
+  },
+  {
+    label: "Canceled",
+    color: "text-[#E25D1A]",
   },
 ];

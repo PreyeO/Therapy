@@ -105,10 +105,13 @@ interface DialogState {
   showReview: boolean;
   success: boolean;
   successMessage?: { title: string; subtitle: string } | null;
+  dialogContent: React.ReactNode; // Add dialogContent as ReactNode for dynamic content
   openSchedule: () => void;
   closeDialog: () => void;
   openReview: () => void;
   openSuccess: (message: { title: string; subtitle: string }) => void;
+  setDialogContent: (content: React.ReactNode) => void; // Add setDialogContent action
+  resetDialogState: () => void;
 }
 
 export const useDialogState = create<DialogState>((set) => ({
@@ -116,16 +119,27 @@ export const useDialogState = create<DialogState>((set) => ({
   showReview: false,
   success: false,
   successMessage: null,
+  dialogContent: null, // Initialize with null
 
   openSchedule: () => set({ isOpen: true, showReview: false }),
   openReview: () => set({ showReview: true }),
   openSuccess: (message) =>
     set({ isOpen: true, success: true, successMessage: message }),
+  setDialogContent: (content) => set({ dialogContent: content, isOpen: true }), // Open dialog and set content
   closeDialog: () =>
     set({
       isOpen: false,
       showReview: false,
       success: false,
+      dialogContent: null,
+      successMessage: null,
+    }),
+  resetDialogState: () =>
+    set({
+      isOpen: false,
+      showReview: false,
+      success: false,
+      dialogContent: null,
       successMessage: null,
     }),
 }));

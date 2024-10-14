@@ -1,13 +1,4 @@
-import {
-  getAuthToken,
-  api,
-  handleError,
-} from "@/services/api/authentication/auth";
-
-const token = getAuthToken();
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Token ${token}`;
-}
+import { api, handleError } from "@/services/api/authentication/auth";
 
 export const getAppointmentAddress = async () => {
   try {

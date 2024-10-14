@@ -1,4 +1,5 @@
 // src/pages/DashboardPage/clinician/account_setup_page/AccountSetupSteps.tsx
+
 import React, { useMemo, useCallback } from "react";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import BusinessPeriodStep from "@/components/screens/dashboard/clinician_screen/accountsetup_ui/BusinessPeriodStep";
@@ -7,38 +8,25 @@ import { useMultiStepForm } from "@/hooks/index";
 import StepNavigation from "@/components/ui/step-navigation";
 import { Progress } from "@/components/ui/progress";
 import { ToastContainer } from "react-toastify";
-import {
-  setupclinicianBusinessPeriods,
-  getAppointmentAddress,
-} from "@/services/api/clinicians/account_setup";
+import { AppointmentAddress } from "@/types/formSchema";
+import { getAppointmentAddress } from "@/services/api/clinicians/account_setup";
+import { useDialogState } from "@/store";
 
-interface AppointmentAddress {
-  id: string;
-  street_address: string;
-  city: string;
-  state: string;
-  postal_code: string;
-}
-
-// Explicitly define the type for the props
-interface AccountSetupStepsProps {
+const AccountSetupSteps: React.FC<{
   setIsSetupComplete: (isComplete: boolean) => void;
-}
-
-const AccountSetupSteps: React.FC<AccountSetupStepsProps> = ({
-  setIsSetupComplete,
-}) => {
-  const { businessPeriods, clearBusinessPeriods } = useBusinessPeriodsStore();
+}> = ({ setIsSetupComplete }) => {
+  const { clearBusinessPeriods, setupBusinessPeriods } =
+    useBusinessPeriodsStore();
   const [appointmentAddresses, setAppointmentAddresses] = React.useState<
     AppointmentAddress[]
   >([]);
+  const { openSuccess } = useDialogState(); // Use dialog state for success dialog
 
-  // Fetch appointment addresses when component mounts
   React.useEffect(() => {
     const fetchAddresses = async () => {
       try {
         const addresses = await getAppointmentAddress();
-        setAppointmentAddresses(addresses); // Directly set the data as received from the API
+        setAppointmentAddresses(addresses); // Set the fetched addresses
       } catch (error) {
         console.error("Error fetching appointment addresses:", error);
       }
@@ -50,9 +38,9 @@ const AccountSetupSteps: React.FC<AccountSetupStepsProps> = ({
     () => [
       <BusinessPeriodStep
         onSave={() => {}}
-        appointmentAddresses={appointmentAddresses}
+        appointmentAddresses={appointmentAddresses} // Pass the addresses as a prop
       />,
-      <ReviewStep appointmentAddresses={appointmentAddresses} />,
+      <ReviewStep appointmentAddresses={appointmentAddresses} />, // Pass the addresses as a prop
     ],
     [appointmentAddresses]
   );
@@ -60,22 +48,25 @@ const AccountSetupSteps: React.FC<AccountSetupStepsProps> = ({
   const { currentStep, step, next, prev, isFirstStep, isLastStep } =
     useMultiStepForm(steps);
 
+  // Handle finish button click
   const handleFinishSetup = useCallback(async () => {
     try {
-      const validBusinessPeriods = businessPeriods.filter(
-        (period) => period.opening_hour && period.closing_hour
-      );
-      await setupclinicianBusinessPeriods(validBusinessPeriods);
+      await setupBusinessPeriods(); // Trigger the setup function in the store
       clearBusinessPeriods();
-      setIsSetupComplete(true);
+      openSuccess({
+        title: "You have successfully set up your account",
+        subtitle: "You can now proceed to your dashboard",
+      }); // Show success dialog
+      setIsSetupComplete(true); // Optional, depending on further requirements
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-  }, [businessPeriods, clearBusinessPeriods, setIsSetupComplete]);
-
-  const handleNext = useCallback(() => {
-    next();
-  }, [next]);
+  }, [
+    setupBusinessPeriods,
+    clearBusinessPeriods,
+    setIsSetupComplete,
+    openSuccess,
+  ]);
 
   return (
     <div className="w-full flex flex-col items-center scale-75">
@@ -98,7 +89,7 @@ const AccountSetupSteps: React.FC<AccountSetupStepsProps> = ({
           isFirstStep={isFirstStep}
           isLastStep={isLastStep}
           prev={prev}
-          handleNext={handleNext}
+          handleNext={next}
           handleFinishSetup={handleFinishSetup}
         />
       </div>

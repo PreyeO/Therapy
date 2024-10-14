@@ -26,7 +26,7 @@ const OverviewScreen = () => {
           <div className="flex lg:gap-5 gap-2">
             <AppointmentCard
               className="bg-[#4285F4]"
-              title="Total Appointment"
+              title="Total Appointments"
               icon={<BriefcaseMedical size={20} color="white" className="" />}
             />
             <AppointmentCard

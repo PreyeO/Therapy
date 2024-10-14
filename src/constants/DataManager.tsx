@@ -268,27 +268,6 @@ export const bookingData = [
   },
 ];
 
-export const TimeData = [
-  {
-    day: "Monday",
-  },
-
-  {
-    day: "Tuesday",
-  },
-  {
-    day: "Wednesday",
-  },
-  {
-    day: "Thursday",
-  },
-  {
-    day: "Friday",
-  },
-];
-
-// clinician profile
-
 export const clinicianProfileData = [
   {
     office_name: "Rockline",

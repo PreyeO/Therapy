@@ -28,7 +28,7 @@ const Success: FC<MyComponentProps> = ({
     <div
       className={`flex flex-col mx-auto max-h-screen justify-center max-w-[829px] ${className} `}
     >
-      <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg">
+      <Card className="flex flex-col justify-center gap-[40px] mx-auto md:p-10 rounded-lg ">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}

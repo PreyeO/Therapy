@@ -236,9 +236,7 @@
   border-color: #8BA05F transparent;
   
 }
-button{
-  background-color: #E2B887;
-}
+
 
 @keyframes rotation {
   0% {
@@ -247,4 +245,11 @@ button{
   100% {
     transform: rotate(360deg);
   }
+}
+
+.flyer{
+  background: url(./assets/image/flyer.svg);
+  background-size: cover;
+  border-radius: 10px;
+  
 }

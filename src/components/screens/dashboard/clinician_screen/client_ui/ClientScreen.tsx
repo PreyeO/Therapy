@@ -1,42 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Title from "@/components/ui/Titles/Title";
 import ClientTable from "./ClientTable";
-
-import { useAppointmentsStore } from "@/store/useAppointment"; // Import the store
-import { useSearchStore } from "@/store"; // Import search store to reset search state
-import AppointmentSearch from "../appointment_ui/AppointmentSearch";
+import { useAppointmentsStore } from "@/store/useAppointment"; // Import the Zustand store
 
 const ClientScreen = () => {
-  const [searchPerformed, setSearchPerformed] = useState(false); // Track if search is performed
+  const { clients, loading, fetchAllClients } = useAppointmentsStore(); // Use Zustand store to get clients and loading state
 
-  const {
-    fetchFullAppointments,
-    fullAppointments,
-    loading,
-    filteredFullAppointments,
-  } = useAppointmentsStore(); // Fetch fullAppointments and loading state
-
-  const { resetFilters } = useSearchStore(); // To reset search filters
-
-  // Fetch full appointments on component mount
   useEffect(() => {
-    fetchFullAppointments();
-
-    return () => {
-      // Reset search state when component unmounts (i.e., when navigating away)
-      resetFilters();
-    };
-  }, [fetchFullAppointments, resetFilters]);
-
-  // Use filteredAppointments if a search has been performed, otherwise use fullAppointments
-  const appointments = searchPerformed
-    ? filteredFullAppointments
-    : fullAppointments;
-
-  // Define handleSearch to track when a search is performed
-  const handleSearch = () => {
-    setSearchPerformed(true); // Set this to true when a search is triggered
-  };
+    // Fetch clients when the component is mounted
+    fetchAllClients(); // Call fetchAllClients without parameters
+  }, [fetchAllClients]);
 
   return (
     <div className="my-7">
@@ -45,11 +18,9 @@ const ClientScreen = () => {
           <Title title="Clients" className="text-2xl font-medium py-10" />
         </div>
 
-        <AppointmentSearch activeTab="all" onSearch={handleSearch} />
-
+        {/* Render the ClientTable with clients data */}
         <div className="min-w-[687px] w-full mt-10">
-          {/* Pass appointments data to the ClientTable */}
-          <ClientTable appointments={appointments} loading={loading} />
+          <ClientTable clients={clients} loading={loading} />
         </div>
       </div>
     </div>

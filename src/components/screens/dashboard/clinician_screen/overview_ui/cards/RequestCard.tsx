@@ -8,7 +8,7 @@ const RequestCard = () => {
     <Card className="h-auto  bg-white rounded-lg py-5">
       <CardHeader className="flex justify-between">
         <div className="flex justify-between  font-bold text-[15.21px] lg:text-lg items-center">
-          <CardTitle className="">Appointment Request</CardTitle>
+          <CardTitle className="">Appointment Requests</CardTitle>
           <Button
             variant="link"
             className="text-[#8BA05F] lg: text-[11.83px] text-sm  font-medium bg-transparent"

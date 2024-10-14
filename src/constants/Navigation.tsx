@@ -72,20 +72,20 @@ export const miniSidebarLinks = [
 
   {
     label: "Business Period",
-    subtitle: "Daily updates about your schedule ",
+    subtitle: "Your work schedule ",
     icon: <CalendarDays strokeWidth={2} color="#868686" size={20} />,
     href: "/clinician_dashboard/profile/businessperiodinfo",
   },
   {
-    label: "Clinic Service",
-    subtitle: "List of clinic services",
+    label: "Clinical Service",
+    subtitle: "List of clinical services",
     icon: <img src={Coins} width={20} height={20} />,
     href: "/clinician_dashboard/profile/businessservices",
   },
 
   {
     label: "Email Updates",
-    subtitle: "Daily updates about your schedule",
+    subtitle: "Updates on your schedule",
     icon: <MessageSquareDot strokeWidth={2} color="#868686" size={20} />,
     href: "/clinician_dashboard/profile/emailinfo",
   },
@@ -115,7 +115,7 @@ export const clientSidebarLinks = [
     href: "/client_dashboard/clients",
   },
   {
-    label: "Payment",
+    label: "Payments",
 
     icon: <CreditCard strokeWidth={2} color="#868686" size={24} />,
     href: "/client_dashboard/billing",

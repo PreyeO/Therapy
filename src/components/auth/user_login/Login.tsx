@@ -11,11 +11,16 @@ import {
 } from "@/components/ui/card";
 import Logo from "@/components/ui/logos/Logo";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser, setAuthToken } from "@/services/api/authentication/auth";
+import {
+  loginUser,
+  logoutUser,
+  setAuthToken,
+} from "@/services/api/authentication/auth";
 import LoginForm from "@/components/auth/user_login/LoginForm";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 import { useAuthState } from "@/store";
+import { resetAllStores } from "@/store/resetStores";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,16 +35,21 @@ const Login = () => {
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     setLoading(true);
     try {
-      const response = await loginUser(data); // Get user data including token and userType
+      // Clear any existing session state and reset stores
+      logoutUser(); // Clear previous user data
+      resetAllStores(); // Reset all Zustand stores to initial state
+
+      // Log in the user and get their data
+      const response = await loginUser(data);
       const token = response.token;
 
-      // Set the auth token after login
+      // Set the auth token for the new session
       setAuthToken(token);
 
       if (response && response.user) {
         const { is_client, is_clinician } = response.user;
 
-        // Redirect based on is_client and is_clinician
+        // Redirect based on user type
         if (is_client) {
           navigate("/client_dashboard");
         } else if (is_clinician) {
@@ -51,7 +61,7 @@ const Login = () => {
     } catch (error) {
       console.error("Login error:", error);
       if (error instanceof Error) {
-        toast.error(error.message || "Ooops!");
+        toast.error(error.message || "An unknown error occurred");
       } else {
         toast.error("OOOPS! An unknown error occurred");
       }

@@ -38,10 +38,13 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
   renderAvailableTime,
 }) => {
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false); // Track popover state
+
+  // Generate the days of the week starting from the given weekStartDate
   const daysOfWeek = Array.from({ length: 7 }).map((_, index) =>
     addDays(startOfWeek(weekStartDate, { weekStartsOn: 0 }), index)
   );
 
+  // Define time slots in hourly intervals from 7:00 to 17:00
   const timeSlots = Array.from({ length: 11 }).map(
     (_, index) => `${7 + index}:00`
   );
@@ -68,174 +71,192 @@ const ScheduleSheet: React.FC<ScheduleSheetProps> = ({
         <div className="absolute inset-0 z-10 bg-transparent pointer-events-auto"></div>
       )}
       <div className="min-w-[1000px]">
-        <div className="grid grid-cols-8 border-b">
-          <div className="col-span-1 p-2 border-r text-center text-[#71717A] text-sm flex flex-col items-center justify-center">
-            EST GMT-5
-          </div>
-          {daysOfWeek.map((day) => (
-            <div
-              key={day.toString()}
-              className={`col-span-1 p-2 border-r ${
-                isWeekend(day)
-                  ? "bg-[#FAFAFB]"
-                  : isSameDay(day, new Date())
-                  ? "bg-[#EFF6FF]"
-                  : "bg-white"
-              }`}
-            >
-              <div className="font-bold text-[#71717A] text-[10px]">
-                {format(day, "EEE")}
-              </div>
-              <div className="text-[22px] font-medium">{format(day, "dd")}</div>
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-8">
-          <div className="col-span-1 border-r">
-            {timeSlots.map((slot) => (
+        {/* Header Row for Days of the Week */}
+        <div className="flex">
+          {/* Placeholder space for time labels */}
+          <div className="w-[50px]"></div>
+          {/* Days of the Week Header */}
+          <div className="flex-1 grid grid-cols-7 border-b">
+            {daysOfWeek.map((day) => (
               <div
-                key={slot}
-                className="h-[60px] border-b flex items-center justify-center bg-[#EFF6FF] text-sm font-normal"
+                key={day.toString()}
+                className={`p-2 border-r ${
+                  isWeekend(day)
+                    ? "bg-white"
+                    : isSameDay(day, new Date())
+                    ? "bg-[#EFF6FF]"
+                    : "bg-white"
+                }`}
               >
-                {slot}
+                <div className="font-bold text-[#71717A] text-[10px] text-center">
+                  {format(day, "EEE")}
+                </div>
+                <div className="text-[22px] font-medium text-center">
+                  {format(day, "dd")}
+                </div>
               </div>
             ))}
           </div>
-          {daysOfWeek.map((day) => (
-            <div
-              key={day.toString()}
-              className={`col-span-1 border-r ${
-                isWeekend(day)
-                  ? "bg-[#FAFAFB]"
-                  : isSameDay(day, new Date())
-                  ? "bg-[#EFF6FF]"
-                  : "bg-white"
-              }`}
-            >
-              {timeSlots.map((slot) => {
-                const hour = parseInt(slot.split(":")[0], 10);
-                const eventsForHour = getEventsForDayAndTime(events, day, hour);
-                const unavailableForHour = getUnavailableSlotForDayAndTime(
-                  unavailableSlots,
-                  day,
-                  hour
-                );
+        </div>
 
-                return (
-                  <div key={slot} className="h-[60px] border-b relative">
-                    {unavailableForHour.length > 0 ? (
-                      unavailableForHour.map((slot) => {
-                        const startMinutes = getMinutes(new Date(slot.start));
-                        const slotDurationInMinutes =
-                          (new Date(slot.end).getTime() -
-                            new Date(slot.start).getTime()) /
-                          1000 /
-                          60;
+        {/* Schedule Grid Rows */}
+        <div className="flex">
+          {/* Time Slot Labels - Positioned on Each Horizontal Line */}
+          <div className="flex flex-col justify-start items-end pr-4 relative">
+            {timeSlots.map((slot) => (
+              <div
+                key={slot}
+                className="h-[60px] flex items-center justify-center text-sm font-normal text-[#71717A] relative"
+              >
+                {/* Time Labels aligned along the grid line */}
+                <span className="text-sm">{slot}</span>
+              </div>
+            ))}
+          </div>
 
-                        const cellsToFill = Math.ceil(
-                          slotDurationInMinutes / 20
-                        );
-                        const topOffset = (startMinutes % 60) / 60;
-                        const { bgColor, textColor } =
-                          getStylesForTimeSlot("Unavailable");
+          {/* Day Columns with Time Slots */}
+          <div className="flex-1 grid grid-cols-7 border-t">
+            {daysOfWeek.map((day) => (
+              <div
+                key={day.toString()}
+                className={`border-r ${
+                  isWeekend(day)
+                    ? "bg-white"
+                    : isSameDay(day, new Date())
+                    ? "bg-[#EFF6FF]"
+                    : "bg-white"
+                }`}
+              >
+                {timeSlots.map((slot) => {
+                  const hour = parseInt(slot.split(":")[0], 10);
+                  const eventsForHour = getEventsForDayAndTime(
+                    events,
+                    day,
+                    hour
+                  );
+                  const unavailableForHour = getUnavailableSlotForDayAndTime(
+                    unavailableSlots,
+                    day,
+                    hour
+                  );
 
-                        return (
-                          <Popover
-                            key={slot.reason}
-                            onOpenChange={handlePopoverOpenChange} // Track popover state change
-                          >
-                            <PopoverTrigger asChild>
-                              <div
-                                className="absolute inset-0 rounded flex items-center justify-center cursor-pointer"
-                                style={{
-                                  backgroundColor: bgColor,
-                                  borderLeft: `4px solid ${textColor}`,
-                                  color: textColor,
-                                  height: `${cellsToFill * 33.33}%`,
-                                  top: `${topOffset * 100}%`,
-                                }}
-                              >
-                                <p className="">{slot.reason}</p>
-                              </div>
-                            </PopoverTrigger>
+                  return (
+                    <div key={slot} className="h-[60px] border-b relative">
+                      {unavailableForHour.length > 0 ? (
+                        unavailableForHour.map((slot) => {
+                          const start = new Date(slot.start);
+                          const startMinutes = getMinutes(start); // Get start minutes within the hour
+                          const slotDurationInMinutes =
+                            (new Date(slot.end).getTime() - start.getTime()) /
+                            1000 /
+                            60;
 
-                            <PopoverContent
-                              onClick={(e) => e.stopPropagation()} // Stop click propagation
+                          // Calculate top offset and height percentage based on the time slot duration and position
+                          const topOffsetPercentage = (startMinutes / 60) * 100;
+                          const slotHeightPercentage =
+                            (slotDurationInMinutes / 60) * 100;
+
+                          const { bgColor, textColor } =
+                            getStylesForTimeSlot("Unavailable");
+
+                          return (
+                            <Popover
+                              key={slot.reason}
+                              onOpenChange={handlePopoverOpenChange} // Track popover state change
                             >
-                              <UnavailableInfo
-                                reason={slot.reason}
-                                start={new Date(slot.start)}
-                                end={new Date(slot.end)}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        );
-                      })
-                    ) : eventsForHour.length > 0 ? (
-                      eventsForHour.map((event) => {
-                        const { bgColor, textColor } = getStylesForTimeSlot(
-                          event.service.name
-                        );
+                              <PopoverTrigger asChild>
+                                <div
+                                  className="absolute inset-0 rounded flex items-center justify-center cursor-pointer"
+                                  style={{
+                                    backgroundColor: bgColor,
+                                    borderLeft: `4px solid ${textColor}`,
+                                    color: textColor,
+                                    height: `${slotHeightPercentage}%`, // Correct height based on duration
+                                    top: `${topOffsetPercentage}%`, // Correct top offset based on start time
+                                  }}
+                                >
+                                  <p>{slot.reason}</p>
+                                </div>
+                              </PopoverTrigger>
 
-                        const eventDurationInMinutes =
-                          (new Date(event.end).getTime() -
-                            new Date(event.start).getTime()) /
-                          1000 /
-                          60;
-
-                        const cellsToFill = Math.ceil(
-                          eventDurationInMinutes / 20
-                        );
-
-                        return (
-                          <Popover
-                            key={event.title}
-                            onOpenChange={handlePopoverOpenChange} // Track popover state change
-                          >
-                            <PopoverTrigger asChild>
-                              <div
-                                className="absolute inset-0 rounded cursor-pointer"
-                                style={{
-                                  backgroundColor: bgColor,
-                                  borderLeft: `4px solid ${textColor}`,
-                                  color: textColor,
-                                  height: `${cellsToFill * 33.33}%`,
-                                  top: `${
-                                    (new Date(event.start).getMinutes() / 60) *
-                                    100
-                                  }%`,
-                                }}
+                              <PopoverContent
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                <p className="text-[14px]">
-                                  {event.service.name}
-                                </p>
-                              </div>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              onClick={(e) => e.stopPropagation()} // Stop click propagation
+                                <UnavailableInfo
+                                  reason={slot.reason}
+                                  start={new Date(slot.start)}
+                                  end={new Date(slot.end)}
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          );
+                        })
+                      ) : eventsForHour.length > 0 ? (
+                        eventsForHour.map((event) => {
+                          const { bgColor, textColor } = getStylesForTimeSlot(
+                            event.service.name
+                          );
+
+                          const eventStart = new Date(event.start);
+                          const eventDurationInMinutes =
+                            (new Date(event.end).getTime() -
+                              eventStart.getTime()) /
+                            1000 /
+                            60;
+
+                          // Calculate height and top offset for events
+                          const eventHeightPercentage =
+                            (eventDurationInMinutes / 60) * 100;
+                          const eventTopOffsetPercentage =
+                            (getMinutes(eventStart) / 60) * 100;
+
+                          return (
+                            <Popover
+                              key={event.title}
+                              onOpenChange={handlePopoverOpenChange} // Track popover state change
                             >
-                              <ScheduleInfo
-                                title={event.service.name}
-                                first_name={event.client}
-                                last_name={event.client}
-                                serviceDuration={event.serviceDuration}
-                                start={new Date(event.start)}
-                                end={new Date(event.end)}
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        );
-                      })
-                    ) : renderAvailableTime ? (
-                      renderAvailableTime(day, slot)
-                    ) : (
-                      <div className="h-full bg-transparent"></div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+                              <PopoverTrigger asChild>
+                                <div
+                                  className="absolute inset-0 rounded cursor-pointer"
+                                  style={{
+                                    backgroundColor: bgColor,
+                                    borderLeft: `4px solid ${textColor}`,
+                                    color: textColor,
+                                    height: `${eventHeightPercentage}%`, // Correct height based on duration
+                                    top: `${eventTopOffsetPercentage}%`, // Correct top offset based on start time
+                                  }}
+                                >
+                                  <p className="text-[14px]">
+                                    {event.service.name}
+                                  </p>
+                                </div>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                onClick={(e) => e.stopPropagation()} // Stop click propagation
+                              >
+                                <ScheduleInfo
+                                  title={event.service.name}
+                                  first_name={event.client}
+                                  last_name={event.client}
+                                  serviceDuration={event.serviceDuration}
+                                  start={eventStart}
+                                  end={new Date(event.end)}
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          );
+                        })
+                      ) : renderAvailableTime ? (
+                        renderAvailableTime(day, slot)
+                      ) : (
+                        <div className="h-full bg-transparent"></div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

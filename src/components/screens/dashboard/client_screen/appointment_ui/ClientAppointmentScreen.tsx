@@ -1,38 +1,92 @@
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAppointmentsStore } from "@/store/useAppointment";
 import ClientAppointmentTable from "./ClientAppointmentTable";
+import { AppointmentInfo } from "@/types/formSchema";
 
-const ClientAppointmentScreen = () => {
+const ClientAppointmentScreen: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<"accepted" | "waitlist">(
+    "accepted"
+  );
+  const {
+    fetchWaitlistedAppointments,
+    fetchUpcomingAppointments,
+    upcomingAppointments,
+    waitlistedAppointments,
+    filteredUpcomingAppointments,
+    filteredWaitlistedAppointments,
+    loading,
+  } = useAppointmentsStore();
+
+  useEffect(() => {
+    if (activeTab === "accepted") {
+      fetchUpcomingAppointments();
+    } else if (activeTab === "waitlist") {
+      fetchWaitlistedAppointments();
+    }
+  }, [activeTab, fetchUpcomingAppointments, fetchWaitlistedAppointments]);
+
+  const handleTabChange = (value: "accepted" | "waitlist") => {
+    setActiveTab(value);
+  };
+
+  const refreshTable = () => {
+    // Re-fetch the appointment data based on the active tab
+    if (activeTab === "accepted") {
+      fetchUpcomingAppointments();
+    } else {
+      fetchWaitlistedAppointments();
+    }
+  };
+
+  const renderTabContent = (appointments: AppointmentInfo[]) => (
+    <ClientAppointmentTable
+      data={appointments}
+      loading={loading}
+      searchPerformed={false}
+      refreshTable={refreshTable}
+    />
+  );
+
   return (
-    <div className="">
-      <Tabs defaultValue="upcoming" className="w-full">
+    <div className="my-7">
+      <Tabs
+        defaultValue="accepted"
+        className="w-full"
+        onValueChange={(value) =>
+          handleTabChange(value as "accepted" | "waitlist")
+        }
+      >
         <TabsList className="h-[50px] lg:w-[40%] w-[318px] font-medium mx-auto my-6 mt-10">
           <TabsTrigger
-            value="upcoming"
+            value="accepted"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Upcoming Appointment
           </TabsTrigger>
           <TabsTrigger
-            value="history"
+            value="waitlist"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
-            History Appointment
+            Appointment History
           </TabsTrigger>
         </TabsList>
 
         <TabsContent
-          value="upcoming"
+          value="accepted"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          {/* Render table without status column, show action column */}
-          <ClientAppointmentTable showStatus={false} />
+          {renderTabContent(
+            filteredUpcomingAppointments || upcomingAppointments
+          )}
         </TabsContent>
         <TabsContent
-          value="history"
+          value="waitlist"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          {/* Render table with status column, hide action column */}
-          <ClientAppointmentTable showStatus={true} />
+          {renderTabContent(
+            filteredWaitlistedAppointments || waitlistedAppointments
+          )}
         </TabsContent>
       </Tabs>
     </div>

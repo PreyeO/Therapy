@@ -1,13 +1,5 @@
-import {
-  getAuthToken,
-  api,
-  handleError,
-} from "@/services/api/authentication/auth";
-
-const token = getAuthToken();
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Token ${token}`;
-}
+import { api, handleError } from "@/services/api/authentication/auth";
+import { BusinessPeriod } from "@/types/formSchema";
 
 export const getAppointmentAddress = async () => {
   try {
@@ -29,19 +21,41 @@ export const setupclinicianBusinessPeriods = async (periods) => {
 
 export const getclinicianBusinessPeriods = async () => {
   try {
-    console.log("Fetching business periods...");
     const response = await api.get(`/api/business-periods/`);
+
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    return [];
+  }
+};
+
+export const deleteclinicianBusinessPeriod = async (
+  businessPeriodId: string
+) => {
+  try {
+    const response = await api.delete(
+      `/api/business-periods/${businessPeriodId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    throw error;
+  }
+};
+
+export const updateclinicianBusinessPeriods = async (
+  businessPeriodId: string,
+  updatedPeriod: Partial<BusinessPeriod>
+) => {
+  try {
+    const response = await api.patch(
+      `/api/business-periods/${businessPeriodId}/`,
+      updatedPeriod
+    );
     return response.data;
   } catch (error) {
     handleError(error);
   }
 };
-
-// export const updateclinicianBusinessPeriods = async (periodDayId) => {
-//   try {
-//     const response = await api.patch(`/api/business-periods/${periodDayId}`);
-//     return response.data;
-//   } catch (error) {
-//     handleError(error);
-//   }
-// };

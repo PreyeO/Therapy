@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -10,24 +10,37 @@ import { useDialogState } from "@/store";
 import DialogCard from "../../../components/DialogCard";
 import { useNavigate } from "react-router-dom";
 import { useAppointmentsStore } from "@/store/useAppointment";
-import { BookingData } from "@/types/formSchema";
-import { useState } from "react";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { BookingData, BusinessPeriod } from "@/types/formSchema";
 import LoadingOverlay from "@/components/ui/loader_effects/LoadingOverlay";
 
 const ProfileInfo = () => {
-  const { selectedClinician, loading } = useAppointmentsStore(); // Added loading state
+  const { selectedClinician, loading } = useAppointmentsStore();
+  const { fetchBusinessPeriodsByClinicianId, fetchedBusinessPeriods } =
+    useBusinessPeriodsStore(); // Use new setFetchedBusinessPeriods function
   const { showReview, openSchedule, openReview, openSuccess } =
     useDialogState();
   const navigate = useNavigate();
-
-  const [bookingData, setBookingData] = useState<BookingData | null>(null); // Use BookingData type
+  const [bookingData, setBookingData] = useState<BookingData | null>(null);
+  const [businessPeriods, setBusinessPeriods] = useState<BusinessPeriod[]>([]);
 
   useEffect(() => {
-    console.log("Selected Clinician:", selectedClinician); // Log the selected clinician data
+    console.log("Selected Clinician:", selectedClinician);
   }, [selectedClinician]);
 
+  const handleFetchBusinessPeriods = async () => {
+    if (selectedClinician?.clinician_profile?.id) {
+      await fetchBusinessPeriodsByClinicianId(
+        selectedClinician.clinician_profile.id
+      );
+      setBusinessPeriods(fetchedBusinessPeriods); // Set local state after fetching
+
+      openSchedule(); // Open the schedule dialog after fetching periods
+    }
+  };
+
   const handleContinue = (data: BookingData) => {
-    setBookingData(data); // Store booking data
+    setBookingData(data);
     openReview();
   };
 
@@ -39,14 +52,13 @@ const ProfileInfo = () => {
   };
 
   const handleViewAppointment = () => {
-    navigate("/client_dashboard/client_appointment"); // Navigate to the appointment page
+    navigate("/client_dashboard/client_appointment");
   };
 
   if (loading) {
     return <LoadingOverlay />;
   }
 
-  // Return a message if no clinician is selected or data is missing
   if (!selectedClinician) {
     return <p>No clinician selected. Please select a clinician.</p>;
   }
@@ -61,11 +73,10 @@ const ProfileInfo = () => {
         <CardTitle className="text-3xl font-bold">
           {`${selectedClinician.first_name} ${selectedClinician.last_name}`}
         </CardTitle>
-        <p className="text-base font-normal text-[#041827B2]">Psychologist</p>
 
         <Button
           className="flex gap-3 rounded-full w-full h-[50px] mx-auto text-[12px] font-medium mt-4"
-          onClick={openSchedule}
+          onClick={handleFetchBusinessPeriods}
         >
           <CalendarClock size={18} />
           Book Appointment
@@ -94,12 +105,12 @@ const ProfileInfo = () => {
           </div>
         </div>
         <div>
-          <p>
+          {/* <p>
             Email Address:
             <span className="font-normal text-[#041827B2] pl-4">
               {selectedClinician.email}
             </span>
-          </p>
+          </p> */}
         </div>
         <div className="flex flex-col gap-4 w-[570px] pt-6">
           <Title title="BIO" className="text-xl font-bold" />
@@ -117,7 +128,10 @@ const ProfileInfo = () => {
         {showReview && bookingData ? (
           <BookingReview bookingData={bookingData} onBookNow={handleBookNow} />
         ) : (
-          <Schedule onContinue={handleContinue} />
+          <Schedule
+            onContinue={handleContinue}
+            businessPeriods={businessPeriods} // Pass the business periods here
+          />
         )}
       </DialogCard>
     </Card>

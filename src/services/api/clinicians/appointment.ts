@@ -1,13 +1,4 @@
-import {
-  getAuthToken,
-  api,
-  handleError,
-} from "@/services/api/authentication/auth";
-
-const token = getAuthToken();
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Token ${token}`;
-}
+import { api, handleError } from "@/services/api/authentication/auth";
 
 export const getUnavailableSlots = async () => {
   try {
@@ -89,7 +80,6 @@ export const getWaitlistedAppointments = async () => {
     handleError(error);
   }
 };
-
 export const updateAppointmentStatus = async (
   appointmentId: string,
   data: {
@@ -99,9 +89,12 @@ export const updateAppointmentStatus = async (
     acceptance_status?: string;
   }
 ) => {
+  if (!appointmentId) {
+    throw new Error("Appointment ID is undefined");
+  }
+
   try {
     const payload: Record<string, string | undefined> = {};
-
     if (data.service) payload.service = data.service;
     if (data.start_time) payload.start_time = data.start_time;
     if (data.status) payload.status = data.status;
@@ -112,7 +105,6 @@ export const updateAppointmentStatus = async (
       `/api/appointments/${appointmentId}/`,
       payload
     );
-
     return response.data;
   } catch (error) {
     handleError(error);
@@ -135,6 +127,26 @@ export const getDateSearch = async (startDate: string, endDate: string) => {
     const response = await api.get(
       `/api/appointments/?detail=true&start_time=${startDate},${endDate}`
     );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllClinicians = async (startDate: string, endDate: string) => {
+  try {
+    const response = await api.get(
+      `/api/appointments/?detail=true&start_time=${startDate},${endDate}`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getAllClients = async () => {
+  try {
+    const response = await api.get(`api/client-profiles/`);
     return response.data;
   } catch (error) {
     handleError(error);

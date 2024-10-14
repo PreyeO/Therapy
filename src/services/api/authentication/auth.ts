@@ -1,3 +1,4 @@
+import { resetAllStores } from "@/store/resetStores";
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -67,15 +68,35 @@ export const verifyEmailOTP = async (userId, otp) => {
 
 // api to login users
 
+// export const loginUser = async (loginData: {
+//   email: string;
+//   password: string;
+// }) => {
+//   try {
+//     const response = await api.post("/api/users/login/", loginData);
+//     const userData = response.data;
+//     localStorage.setItem("user", JSON.stringify(userData));
+//     setAuthToken(userData.token); // Set the token after login
+//     return userData;
+//   } catch (error) {
+//     handleError(error);
+//   }
+// };
 export const loginUser = async (loginData: {
   email: string;
   password: string;
 }) => {
   try {
+    // Clear any existing session or state
+    logoutUser(); // Ensure any existing session is removed
+
     const response = await api.post("/api/users/login/", loginData);
     const userData = response.data;
+
+    // Store the new user data
     localStorage.setItem("user", JSON.stringify(userData));
-    setAuthToken(userData.token); // Set the token after login
+    setAuthToken(userData.token); // Set the token for the new user
+
     return userData;
   } catch (error) {
     handleError(error);
@@ -93,19 +114,39 @@ export const getUserData = () => {
   return null;
 };
 
-// api to get auth token from local storage
-
 export const getAuthToken = () => {
-  const userData = getUserData();
+  const userData = localStorage.getItem("user");
   if (userData) {
-    return userData.token;
+    return JSON.parse(userData).token;
   }
   return null;
 };
 
+// Set the token whenever making an authenticated request
+const token = getAuthToken();
+if (token) {
+  setAuthToken(token);
+}
+
+// api to get auth token from local storage
+
+// export const getAuthToken = () => {
+//   const userData = getUserData();
+//   if (userData) {
+//     return userData.token;
+//   }
+//   return null;
+// };
+
 export const logoutUser = () => {
+  // Remove user data from localStorage
   localStorage.removeItem("user");
+
+  // Remove the authorization header
   delete api.defaults.headers.common["Authorization"];
+
+  // Call the centralized state reset function
+  resetAllStores();
 };
 export const handleError = (error) => {
   if (axios.isAxiosError(error)) {
