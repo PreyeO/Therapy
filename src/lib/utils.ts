@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { isSameDay, getHours, getMinutes, isWithinInterval } from "date-fns";
 import { Event, AppointmentInfo, AppointmentAddress } from "@/types/formSchema";
 import { calendarSheetColors } from "@/constants/DataManager";
+import axios from "axios";
 
 // Utility for class names
 export function cn(...inputs: ClassValue[]) {
@@ -229,4 +230,25 @@ export const isWithinNext24Hours = (startTime: string): boolean => {
 
   // Calculate the time difference in hours and check if it's less than or equal to 24 hours.
   return timeDifferenceInMs <= 24 * 60 * 60 * 1000 && timeDifferenceInMs >= 0;
+};
+
+export const getErrorMessage = (error: unknown): string => {
+  // Check if the error is an Axios error
+  if (axios.isAxiosError(error) && error.response) {
+    // Try to extract a message from different fields (common structure in many APIs)
+    return (
+      error.response.data?.message || // Custom message from the server
+      error.response.data?.error || // Sometimes it's under 'error'
+      error.response.data?.detail || // Sometimes it's under 'detail'
+      "An error occurred. Please try again." // Default message if no specific error message found
+    );
+  }
+
+  // If it's a generic JS error, return its message
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  // Fallback message for unknown errors
+  return "An unexpected error occurred. Please try again.";
 };

@@ -2,16 +2,28 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  placeholderColor?: string; // Add a new prop for placeholder color
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, value = "", children, ...props }, ref) => {
+  (
+    {
+      className,
+      type,
+      value = "",
+      children,
+      placeholderColor = "placeholder-muted-foreground",
+      ...props
+    },
+    ref
+  ) => {
     return (
       <div className="relative">
         <input
           type={type}
           className={cn(
-            "flex h-10 w-full rounded-xl border border-input bg-[#FEFEFE] px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50  focus:outline-none focus:ring focus:ring-army_green",
+            `flex h-10 w-full rounded-xl border border-input bg-transparent px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium ${placeholderColor} focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring focus:ring-army_green`,
             className,
             children && "opacity-0 absolute w-full h-full cursor-pointer" // Apply these classes only if children are present
           )}

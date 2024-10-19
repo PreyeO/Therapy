@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore"; // Use Zustand store
+import ProfileTitle from "@/components/ui/Titles/ProfileTitle";
 
 const ProfileForm = () => {
   const { profile, profileLoading, fetchProfileData } =
@@ -11,10 +12,9 @@ const ProfileForm = () => {
 
   const form = useForm({
     defaultValues: {
-      state: "",
-      city: "",
-      street: "",
-      zipcode: "",
+      firstName: "",
+      lastName: "",
+      email: "",
     },
   });
 
@@ -33,7 +33,7 @@ const ProfileForm = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <h3 className=" font-bold text-lg">Personal Info</h3>
+      <ProfileTitle title="Personal Info" />
       <Form {...form}>
         <form className="flex flex-col gap-5 w-full">
           <FormItem>

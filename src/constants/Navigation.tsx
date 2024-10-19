@@ -3,6 +3,8 @@ import {
   CalendarCheck,
   CalendarDays,
   ClipboardPlus,
+  Contact,
+  // ClipboardPlus,
   CreditCard,
   HandCoins,
   Headset,
@@ -58,11 +60,40 @@ export const sidebarLinksTwo = [
   {
     label: "Support",
     icon: <Headset strokeWidth={2} color="#868686" size={24} />,
-    href: "/clinician_dashboard/empty",
+    href: "/clinician_dashboard/support",
   },
 ];
 
-export const miniSidebarLinks = [
+export const clientMiniSidebarLinks = [
+  {
+    label: "Profile",
+    subtitle: "Personal info",
+    icon: <User strokeWidth={2} color="#868686" size={20} />,
+    href: "/client_dashboard/profile",
+  },
+
+  {
+    label: "Medical Info",
+    subtitle: "Your medical information",
+    icon: <ClipboardPlus strokeWidth={2} color="#868686" size={20} />,
+    href: "/client_dashboard/profile/medicalinfo",
+  },
+  {
+    label: "Emergency Contact",
+    subtitle: "Contacts in case of emergency",
+    icon: <Contact strokeWidth={2} color="#868686" size={20} />,
+    href: "/client_dashboard/profile/emergencycontact",
+  },
+
+  {
+    label: "Email Updates",
+    subtitle: "Updates on your schedule",
+    icon: <MessageSquareDot strokeWidth={2} color="#868686" size={20} />,
+    href: "/client_dashboard/profile/emailinfo",
+  },
+];
+
+export const clinicianMiniSidebarLinks = [
   {
     label: "Profile",
     subtitle: "Personal info",
@@ -109,24 +140,29 @@ export const clientSidebarLinks = [
     href: "/client_dashboard/client_appointment",
   },
 
-  {
-    label: "Reports",
-    icon: <ClipboardPlus strokeWidth={2} color="#868686" size={24} />,
-    href: "/client_dashboard/clients",
-  },
+  // {
+  //   label: "Reports",
+  //   icon: <ClipboardPlus strokeWidth={2} color="#868686" size={24} />,
+  //   href: "/client_dashboard/clients",
+  // },
   {
     label: "Payments",
 
     icon: <CreditCard strokeWidth={2} color="#868686" size={24} />,
     href: "/client_dashboard/billing",
   },
-];
-export const clientSidebarLinksTwo = [
   {
     label: "Receipts",
 
     icon: <ReceiptText strokeWidth={2} color="#868686" size={24} />,
     href: "/client_dashboard/billing",
+  },
+];
+export const clientSidebarLinksTwo = [
+  {
+    label: "Support",
+    icon: <Headset strokeWidth={2} color="#868686" size={24} />,
+    href: "/client_dashboard/support",
   },
   {
     label: "Profile Settings",

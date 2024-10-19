@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { BookingData, BookAppointment } from "@/types/formSchema";
 import { bookAppointment } from "@/services/api/clients/appointments";
@@ -7,6 +6,8 @@ import { useAppointmentsStore } from "@/store/useAppointment";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 import { useAuthState } from "@/store";
+import { toast, ToastContainer } from "react-toastify";
+import { getErrorMessage } from "@/lib/utils";
 
 interface BookingReviewProps {
   bookingData: BookingData | null;
@@ -25,7 +26,6 @@ const BookingReview: React.FC<BookingReviewProps> = ({
     return <p className="text-center">No booking data available</p>;
 
   // Retrieve clinician, service, and location IDs based on bookingData
-  // const clinicianId = selectedClinician?.clinician_profile?.id || "";
   const serviceId =
     services.find((service) => service.name === bookingData.service)?.id || "";
   const locationId =
@@ -35,7 +35,7 @@ const BookingReview: React.FC<BookingReviewProps> = ({
 
   const handleBookNow = async () => {
     if (!bookingData || !selectedClinician || !serviceId || !locationId) {
-      console.error("Booking data is incomplete or clinician not selected");
+      toast.error("Incomplete booking data. Please check the details.");
       return;
     }
 
@@ -45,7 +45,7 @@ const BookingReview: React.FC<BookingReviewProps> = ({
       // Ensure that the clinician ID matches the selected clinician's ID
       const clinicianId = selectedClinician.clinician_profile?.id || "";
       if (!clinicianId) {
-        console.error("Selected clinician has no valid ID");
+        toast.error("Clinician selection is invalid.");
         return;
       }
 
@@ -58,10 +58,15 @@ const BookingReview: React.FC<BookingReviewProps> = ({
         location: locationId,
       };
 
+      // Attempt to book appointment
       await bookAppointment(payload);
       onBookNow(); // Trigger success callback
     } catch (error) {
-      console.error("Failed to book appointment:", error);
+      // Use the centralized error handler to get the error message
+      const errorMessage = getErrorMessage(error);
+
+      // Toast the error message extracted
+      toast.error(`Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -104,10 +109,14 @@ const BookingReview: React.FC<BookingReviewProps> = ({
         <ButtonLoader
           loading={loading} // Use loading from the store
           text="Book Now"
-          className="rounded-full w-full h-14"
+          className="rounded-full w-full h-14 text-base"
           onClick={handleBookNow} // Set the onClick handler to handleBookNow
         />
       </CardContent>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </Card>
   );
 };

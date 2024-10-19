@@ -1,10 +1,19 @@
-import { miniSidebarLinks } from "@/constants/Navigation";
-
 import { Link, useLocation } from "react-router-dom";
 
-import React from "react";
+import React, { ReactElement } from "react";
 
-const MiniSidebar = () => {
+interface SidebarLink {
+  icon: ReactElement;
+  href: string;
+  label: string;
+  subtitle: string;
+}
+
+interface MiniSidebarProps {
+  links: SidebarLink[];
+}
+
+const MiniSidebar: React.FC<MiniSidebarProps> = ({ links }) => {
   const location = useLocation();
 
   return (
@@ -12,7 +21,7 @@ const MiniSidebar = () => {
       <nav className="flex flex-col  pt-9">
         <h2 className="text-lg text-army_green font-bold">Profile</h2>
         <div className="flex flex-col gap-9 pt-8">
-          {miniSidebarLinks.map((item, index) => (
+          {links.map((item, index) => (
             <div key={index} className="flex gap-4 items-center">
               <div>
                 {React.cloneElement(item.icon, {

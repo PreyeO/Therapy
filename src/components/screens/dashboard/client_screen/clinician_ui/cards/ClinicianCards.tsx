@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { CalendarClock, Eye } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAppointmentsStore } from "@/store/useAppointment";
-import { useDialogState } from "@/store";
+
 import DialogCard from "../../../components/DialogCard";
 import Schedule from "../../booking_ui/Schedule";
 import BookingReview from "../../booking_ui/BookingReview";
-import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 // Import the BookingData interface
 import { BookingData, BusinessPeriod } from "@/types/formSchema"; // Adjust the path as needed
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { useDialogState } from "@/store";
 
 const ClinicianCards = () => {
   const {
     clinicians,
-    loading,
     fetchClinicianList,
     fetchIndividualClinician,
     setSelectedClinician,
@@ -32,6 +32,9 @@ const ClinicianCards = () => {
 
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [businessPeriods, setBusinessPeriods] = useState<BusinessPeriod[]>([]);
+
+  // State to manage loading for individual clinician cards
+  const [loadingClinician, setLoadingClinician] = useState<string | null>(null); // Track which clinician is loading
 
   useEffect(() => {
     fetchClinicianList();
@@ -58,27 +61,19 @@ const ClinicianCards = () => {
     navigate("/client_dashboard/client_appointment");
   };
 
-  const handleBookAppointment = async (clinician) => {
-    // Step 1: Set the selected clinician in the global store
+  const handleBookAppointment = async (clinicianId: string, clinician) => {
+    setLoadingClinician(clinicianId); // Set loading for the specific clinician
+
     setSelectedClinician(clinician);
 
-    // Step 2: Fetch business periods for the selected clinician
-    if (clinician.clinician_profile?.id) {
+    if (clinician?.clinician_profile?.id) {
       await fetchBusinessPeriodsByClinicianId(clinician.clinician_profile.id);
       setBusinessPeriods(fetchedBusinessPeriods); // Set the fetched business periods to local state
     }
 
-    // Step 3: Open the schedule dialog after setting the clinician and fetching periods
+    setLoadingClinician(null); // Reset loading after the data is fetched
     openSchedule();
   };
-
-  if (loading) {
-    return (
-      <div className="relative w-full h-[300px] flex justify-center items-center">
-        <SmallLoader />
-      </div>
-    );
-  }
 
   return (
     <div className="grid grid-cols-4 gap-6 pt-[60px] h-[196px]">
@@ -98,9 +93,6 @@ const ClinicianCards = () => {
                 <CardTitle className="font-bold text-lg break-words whitespace-normal">
                   {`${clinician.first_name} ${clinician.last_name}`}
                 </CardTitle>
-                {/* <p className="text-[#041827B2] text-[14px] break-words whitespace-normal">
-                  {clinician.email}
-                </p> */}
               </div>
             </div>
 
@@ -110,18 +102,32 @@ const ClinicianCards = () => {
 
             <CardFooter className="flex flex-col pt-5">
               <div className="flex gap-3 pt-5">
-                <Button
-                  className="flex gap-3 rounded-full w-[190px] text-[12px] font-medium flex-shrink-0"
-                  onClick={() => handleBookAppointment(clinician)}
-                >
-                  <CalendarClock size={18} />
-                  Book Appointment
-                </Button>
+                {clinician?.clinician_profile?.id && (
+                  <ButtonLoader
+                    loading={
+                      loadingClinician === clinician.clinician_profile?.id
+                    } // Safely access id with optional chaining
+                    className="flex gap-3 rounded-full w-[190px] text-[12px] font-medium flex-shrink-0"
+                    onClick={() => {
+                      const clinicianId = clinician.clinician_profile?.id;
+                      if (clinicianId) {
+                        handleBookAppointment(clinicianId, clinician);
+                      }
+                    }}
+                    disabled={
+                      loadingClinician === clinician.clinician_profile?.id
+                    } // Safely access id with optional chaining
+                  >
+                    Book Appointment
+                    <CalendarClock size={18} />
+                  </ButtonLoader>
+                )}
 
                 <div
                   className="rounded-full w-[38px] h-[38px] border-2 border-army_green flex items-center justify-center cursor-pointer"
                   onClick={() =>
-                    handleViewClinician(clinician.clinician_profile?.id || "")
+                    clinician?.clinician_profile?.id &&
+                    handleViewClinician(clinician.clinician_profile.id)
                   }
                 >
                   <Eye color="#6D7C43" />

@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { addDays, format, startOfWeek, isSameDay, getMinutes } from "date-fns";
+import {
+  addDays,
+  format,
+  startOfWeek,
+  isSameDay,
+  isBefore,
+  getMinutes,
+} from "date-fns";
 import {
   Tooltip,
   TooltipContent,
@@ -32,45 +39,36 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
   const [openPopoverSlot, setOpenPopoverSlot] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Map the business hours using the `mapBusinessHours` utility function
   const businessHours = mapBusinessHours(businessPeriods);
 
-  // Calculate days of the week based on the starting date
   const daysOfWeek = Array.from({ length: 7 }).map((_, index) =>
     addDays(startOfWeek(weekStartDate, { weekStartsOn: 0 }), index)
   );
 
-  // Define 20-minute time slots for each hour (7:00 AM - 5:00 PM, each hour has 3 slots)
   const timeSlots = Array.from({ length: 11 }).map((_, hourIndex) => {
-    const hour = hourIndex + 7; // Start at 7:00 AM
+    const hour = hourIndex + 7;
     return [`${hour}:00`, `${hour}:20`, `${hour}:40`];
   });
 
-  // Hourly labels (7:00, 8:00, etc.)
   const hourlyLabels = Array.from({ length: 11 }).map(
     (_, index) => `${7 + index}:00`
   );
 
-  // Update current time every minute
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(interval);
   }, []);
 
-  // Get the percentage position of the current time in its hour
   const getCurrentTimePosition = () => {
     const minutes = getMinutes(currentTime);
-    return `${(minutes / 60) * 100}%`; // Percentage within the hour
+    return `${(minutes / 60) * 100}%`;
   };
 
   return (
     <div className="w-full h-full overflow-x-auto relative">
       <div className="min-w-[1000px] relative z-30">
-        {/* Header Row for Days of the Week */}
         <div className="flex">
-          {/* Empty space to align with the time labels */}
           <div className="w-[50px]"></div>
-          {/* Days of the Week Header */}
           <div className="flex-1 grid grid-cols-7 border-b-2 border-[#6D7C43]">
             {daysOfWeek.map((day) => (
               <div
@@ -90,24 +88,19 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
           </div>
         </div>
 
-        {/* Schedule Rows */}
         <div className="flex">
-          {/* Time Slot Labels - Positioned on Each Hour */}
           <div className="flex flex-col justify-start items-end pr-4 relative">
             {hourlyLabels.map((label) => (
               <div
                 key={label}
                 className="h-[60px] flex flex-col items-center justify-start text-sm font-normal text-[#71717A] relative"
               >
-                {/* Hourly Time Labels (e.g., 7:00, 8:00) */}
                 <span className="text-sm">{label}</span>
               </div>
             ))}
           </div>
 
-          {/* Day Columns with Time Slots */}
           <div className="flex-1 grid grid-cols-7 relative">
-            {/* Green horizontal line stretching across the week for each hour */}
             {hourlyLabels.map((label, index) => (
               <div
                 key={label}
@@ -123,12 +116,13 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
               const dayKey = format(day, "eeee").toLowerCase();
               const businessDayHours = businessHours[dayKey];
 
+              const isPastDay = isBefore(day, new Date());
+
               return (
                 <div
                   key={day.toString()}
                   className="border-r-2 border-[#6D7C43] relative"
                 >
-                  {/* Red line to indicate current time if today */}
                   {isSameDay(day, currentTime) && (
                     <div
                       className="absolute left-0 w-full border-red-500"
@@ -140,7 +134,7 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                   )}
 
                   {timeSlots.map((slotsForHour, hourIndex) => {
-                    const hour = hourIndex + 7; // Start at 7:00 AM
+                    const hour = hourIndex + 7;
 
                     return (
                       <div key={hour} className="relative">
@@ -166,23 +160,31 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                             (Number(hour) >= businessDayHours.closingHour &&
                               minute === "00");
 
+                          const isPastSlot =
+                            isPastDay ||
+                            (isSameDay(day, currentTime) &&
+                              isBefore(slotStart, currentTime));
+
                           return (
                             <TooltipProvider key={`${day}-${slot}`}>
                               <Tooltip>
                                 <TooltipTrigger
                                   asChild
-                                  disabled={isBlocked || isOutsideBusinessHours}
+                                  disabled={
+                                    isBlocked ||
+                                    isOutsideBusinessHours ||
+                                    isPastSlot
+                                  }
                                 >
                                   <div
                                     className={`h-[20px] ${
                                       isBlocked ? "cursor-not-allowed" : ""
                                     } ${
-                                      isOutsideBusinessHours
+                                      isOutsideBusinessHours || isPastSlot
                                         ? "bg-[#E0E0E0] cursor-not-allowed"
                                         : ""
                                     } relative flex items-center justify-center`}
                                   >
-                                    {/* #D8E1B7 */}
                                     {isBlocked ? (
                                       blockedSlots.map((blockedSlot) => {
                                         if (
@@ -199,8 +201,8 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                                               className="absolute left-0 w-full rounded flex items-center justify-center text-[#FFFFFF] font-bold"
                                               style={{
                                                 backgroundColor: "#FF2626",
-                                                height: `${slotStyle.height}`, // Adjust height dynamically
-                                                top: `${slotStyle.top}`, // Adjust top position dynamically
+                                                height: `${slotStyle.height}`,
+                                                top: `${slotStyle.top}`,
                                               }}
                                             >
                                               Booked
@@ -209,10 +211,10 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                                         }
                                         return null;
                                       })
-                                    ) : isOutsideBusinessHours ? (
+                                    ) : isOutsideBusinessHours || isPastSlot ? (
                                       <TooltipContent
                                         side="top"
-                                        className="bg-[#FF2626] text-white "
+                                        className="bg-[#FF2626] text-white"
                                       >
                                         Unavailable
                                       </TooltipContent>

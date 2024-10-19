@@ -5,9 +5,22 @@ import {
 import FullLogo from "../ui/logos/FullLogo";
 import { Link, useLocation } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getUserData } from "@/services/api/authentication/auth";
 
 const ClientSideBar = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const userData = getUserData();
+    if (userData) {
+      const { email } = userData.user;
+      const { first_name } = userData.user;
+      setName(`${first_name}`);
+      setEmail(`${email}`);
+    }
+  }, []);
   const location = useLocation();
 
   return (
@@ -69,10 +82,8 @@ const ClientSideBar = () => {
             <AvatarFallback>avatar</AvatarFallback>
           </Avatar>
           <div>
-            <h2 className="text-base font-bold"> Dr. Preye</h2>
-            <h2 className="text-[12px] text-[#BDBDBD] font-normal">
-              speak2preye@co.uk
-            </h2>
+            <h2 className="text-base font-bold">{name}</h2>
+            <h2 className="text-[12px] text-[#BDBDBD] font-normal">{email}</h2>
           </div>
         </div>
       </nav>

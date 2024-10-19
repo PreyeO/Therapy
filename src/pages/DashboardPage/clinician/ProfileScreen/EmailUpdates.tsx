@@ -1,6 +1,6 @@
 import EmailInfo from "@/components/screens/dashboard/clinician_screen/profile_ui/EmailInfo";
 
-const EmailProfile = () => {
+const EmailUpdates = () => {
   return (
     <main className="">
       <EmailInfo />
@@ -8,4 +8,4 @@ const EmailProfile = () => {
   );
 };
 
-export default EmailProfile;
+export default EmailUpdates;

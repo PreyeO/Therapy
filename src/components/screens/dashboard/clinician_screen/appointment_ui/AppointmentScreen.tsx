@@ -53,6 +53,9 @@ const AppointmentScreen = () => {
       case "all":
         fetchFullAppointments();
         break;
+      case "history":
+        fetchWaitlistedAppointments();
+        break;
       default:
         break;
     }
@@ -160,8 +163,13 @@ const AppointmentScreen = () => {
           >
             All Appointments
           </TabsTrigger>
+          <TabsTrigger
+            value="all"
+            className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
+          >
+            Appointment History
+          </TabsTrigger>
         </TabsList>
-
         <TabsContent
           value="request"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
@@ -173,7 +181,6 @@ const AppointmentScreen = () => {
             dropdownItemsGenerator: getDropdownItemsOne,
           })}
         </TabsContent>
-
         <TabsContent
           value="accepted"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
@@ -185,7 +192,6 @@ const AppointmentScreen = () => {
             dropdownItemsGenerator: getDropdownItemsTwo,
           })}
         </TabsContent>
-
         <TabsContent
           value="waitlist"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
@@ -197,13 +203,25 @@ const AppointmentScreen = () => {
             dropdownItemsGenerator: getDropdownItemsOne,
           })}
         </TabsContent>
-
         <TabsContent
           value="all"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
           {renderTabContent({
             title: "All Appointments",
+            data: fullAppointments,
+            filteredData: filteredFullAppointments,
+            dropdownItemsGenerator: getDropdownItemsTwo,
+            isAllTab: true,
+          })}
+        </TabsContent>
+        \{" "}
+        <TabsContent
+          value="history"
+          className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
+        >
+          {renderTabContent({
+            title: "Appointment History",
             data: fullAppointments,
             filteredData: filteredFullAppointments,
             dropdownItemsGenerator: getDropdownItemsTwo,

@@ -9,6 +9,7 @@ interface SearchInputProps {
   borderClass?: string;
   readOnly?: boolean;
   onChange?: (value: string) => void;
+  placeholderColor?: string;
 }
 
 const SearchInput: FC<SearchInputProps> = ({
@@ -16,6 +17,7 @@ const SearchInput: FC<SearchInputProps> = ({
   placeholder,
   value, // Destructure value prop
   onChange,
+  placeholderColor = "placeholder-muted-foreground",
 }) => {
   return (
     <div className={`flex items-center px-6  ${className}`}>
@@ -30,6 +32,7 @@ const SearchInput: FC<SearchInputProps> = ({
         placeholder={placeholder}
         className="focus:ring-transparent border-none"
         onChange={(e) => onChange && onChange(e.target.value)} // Handle change event
+        placeholderColor={placeholderColor}
       />
     </div>
   );

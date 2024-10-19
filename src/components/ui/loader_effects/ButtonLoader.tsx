@@ -1,13 +1,13 @@
-// src/components/ui/ButtonLoader.tsx
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
 interface ButtonLoaderProps {
   loading: boolean;
-  text: string;
+  text?: string; // Make text optional
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
+  children?: ReactNode; // Add children prop
 }
 
 const ButtonLoader: FC<ButtonLoaderProps> = ({
@@ -16,11 +16,12 @@ const ButtonLoader: FC<ButtonLoaderProps> = ({
   disabled,
   onClick,
   className,
+  children,
 }) => {
   return (
     <Button
       type="submit"
-      className={`${className} w-full bg-army_green font-semibold text-white hover:bg-army_green  text-base ${
+      className={`${className}  bg-army_green font-semibold text-white hover:bg-army_green  ${
         loading ? "cursor-not-allowed" : ""
       }`}
       disabled={loading || disabled}
@@ -32,7 +33,7 @@ const ButtonLoader: FC<ButtonLoaderProps> = ({
           Please wait...
         </div>
       ) : (
-        text
+        children || text // Render children if passed, otherwise fallback to text
       )}
     </Button>
   );

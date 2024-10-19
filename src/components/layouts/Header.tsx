@@ -15,7 +15,7 @@ const Header: FC<HeaderProps> = ({ message }) => {
       <div className="flex justify-between">
         <div className="w-[50%] h-[72px] bg-white  px-6 hidden lg:flex rounded-xl ">
           <SearchInput
-            className="text-base text-[#BDBDBD] border-none focus:ring-transparents focus:ring-transparent "
+            className="text-base text-[#BDBDBD] border-none  focus:ring-transparent "
             placeholder={message}
           />
         </div>

@@ -191,7 +191,9 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     fetchBusinessPeriodsByClinicianId: async (
       clinician_profile_id: string
     ): Promise<BusinessPeriod[]> => {
+      set({ fetchedBusinessPeriods: [] });
       set({ loading: true, error: null });
+
       try {
         const periods = await getIndividualClinicianBusinessPeriod(
           clinician_profile_id
@@ -203,6 +205,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
         return []; // Return an empty array if an error occurs
       }
     },
+
     // Fetch appointment addresses from backend
     fetchAppointmentAddresses: async () => {
       set({ loading: true, error: null });

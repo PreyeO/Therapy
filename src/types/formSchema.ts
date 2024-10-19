@@ -387,3 +387,32 @@ export type AppointmentCalender = {
   start_date: string;
   end_date: string;
 };
+
+// Client profile structure
+
+export const medicationSchema = z.object({
+  medicaton_name: z.string({
+    required_error: "Provide your business street to continue",
+  }),
+  medication_dosage: z.string({
+    required_error: "Provide your business city to continue",
+  }),
+  medication_prescriber: z.string({
+    required_error: "Provide your business state to continue",
+  }),
+  medication_start_date: z.string({
+    required_error: "Provide your business postal code to continue",
+  }),
+  medication_end_date: z.string({
+    required_error: "Provide your business postal code to continue",
+  }),
+  medication_frequency: z.string({
+    required_error: "Provide your business postal code to continue",
+  }),
+  medication_note: z.string({
+    required_error: "Provide your business postal code to continue",
+  }),
+  medication_purpose: z.string({
+    required_error: "Provide your business postal code to continue",
+  }),
+});

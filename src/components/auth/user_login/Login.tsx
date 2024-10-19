@@ -1,7 +1,3 @@
-import { loginFormSchema } from "@/types/formSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
 import {
   Card,
   CardContent,
@@ -9,18 +5,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Logo from "@/components/ui/logos/Logo";
+import { loginFormSchema } from "@/types/formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, FormProvider } from "react-hook-form";
+import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import {
   loginUser,
   logoutUser,
   setAuthToken,
 } from "@/services/api/authentication/auth";
-import LoginForm from "@/components/auth/user_login/LoginForm";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 import { useAuthState } from "@/store";
 import { resetAllStores } from "@/store/resetStores";
+import LoginForm from "@/components/auth/user_login/LoginForm";
+
+import Logo from "@/components/ui/logos/Logo";
+import { getErrorMessage } from "@/lib/utils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,12 +61,9 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.error("Login error:", error);
-      if (error instanceof Error) {
-        toast.error(error.message || "An unknown error occurred");
-      } else {
-        toast.error("OOOPS! An unknown error occurred");
-      }
+      // Use the centralized error handler
+      const errorMessage = getErrorMessage(error);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -96,7 +95,8 @@ const Login = () => {
               <ButtonLoader
                 loading={loading}
                 text="Login"
-                className="h-14 rounded-full "
+                className="h-14 rounded-full w-full text-base "
+                disabled={loading}
               />
 
               <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">

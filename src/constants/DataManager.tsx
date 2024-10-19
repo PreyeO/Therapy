@@ -358,3 +358,36 @@ export const calendarSheetColors = {
     textColor: "#868686",
   },
 };
+
+export const accordionData = [
+  {
+    id: "1",
+    question: "How can i begin speaking with a clinician",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
+  },
+  {
+    id: "2",
+    question: "How can i begin speaking with a clinician",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
+  },
+  {
+    id: "3",
+    question: "How can i begin speaking with a clinician",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
+  },
+  {
+    id: "4",
+    question: "How can i begin speaking with a clinician",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
+  },
+  {
+    id: "5",
+    question: "How can i begin speaking with a clinician",
+    answer:
+      "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
+  },
+];

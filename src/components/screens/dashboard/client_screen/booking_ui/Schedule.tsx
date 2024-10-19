@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useAppointmentsStore } from "@/store/useAppointment";
 import DateNavigator from "@/components/common/DateNavigator";
 import BookingScheduleSheet from "./BookingScheduleSheet";
-import { BookingData, BusinessPeriod, Clinician } from "@/types/formSchema"; // Import necessary types
+import { BookingData, BusinessPeriod, Clinician } from "@/types/formSchema";
 import { getClinicianCalendar } from "@/services/api/clients/appointments";
 import { format, addDays } from "date-fns";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader"; // Import the loader
 
 // Define CalendarSlot type
 type CalendarSlot = {
@@ -29,30 +30,25 @@ const hasClinicianProfile = (
   );
 };
 
-interface ScheduleProps {
-  onContinue: (data: BookingData) => void;
-  businessPeriods: BusinessPeriod[]; // Accept business periods as a prop
-}
-
 const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(today);
   const [blockedSlots, setBlockedSlots] = useState<
     Array<{ start: Date; end: Date }>
   >([]);
+  const [loading, setLoading] = useState<boolean>(false); // Add loading state
 
-  // Access selected clinician from global store
-  const { selectedClinician } = useAppointmentsStore();
+  const { selectedClinician } = useAppointmentsStore(); // Access clinician
 
   useEffect(() => {
-    // Check if the clinician has a valid clinician_profile before calling the API
     if (hasClinicianProfile(selectedClinician)) {
       const fetchClinicianAvailability = async () => {
+        setLoading(true); // Set loading to true before fetching data
         try {
           const startOfWeekDate = format(currentDate, "yyyy-MM-dd");
           const endOfWeekDate = format(addDays(currentDate, 6), "yyyy-MM-dd");
 
-          // Use clinician_profile.id to fetch calendar data
+          // Fetch the clinician's calendar data
           const calendarData: CalendarSlot[] = await getClinicianCalendar(
             selectedClinician.clinician_profile.id,
             startOfWeekDate,
@@ -64,9 +60,11 @@ const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
             end: new Date(slot.end_time),
           }));
 
-          setBlockedSlots(parsedBlockedSlots); // Update state with blocked slots
+          setBlockedSlots(parsedBlockedSlots); // Update blocked slots
         } catch (error) {
           console.error("Failed to fetch clinician calendar:", error);
+        } finally {
+          setLoading(false); // Set loading to false after data is fetched
         }
       };
 
@@ -90,13 +88,21 @@ const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
         </span>
       </div>
 
-      {/* Render BookingScheduleSheet directly and pass onContinue, blockedSlots, and businessPeriods */}
-      <BookingScheduleSheet
-        weekStartDate={currentDate}
-        blockedSlots={blockedSlots} // Pass blocked slots to BookingScheduleSheet
-        businessPeriods={businessPeriods} // Pass business periods to BookingScheduleSheet
-        onContinue={onContinue} // Pass the onContinue handler
-      />
+      <div className="relative" style={{ minHeight: "400px" }}>
+        {" "}
+        {/* Set a minimum height for the calendar */}
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 bg-gray-200 z-50">
+            <SmallLoader />
+          </div>
+        )}
+        <BookingScheduleSheet
+          weekStartDate={currentDate}
+          blockedSlots={blockedSlots}
+          businessPeriods={businessPeriods}
+          onContinue={onContinue}
+        />
+      </div>
     </div>
   );
 };

@@ -26,6 +26,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 import { useAuthState } from "@/store";
+import { getErrorMessage } from "@/lib/utils";
 
 // accessing user category type
 interface RegisterProps extends handleNextProps {
@@ -52,12 +53,9 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
       handleNext(data.user.id, data.token, userData.email);
       return response;
     } catch (error) {
-      console.error("Registration error:", error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Unknown error occurred");
-      }
+      const errorMessage = getErrorMessage(error); // Use centralized error handler
+
+      toast.error(errorMessage); // Display the error message with toast
     }
   };
 
@@ -69,7 +67,9 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
         handleNext(userId, "", email);
       }
     } catch (error) {
-      console.error("Error sending OTP:", error);
+      const errorMessage = getErrorMessage(error); // Use centralized error handler
+
+      toast.error(errorMessage); // Display the error message with toast
     }
   };
 
@@ -113,12 +113,9 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
         await handleSendOTP(userId, data.email);
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      if (error instanceof Error) {
-        toast.error(error.message || "Ooops!");
-      } else {
-        toast.error("An unknown error occurred");
-      }
+      const errorMessage = getErrorMessage(error); // Use centralized error handler
+      console.error("Registration error:", errorMessage);
+      toast.error(errorMessage); // Display the error message with toast
     } finally {
       setLoading(false);
     }
@@ -150,7 +147,7 @@ const Register: FC<RegisterProps> = ({ userType, handleNext }) => {
               <ButtonLoader
                 loading={loading}
                 text="Create Account"
-                className="h-14 rounded-full "
+                className="h-14 rounded-full w-full text-base"
               />
               <p className="flex w-full gap-1 items-center justify-center text-center font-normal text-base text-primary_black_text">
                 Already have an account?

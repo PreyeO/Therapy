@@ -1,3 +1,4 @@
+import { getErrorMessage } from "@/lib/utils";
 import { resetAllStores } from "@/store/resetStores";
 import axios from "axios";
 
@@ -148,11 +149,8 @@ export const logoutUser = () => {
   // Call the centralized state reset function
   resetAllStores();
 };
-export const handleError = (error) => {
-  if (axios.isAxiosError(error)) {
-    const message = error.response?.data?.detail || "Unknown error occurred";
-    throw new Error(message);
-  } else {
-    throw new Error("Unknown error occurred");
-  }
+
+export const handleError = (error: unknown): void => {
+  const message = getErrorMessage(error);
+  throw new Error(message);
 };
