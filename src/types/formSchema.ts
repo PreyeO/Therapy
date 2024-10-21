@@ -264,6 +264,7 @@ export type AppointmentInfo = {
   service: Service;
   start_time: string;
   end_time: string;
+  status?: string;
   location: {
     id?: number;
     street_address?: string;
@@ -274,6 +275,7 @@ export type AppointmentInfo = {
     id?: number;
     first_name?: string;
     last_name?: string;
+    email?: string;
   };
 };
 

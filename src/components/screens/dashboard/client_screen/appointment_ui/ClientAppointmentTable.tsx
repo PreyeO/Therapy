@@ -18,9 +18,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { format } from "date-fns";
-import { formatTime } from "@/lib/utils";
+import { formatDate, getStatusTextColor } from "@/lib/utils"; // Assuming this is a utility function to format dates
 import AppointmentActions from "./AppointmentActions";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 interface AppointmentTableProps {
   data: AppointmentInfo[];
@@ -34,7 +34,7 @@ const ClientAppointmentTable: React.FC<AppointmentTableProps> = ({
   data,
   loading,
   searchPerformed,
-  showActionColumn = true,
+  showActionColumn = true, // Show Action by default, hide for history
   refreshTable,
 }) => {
   const {
@@ -47,27 +47,14 @@ const ClientAppointmentTable: React.FC<AppointmentTableProps> = ({
   } = usePaginationStore();
   const [appointments, setAppointments] = useState(data);
 
-  const formatAppointmentDate = (
-    appointmentDate: string,
-    appointmentTime: string
-  ) => {
-    const [startTime, endTime] = appointmentTime.split(" - ");
-    const date = new Date(appointmentDate);
-    const formattedStartTime = formatTime(startTime);
-    const formattedEndTime = formatTime(endTime);
-    const formattedDate = format(date, "MMMM do yyyy,");
-    return `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`;
-  };
-
   useEffect(() => {
     setTotalItems(data.length);
     setAppointments(data); // Sync the appointments with prop changes
   }, [data, setTotalItems]);
-
   if (loading) {
     return (
       <div className="relative w-full h-[300px] flex justify-center items-center">
-        <p>Loading...</p>
+        <SmallLoader />
       </div>
     );
   }
@@ -92,6 +79,7 @@ const ClientAppointmentTable: React.FC<AppointmentTableProps> = ({
         <TableHeader>
           <TableRow className="text-xl text-[#212121]">
             <TableHead className="font-bold">Clinician Name</TableHead>
+            <TableHead className="font-bold">Clinician Email</TableHead>
             <TableHead className="font-bold">Booked Date</TableHead>
             <TableHead className="font-bold">Service</TableHead>
             {!showActionColumn && (
@@ -118,11 +106,18 @@ const ClientAppointmentTable: React.FC<AppointmentTableProps> = ({
                 {item.clinician?.first_name} {item.clinician?.last_name}
               </TableCell>
               <TableCell>
-                {formatAppointmentDate(item.start_time, item.end_time)}
+                {item.clinician?.email
+                  ? item.clinician.email
+                  : "Email Not Available"}{" "}
+                {/* Explicitly check and log */}
               </TableCell>
+              <TableCell>{formatDate(item.start_time)}</TableCell>
               <TableCell>{item.service.name}</TableCell>
               {!showActionColumn && (
-                <TableCell className="text-army_green">Attended</TableCell>
+                <TableCell className={getStatusTextColor(item.status)}>
+                  {item.status ? item.status : "Status Not Available"}{" "}
+                  {/* Explicit check */}
+                </TableCell>
               )}
               {showActionColumn && (
                 <TableCell className="px-4 py-3 text-left align-middle">
@@ -139,25 +134,31 @@ const ClientAppointmentTable: React.FC<AppointmentTableProps> = ({
       </Table>
 
       {/* Pagination Section */}
-      <div className="py-3 mt-4">
+      <div className="py-3 mt-4 ">
         <div className="border p-[0.1px] w-[100%]"></div>
-        <Pagination className="flex justify-center">
+        <Pagination className=" mt-10 flex  items-start justify-start">
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious onClick={goToPreviousPage} />
+              <PaginationPrevious
+                onClick={currentPage === 1 ? undefined : goToPreviousPage}
+                disabled={currentPage === 1}
+              />
             </PaginationItem>
             {Array.from({ length: totalPages }, (_, index) => (
               <PaginationItem key={index}>
                 <PaginationLink
                   onClick={() => setCurrentPage(index + 1)}
-                  className={currentPage === index + 1 ? "active" : ""}
+                  className={`${currentPage === index + 1 ? "active" : ""} `}
                 >
                   {index + 1}
                 </PaginationLink>
               </PaginationItem>
             ))}
             <PaginationItem>
-              <PaginationNext onClick={goToNextPage} />
+              <PaginationNext
+                onClick={currentPage === totalPages ? undefined : goToNextPage}
+                disabled={currentPage === totalPages}
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

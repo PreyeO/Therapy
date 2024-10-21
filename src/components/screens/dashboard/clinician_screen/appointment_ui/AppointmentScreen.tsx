@@ -8,7 +8,7 @@ import { useAppointmentsStore } from "@/store/useAppointment";
 
 import DialogCard from "../../components/DialogCard";
 import AppointmentSearch from "./AppointmentSearch";
-import { mapToAppointmentTableFormat } from "@/lib/utils";
+import { getStatusTextColor, mapToAppointmentTableFormat } from "@/lib/utils";
 import AllAppointmentSearch from "./AllAppointmentSearch";
 import { useSearchStore } from "@/store";
 import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
@@ -26,10 +26,12 @@ const AppointmentScreen = () => {
     fetchWaitlistedAppointments,
     fetchUpcomingAppointments,
     fetchFullAppointments,
+    fetchAppointmentHistory,
     appointmentRequests,
     upcomingAppointments,
     waitlistedAppointments,
     fullAppointments,
+    appointmentHistory,
     filteredAppointmentRequests,
     filteredUpcomingAppointments,
     filteredWaitlistedAppointments,
@@ -54,7 +56,7 @@ const AppointmentScreen = () => {
         fetchFullAppointments();
         break;
       case "history":
-        fetchWaitlistedAppointments();
+        fetchAppointmentHistory();
         break;
       default:
         break;
@@ -65,6 +67,7 @@ const AppointmentScreen = () => {
     fetchUpcomingAppointments,
     fetchWaitlistedAppointments,
     fetchFullAppointments,
+    fetchAppointmentHistory,
   ]);
 
   useEffect(() => {
@@ -74,6 +77,11 @@ const AppointmentScreen = () => {
       resetFilters();
     };
   }, [activeTab, resetFilters, refreshTable]);
+  useEffect(() => {}, [
+    appointmentRequests,
+    upcomingAppointments,
+    waitlistedAppointments,
+  ]);
 
   // Define handleSearch to track when a search is performed
   const handleSearch = () => {
@@ -84,12 +92,39 @@ const AppointmentScreen = () => {
     setActiveTab(value);
   };
 
+  const historyColumns = [
+    {
+      key: "clientName",
+      label: "Client Name",
+      render: (item) => `${item.client || "Unknown"}`,
+    },
+    {
+      key: "email",
+      label: "Email",
+      render: (item) => item.email || "Email Not Available",
+    },
+    {
+      key: "bookedDate",
+      label: "Booked Date",
+      render: (item) => item.appointmentDate,
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (item) => (
+        <span className={getStatusTextColor(item.status)}>
+          {item.status || "Unknown"}
+        </span>
+      ),
+    },
+  ];
   const renderTabContent = ({
     title,
     data,
     filteredData,
     dropdownItemsGenerator,
     isAllTab = false,
+    isHistory = false,
   }) => (
     <>
       <div className="flex md:justify-between justify-around py-5 items-center">
@@ -125,6 +160,7 @@ const AppointmentScreen = () => {
           searchPerformed={searchPerformed}
           showActionColumn={!isAllTab}
           setActionLoading={setActionLoading} // Pass loader state setter to child
+          columns={isHistory ? historyColumns : undefined}
         />
       </div>
     </>
@@ -164,7 +200,7 @@ const AppointmentScreen = () => {
             All Appointments
           </TabsTrigger>
           <TabsTrigger
-            value="all"
+            value="history"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Appointment History
@@ -215,17 +251,14 @@ const AppointmentScreen = () => {
             isAllTab: true,
           })}
         </TabsContent>
-        \{" "}
-        <TabsContent
-          value="history"
-          className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
-        >
+
+        <TabsContent value="history">
           {renderTabContent({
             title: "Appointment History",
-            data: fullAppointments,
+            data: appointmentHistory,
             filteredData: filteredFullAppointments,
             dropdownItemsGenerator: getDropdownItemsTwo,
-            isAllTab: true,
+            isHistory: true,
           })}
         </TabsContent>
       </Tabs>

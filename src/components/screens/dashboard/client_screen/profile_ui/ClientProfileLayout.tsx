@@ -4,8 +4,8 @@ import { clientMiniSidebarLinks } from "@/constants/Navigation";
 
 const ClientProfileLayout = () => {
   return (
-    <div className=" bg-white  max-w-[100%] mt-7 rounded-[20px] flex py-3 px-10">
-      <div className="hidden lg:flex w-[35%] border-r-2">
+    <div className=" bg-white  max-w-[100%] mt-7 rounded-[20px] flex py-3">
+      <div className="hidden lg:flex w-[35%] border-r-2 px-5">
         <MiniSidebar links={clientMiniSidebarLinks} />
       </div>
       <main className=" w-full">

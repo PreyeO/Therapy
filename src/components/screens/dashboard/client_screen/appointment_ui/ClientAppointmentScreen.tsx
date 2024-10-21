@@ -5,28 +5,31 @@ import ClientAppointmentTable from "./ClientAppointmentTable";
 import { AppointmentInfo } from "@/types/formSchema";
 
 const ClientAppointmentScreen: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"accepted" | "waitlist">(
+  const [activeTab, setActiveTab] = useState<"accepted" | "history">(
     "accepted"
   );
+
   const {
-    fetchWaitlistedAppointments,
     fetchUpcomingAppointments,
     upcomingAppointments,
-    waitlistedAppointments,
+    appointmentHistory,
     filteredUpcomingAppointments,
-    filteredWaitlistedAppointments,
+    fetchAppointmentHistory,
+
     loading,
   } = useAppointmentsStore();
 
   useEffect(() => {
     if (activeTab === "accepted") {
       fetchUpcomingAppointments();
-    } else if (activeTab === "waitlist") {
-      fetchWaitlistedAppointments();
+    } else if (activeTab === "history") {
+      fetchAppointmentHistory();
     }
-  }, [activeTab, fetchUpcomingAppointments, fetchWaitlistedAppointments]);
+  }, [activeTab, fetchUpcomingAppointments, fetchAppointmentHistory]);
 
-  const handleTabChange = (value: "accepted" | "waitlist") => {
+  useEffect(() => {}, [upcomingAppointments]);
+
+  const handleTabChange = (value: "accepted" | "history") => {
     setActiveTab(value);
   };
 
@@ -34,16 +37,20 @@ const ClientAppointmentScreen: React.FC = () => {
     // Re-fetch the appointment data based on the active tab
     if (activeTab === "accepted") {
       fetchUpcomingAppointments();
-    } else {
-      fetchWaitlistedAppointments();
+    } else if (activeTab === "history") {
+      fetchAppointmentHistory();
     }
   };
 
-  const renderTabContent = (appointments: AppointmentInfo[]) => (
+  const renderTabContent = (
+    appointments: AppointmentInfo[],
+    showActionColumn: boolean = true
+  ) => (
     <ClientAppointmentTable
       data={appointments}
       loading={loading}
       searchPerformed={false}
+      showActionColumn={showActionColumn}
       refreshTable={refreshTable}
     />
   );
@@ -54,7 +61,7 @@ const ClientAppointmentScreen: React.FC = () => {
         defaultValue="accepted"
         className="w-full"
         onValueChange={(value) =>
-          handleTabChange(value as "accepted" | "waitlist")
+          handleTabChange(value as "accepted" | "history")
         }
       >
         <TabsList className="h-[50px] lg:w-[40%] w-[318px] font-medium mx-auto my-6 mt-10">
@@ -65,7 +72,7 @@ const ClientAppointmentScreen: React.FC = () => {
             Upcoming Appointment
           </TabsTrigger>
           <TabsTrigger
-            value="waitlist"
+            value="history"
             className="w-full lg:text-sm md:text-[12px] text-[10px] bg-white"
           >
             Appointment History
@@ -81,12 +88,10 @@ const ClientAppointmentScreen: React.FC = () => {
           )}
         </TabsContent>
         <TabsContent
-          value="waitlist"
+          value="history"
           className="bg-white px-[2%] mt-6 w-full overflow-x-auto"
         >
-          {renderTabContent(
-            filteredWaitlistedAppointments || waitlistedAppointments
-          )}
+          {renderTabContent(appointmentHistory, false)}
         </TabsContent>
       </Tabs>
     </div>

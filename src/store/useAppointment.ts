@@ -11,7 +11,8 @@ import {
   getUpcomingAppointments,
   getWaitlistedAppointments,
   getAllClients,
-} from "@/services/api/clinicians/appointment"; // Ensure to import getUnavailableSlots
+} from "@/services/api/clinicians/appointment";
+
 import {
   AppointmentInfo,
   BusinessPeriod,
@@ -20,6 +21,7 @@ import {
   Event,
 } from "@/types/formSchema";
 import { mapAppointmentResponse } from "@/lib/utils";
+import { getAppointmentHistory } from "@/services/api/joint";
 
 interface AppointmentsState {
   appointments: Event[];
@@ -34,6 +36,7 @@ interface AppointmentsState {
   clients: Client[];
   removeAppointmentFromState: (appointmentId: string) => void;
   updateAppointmentInState: (updatedAppointment: AppointmentInfo) => void;
+  appointmentHistory: AppointmentInfo[];
 
   filteredAppointmentRequests: AppointmentInfo[] | null;
   filteredUpcomingAppointments: AppointmentInfo[] | null;
@@ -60,6 +63,7 @@ interface AppointmentsState {
   fetchUpcomingAppointments: () => Promise<void>;
   fetchFullAppointments: () => Promise<void>;
   fetchClinicianList: () => Promise<void>;
+  fetchAppointmentHistory: () => Promise<void>;
 
   fetchIndividualClinician: (
     clinicianId: string
@@ -80,6 +84,7 @@ export const useAppointmentsStore = create<AppointmentsState>((set, get) => ({
   selectedClinician: null,
   businessPeriods: [],
   clients: [],
+  appointmentHistory: [],
 
   filteredAppointmentRequests: null,
   filteredUpcomingAppointments: null,
@@ -246,6 +251,18 @@ export const useAppointmentsStore = create<AppointmentsState>((set, get) => ({
       set({ clients }); // Set the fetched clients to the state
     } catch (error) {
       console.error("Failed to fetch clients:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+  fetchAppointmentHistory: async () => {
+    set({ loading: true });
+    try {
+      const history = await getAppointmentHistory(); // Assuming this is already implemented
+      const parsedHistory = mapAppointmentResponse(history);
+      set({ appointmentHistory: parsedHistory });
+    } catch (error) {
+      console.error("Failed to fetch appointment history:", error);
     } finally {
       set({ loading: false });
     }

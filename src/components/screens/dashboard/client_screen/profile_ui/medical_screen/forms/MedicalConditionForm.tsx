@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { medicationSchema } from "@/types/formSchema";
 
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const MedicalConditionForm = () => {
   const form = useForm({
@@ -73,10 +74,10 @@ const MedicalConditionForm = () => {
                   Note
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter notes"
+                    placeholder="Enter any additional details or notes"
                     {...field}
                   />
                 </FormControl>
@@ -84,7 +85,7 @@ const MedicalConditionForm = () => {
               </FormItem>
             )}
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium">
+          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
             Add
           </Button>
         </form>

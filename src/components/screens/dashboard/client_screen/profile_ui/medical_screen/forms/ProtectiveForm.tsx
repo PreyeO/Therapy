@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const ProtectiveForm = () => {
   const form = useForm({
@@ -29,78 +29,37 @@ const ProtectiveForm = () => {
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
         <form className="flex flex-col gap-5">
-          <FormField
-            control={form.control}
-            name="medication_name"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Clinician
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the name of medication"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
           <FormItem className="">
             <FormLabel className="text-base font-medium text-primary_black_text">
-              Type
+              Protective Factor
             </FormLabel>
             <Select>
               <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                <SelectValue placeholder="Select frequency" />
+                <SelectValue placeholder="Select protective factor" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="BID">BID</SelectItem>
-                <SelectItem value="TID">TID</SelectItem>
-                <SelectItem value="QID">QID</SelectItem>
-                <SelectItem value="PRN">PRN</SelectItem>
-                <SelectItem value="once_a_week">Once a week</SelectItem>
+                <SelectItem value="daily">
+                  Responsibility to family or children
+                </SelectItem>
+                <SelectItem value="BID">Spiritual/religious beliefs</SelectItem>
+                <SelectItem value="TID">Perceived social support</SelectItem>
+                <SelectItem value="QID">Other</SelectItem>
               </SelectContent>
             </Select>
           </FormItem>
-          <FormField
-            control={form.control}
-            name="medication_prescriber"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Date
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the name of medication"
-                    type="date"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="note"
             render={({ field }) => (
               <FormItem className="">
                 <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Progress Note
+                  Description
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter notes"
+                    placeholder="Enter a description of how this factor protects you"
                     {...field}
                   />
                 </FormControl>
@@ -108,7 +67,6 @@ const ProtectiveForm = () => {
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="note"
@@ -118,10 +76,10 @@ const ProtectiveForm = () => {
                   Note
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter notes"
+                    placeholder="Enter any additional notes"
                     {...field}
                   />
                 </FormControl>
@@ -129,7 +87,8 @@ const ProtectiveForm = () => {
               </FormItem>
             )}
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium">
+
+          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
             Add
           </Button>
         </form>

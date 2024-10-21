@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const SocialSupportForm = () => {
   const form = useForm({
@@ -29,19 +29,44 @@ const SocialSupportForm = () => {
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
         <form className="flex flex-col gap-5">
+          <FormItem className="">
+            <FormLabel className="text-base font-medium text-primary_black_text">
+              Type of Support
+            </FormLabel>
+            <Select>
+              <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
+                <SelectValue placeholder="Select frequency" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Family</SelectItem>
+                <SelectItem value="BID">friend</SelectItem>
+                <SelectItem value="TID">peer support</SelectItem>
+                <SelectItem value="QID">spiritual community</SelectItem>
+                <SelectItem value="PRN">faith-based community</SelectItem>
+                <SelectItem value="once_a_week">online community</SelectItem>
+                <SelectItem value="once_a_week">recreational club</SelectItem>
+                <SelectItem value="once_a_week">sports team</SelectItem>
+                <SelectItem value="once_a_week">mentor</SelectItem>
+                <SelectItem value="once_a_week">
+                  cultural organization
+                </SelectItem>
+                <SelectItem value="once_a_week">other</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormItem>
           <FormField
             control={form.control}
-            name="medication_name"
+            name="note"
             render={({ field }) => (
-              <FormItem className="flex-grow">
+              <FormItem className="">
                 <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Clinician
+                  Description
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter the name of medication"
+                    placeholder="Enter a description of the social support (e.g., close-knit family)"
                     {...field}
                   />
                 </FormControl>
@@ -51,63 +76,19 @@ const SocialSupportForm = () => {
           />
           <FormItem className="">
             <FormLabel className="text-base font-medium text-primary_black_text">
-              Type
+              Strength
             </FormLabel>
             <Select>
               <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                <SelectValue placeholder="Select frequency" />
+                <SelectValue placeholder="Select support strength" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="BID">BID</SelectItem>
-                <SelectItem value="TID">TID</SelectItem>
-                <SelectItem value="QID">QID</SelectItem>
-                <SelectItem value="PRN">PRN</SelectItem>
-                <SelectItem value="once_a_week">Once a week</SelectItem>
+                <SelectItem value="daily">Weak</SelectItem>
+                <SelectItem value="BID">Moderate</SelectItem>
+                <SelectItem value="TID">Strong</SelectItem>
               </SelectContent>
             </Select>
           </FormItem>
-          <FormField
-            control={form.control}
-            name="medication_prescriber"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Date
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the name of medication"
-                    type="date"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Progress Note
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter notes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
 
           <FormField
             control={form.control}
@@ -118,10 +99,10 @@ const SocialSupportForm = () => {
                   Note
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter notes"
+                    placeholder="Enter any additional details or notes"
                     {...field}
                   />
                 </FormControl>
@@ -129,7 +110,7 @@ const SocialSupportForm = () => {
               </FormItem>
             )}
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium">
+          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
             Add
           </Button>
         </form>

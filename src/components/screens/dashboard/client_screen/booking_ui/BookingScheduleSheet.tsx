@@ -64,6 +64,27 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
     return `${(minutes / 60) * 100}%`;
   };
 
+  const isOutsideBusinessHours = (dayKey: string, slotStart: Date): boolean => {
+    const businessDayHours = businessHours[dayKey];
+
+    if (!businessDayHours) return true;
+
+    const hour = slotStart.getHours();
+    const minute = slotStart.getMinutes();
+
+    // Block all hours before opening and after closing
+    // And block the closing hour entirely (including 00 minute)
+    if (
+      hour < businessDayHours.openingHour || // Before opening hour
+      hour > businessDayHours.closingHour || // After closing hour
+      (hour === businessDayHours.closingHour && minute >= 0) // Block entire closing hour
+    ) {
+      return true; // Block time slot
+    }
+
+    return false; // Slot is within business hours
+  };
+
   return (
     <div className="w-full h-full overflow-x-auto relative">
       <div className="min-w-[1000px] relative z-30">
@@ -114,8 +135,6 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
 
             {daysOfWeek.map((day) => {
               const dayKey = format(day, "eeee").toLowerCase();
-              const businessDayHours = businessHours[dayKey];
-
               const isPastDay = isBefore(day, new Date());
 
               return (
@@ -139,11 +158,11 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                     return (
                       <div key={hour} className="relative">
                         {slotsForHour.map((slot) => {
-                          const [hour, minute] = slot.split(":");
+                          const [slotHour, slotMinute] = slot.split(":");
                           const slotStart = new Date(day);
                           slotStart.setHours(
-                            Number(hour),
-                            Number(minute),
+                            Number(slotHour),
+                            Number(slotMinute),
                             0,
                             0
                           );
@@ -154,11 +173,10 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                             blockedSlots
                           );
 
-                          const isOutsideBusinessHours =
-                            !businessDayHours ||
-                            Number(hour) < businessDayHours.openingHour ||
-                            (Number(hour) >= businessDayHours.closingHour &&
-                              minute === "00");
+                          const isOutside = isOutsideBusinessHours(
+                            dayKey,
+                            slotStart
+                          );
 
                           const isPastSlot =
                             isPastDay ||
@@ -171,16 +189,14 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                                 <TooltipTrigger
                                   asChild
                                   disabled={
-                                    isBlocked ||
-                                    isOutsideBusinessHours ||
-                                    isPastSlot
+                                    isBlocked || isOutside || isPastSlot
                                   }
                                 >
                                   <div
                                     className={`h-[20px] ${
                                       isBlocked ? "cursor-not-allowed" : ""
                                     } ${
-                                      isOutsideBusinessHours || isPastSlot
+                                      isOutside || isPastSlot
                                         ? "bg-[#E0E0E0] cursor-not-allowed"
                                         : ""
                                     } relative flex items-center justify-center`}
@@ -211,7 +227,7 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                                         }
                                         return null;
                                       })
-                                    ) : isOutsideBusinessHours || isPastSlot ? (
+                                    ) : isOutside || isPastSlot ? (
                                       <TooltipContent
                                         side="top"
                                         className="bg-[#FF2626] text-white"

@@ -77,7 +77,7 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
       time: timeSlot,
       location: selectedLocation
         ? appointmentAddresses.find(
-            (loc) => loc.id.toString() === selectedLocation
+            (loc) => String(loc.id) === selectedLocation
           )?.street_address || null
         : null,
       service: selectedService
@@ -155,14 +155,18 @@ const AvailableTime: React.FC<AvailableTimeProps> = ({
                     <SelectValue placeholder="Choose location" />
                   </SelectTrigger>
                   <SelectContent>
-                    {appointmentAddresses.map((location) => (
-                      <SelectItem
-                        key={location.id}
-                        value={location.id.toString()}
-                      >
-                        {`${location.street_address}, ${location.city}, ${location.state}, ${location.postal_code}`}
-                      </SelectItem>
-                    ))}
+                    {appointmentAddresses
+                      .filter((location) => location.id) // Filter out items without a valid id
+                      .map((location) => (
+                        <SelectItem
+                          key={String(location.id)}
+                          value={String(location.id)} // Ensure this is always a valid string
+                        >
+                          {location.street_address
+                            ? `${location.street_address}, ${location.city}, ${location.state}, ${location.postal_code}`
+                            : "Unknown Address"}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
                 <FormMessage className="text-[#E75F51] text-[13px] font-light" />

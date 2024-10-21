@@ -62,7 +62,7 @@ const AllergyForm = () => {
             )}
           />
 
-          <Button className="rounded-full h-[63px] text-xl font-medium">
+          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
             Add
           </Button>
         </form>

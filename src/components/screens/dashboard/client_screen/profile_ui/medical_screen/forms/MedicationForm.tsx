@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const MedicationForm = () => {
   const form = useForm({
@@ -61,7 +62,7 @@ const MedicationForm = () => {
                     <Input
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="off"
-                      placeholder="Enter the name of medication"
+                      placeholder="Enter name of medication prescriber"
                       {...field}
                     />
                   </FormControl>
@@ -150,6 +151,7 @@ const MedicationForm = () => {
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="Enter start date"
+                      type="date"
                       {...field}
                     />
                   </FormControl>
@@ -170,6 +172,7 @@ const MedicationForm = () => {
                       className="h-16 text-placeholder_text font-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="Enter end date"
+                      type="date"
                       {...field}
                     />
                   </FormControl>
@@ -191,7 +194,7 @@ const MedicationForm = () => {
                   <Input
                     className="h-16 text-placeholder_text font-sm font-normal w-full"
                     autoComplete="off"
-                    placeholder="Enter purpose"
+                    placeholder="What is the medication for"
                     {...field}
                   />
                 </FormControl>
@@ -208,10 +211,10 @@ const MedicationForm = () => {
                   Note
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
+                  <Textarea
+                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
                     autoComplete="off"
-                    placeholder="Enter notes"
+                    placeholder="Enter any additional details or notes"
                     {...field}
                   />
                 </FormControl>
@@ -219,7 +222,8 @@ const MedicationForm = () => {
               </FormItem>
             )}
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium">
+
+          <Button className="rounded-full h-[63px] text-xl font-medium ">
             Add
           </Button>
         </form>

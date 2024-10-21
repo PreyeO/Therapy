@@ -1,6 +1,12 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { isSameDay, getHours, getMinutes, isWithinInterval } from "date-fns";
+import {
+  isSameDay,
+  getHours,
+  getMinutes,
+  isWithinInterval,
+  format,
+} from "date-fns";
 import { Event, AppointmentInfo, AppointmentAddress } from "@/types/formSchema";
 import { calendarSheetColors } from "@/constants/DataManager";
 import axios from "axios";
@@ -53,14 +59,22 @@ export const formatTimeRange = (start: string, end: string) => {
   }).format(endTime);
   return `${formattedStartTime} - ${formattedEndTime}`;
 };
+export const formatTimeRanges = (startTime: string, endTime: string) => {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+
+  // Format both start and end times as "hh:mm a" (e.g., "10:00 AM")
+  const formattedStartTime = format(start, "hh:mm a");
+  const formattedEndTime = format(end, "hh:mm a");
+
+  return `${formattedStartTime} - ${formattedEndTime}`;
+};
 
 // Format date to MM-DD-YY
-export const formatDate = (date: string) => {
-  const formattedDate = new Date(date);
-  const day = String(formattedDate.getDate()).padStart(2, "0");
-  const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-  const year = String(formattedDate.getFullYear()).slice(2);
-  return `${month}-${day}-${year}`;
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  // Format date as "November 29th, 2024"
+  return format(date, "MMMM do, yyyy");
 };
 
 // Map AppointmentRequest[] to AppointmentTable format
@@ -69,10 +83,11 @@ export const mapToAppointmentTableFormat = (requests: AppointmentInfo[]) => {
   return requests.map((request) => ({
     id: request.id,
     client: `${request.client.first_name} ${request.client.last_name}`,
-    appointmentTime: formatTimeRange(request.start_time, request.end_time),
+    appointmentTime: formatTimeRanges(request.start_time, request.end_time),
     appointmentDate: formatDate(request.start_time),
     service: request.service.name,
     email: request.client.email,
+    status: request.status || "Unknown",
     location: `${request.location.city}${request.location.street_address}${request.location.postal_code}${request.location.id}`,
     clinician: `${request.clinician.first_name} ${request.clinician.last_name}`,
   }));
@@ -91,6 +106,7 @@ export const mapAppointmentResponse = (
     service: appointment.service,
     start_time: appointment.start_time,
     end_time: appointment.end_time,
+    status: appointment.status,
     location: {
       id: appointment.location.id,
       street_address: appointment.location.street_address,
@@ -101,6 +117,7 @@ export const mapAppointmentResponse = (
       id: appointment.clinician.id,
       first_name: appointment.clinician.first_name,
       last_name: appointment.clinician.last_name,
+      email: appointment.clinician?.email,
     },
   }));
 };
@@ -251,4 +268,33 @@ export const getErrorMessage = (error: unknown): string => {
 
   // Fallback message for unknown errors
   return "An unexpected error occurred. Please try again.";
+};
+
+// export const formatAppointmentDate = (startTime: string, endTime: string) => {
+//   const start = new Date(startTime);
+//   const end = new Date(endTime);
+
+//   const formattedStartTime = format(start, "hh:mm a");
+//   const formattedEndTime = format(end, "hh:mm a");
+//   const formattedDate = format(start, "MMMM do yyyy");
+
+//   return `${formattedDate}, ${formattedStartTime} - ${formattedEndTime}`;
+// };
+export const getStatusTextColor = (status: string | undefined): string => {
+  if (!status) return "text-gray-500";
+
+  switch (status) {
+    case "Late Cancel":
+    case "Client Canceled":
+    case "Clinician Canceled":
+      return "text-red-500";
+    case "No Show":
+      return "text-yellow-500";
+    case "Attended":
+      return "text-green-500";
+    case "Scheduled":
+      return "text-blue-500";
+    default:
+      return "text-gray-500";
+  }
 };

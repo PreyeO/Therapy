@@ -27,15 +27,16 @@ export const handleActionClick = async (
       subtitle: `The appointment ${key} has been successfully updated to ${value}.`,
     });
 
-    // Update the state immediately after successful action
+    // Immediately update the state after successful action
     updateState(appointmentId, data);
 
-    // Refresh the table to reflect any changes
+    // Optionally refresh table data if needed (fetch from API)
     refreshTable();
   } catch (error) {
     console.error("Failed to update appointment:", error);
   }
 };
+
 // Modify `getDropdownItemsOne` to use the new `refreshTable` parameter
 export const getDropdownItemsOne = (
   appointmentId: string,

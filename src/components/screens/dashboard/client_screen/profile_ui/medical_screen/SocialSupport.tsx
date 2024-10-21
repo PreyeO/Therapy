@@ -17,7 +17,7 @@ const SocialSupport = () => {
     <div className="flex flex-col gap-[67px]">
       <ProfileHeader
         label="Add social support"
-        title="Encounter"
+        title="Social Support"
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />
@@ -54,7 +54,7 @@ const SocialSupport = () => {
       <MedicalDialog
         open={isOpen}
         onClose={closeDialog}
-        title="Add Allergy"
+        title="Add Social Support"
         formComponent={<SocialSupportForm />}
       />
     </div>

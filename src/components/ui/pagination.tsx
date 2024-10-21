@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
 
+// Pagination Wrapper
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
@@ -14,6 +15,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 );
 Pagination.displayName = "Pagination";
 
+// Pagination Content
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
@@ -26,6 +28,7 @@ const PaginationContent = React.forwardRef<
 ));
 PaginationContent.displayName = "PaginationContent";
 
+// Pagination Item
 const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
@@ -34,6 +37,7 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = "PaginationItem";
 
+// Pagination Link Component with styling applied for active and normal states
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
@@ -42,16 +46,17 @@ type PaginationLinkProps = {
 const PaginationLink = ({
   className,
   isActive,
-  size = "icon",
+  size = "default",
   ...props
 }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? "page" : undefined}
     className={cn(
-      buttonVariants({
-        variant: isActive ? "outline" : "ghost",
-        size,
-      }),
+      buttonVariants({ size }),
+      isActive
+        ? "bg-[#889755] hover:bg-army_green text-white" // Active state styles
+        : "bg-army_green text-white hover:bg-[#889755] cursor-pointer", // Normal state styles
+      "px-4 py-2 rounded-md", // Shared styling
       className
     )}
     {...props}
@@ -59,14 +64,22 @@ const PaginationLink = ({
 );
 PaginationLink.displayName = "PaginationLink";
 
+// Pagination Previous with disabled logic
 const PaginationPrevious = ({
   className,
+  disabled,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: React.ComponentProps<typeof PaginationLink> & { disabled?: boolean }) => (
   <PaginationLink
     aria-label="Go to previous page"
     size="default"
-    className={cn("gap-1 ", className)}
+    className={cn(
+      disabled
+        ? "bg-gray-100 text-gray-500 cursor-not-allowed hover:bg-gray-100 " // Disabled styling
+        : "bg-army_green text-white hover:bg-[#889755] cursor-pointer", // Enabled styling
+      "px-4 py-2 rounded-md", // Shared styling
+      className
+    )}
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
@@ -75,14 +88,22 @@ const PaginationPrevious = ({
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
+// Pagination Next with disabled logic
 const PaginationNext = ({
   className,
+  disabled,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: React.ComponentProps<typeof PaginationLink> & { disabled?: boolean }) => (
   <PaginationLink
     aria-label="Go to next page"
     size="default"
-    className={cn("gap-1 pr-2.5", className)}
+    className={cn(
+      disabled
+        ? "bg-gray-100 text-gray-500 cursor-not-allowed hover:bg-gray-100 " // Disabled styling
+        : "bg-army_green text-white hover:bg-[#889755] cursor-pointer", // Enabled styling
+      "px-4 py-2 rounded-md", // Shared styling
+      className
+    )}
     {...props}
   >
     <span>Next</span>
@@ -91,6 +112,7 @@ const PaginationNext = ({
 );
 PaginationNext.displayName = "PaginationNext";
 
+// Pagination Ellipsis for handling large pagination ranges
 const PaginationEllipsis = ({
   className,
   ...props

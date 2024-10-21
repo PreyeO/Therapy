@@ -15,7 +15,7 @@ const Allergies = () => {
     <div className="flex flex-col gap-[67px]">
       <ProfileHeader
         label="Add allergy"
-        title="known Allergy"
+        title="Known Allergy"
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />

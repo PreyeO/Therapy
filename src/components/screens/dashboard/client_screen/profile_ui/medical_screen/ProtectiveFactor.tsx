@@ -17,7 +17,7 @@ const ProtectiveFactor = () => {
     <div className="flex flex-col gap-[67px]">
       <ProfileHeader
         label="Add protective factor"
-        title="Encounter"
+        title="Protective Factor"
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />

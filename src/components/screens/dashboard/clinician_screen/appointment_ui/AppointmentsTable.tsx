@@ -21,6 +21,11 @@ import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import { useDialogState, useDropdownStore, usePaginationStore } from "@/store";
 import { Appointment, DropdownItem } from "@/types/formSchema";
 
+interface ColumnConfig {
+  key: string;
+  label: string;
+  render: (item: Appointment) => React.ReactNode;
+}
 interface AppointmentTableProps {
   dropdownItemsGenerator: (
     appointmentId: string,
@@ -31,6 +36,7 @@ interface AppointmentTableProps {
   loading: boolean;
   searchPerformed: boolean;
   showActionColumn?: boolean;
+  columns?: ColumnConfig[];
   // New: Prop to set loading state
   setActionLoading: (loading: boolean) => void;
 }
@@ -41,7 +47,8 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   loading,
   searchPerformed,
   showActionColumn = true,
-  setActionLoading, // New prop
+  setActionLoading,
+  columns,
 }) => {
   const {
     currentPage,
@@ -86,20 +93,30 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
   return (
     <div className="w-full min-h-[500px] flex flex-col justify-between">
       <Table className="w-full table-auto bg-white pt-5">
-        <thead className="">
+        <thead>
           <TableRow className="text-sm">
-            <TableHead className="px-4 py-3 font-semibold pt-8">
-              Client Name
-            </TableHead>
-            <TableHead className="px-4 py-3 font-semibold pt-8">Time</TableHead>
-            <TableHead className="px-4 py-3 font-semibold pt-8">Date</TableHead>
-            <TableHead className="px-4 py-3 font-semibold pt-8">
-              Location
-            </TableHead>
-            {showActionColumn && (
-              <TableHead className="px-4 py-3 font-semibold pt-8">
-                Action
-              </TableHead>
+            {columns ? (
+              columns.map((column) => (
+                <TableHead key={column.key} className="px-4 py-3 font-semibold">
+                  {column.label}
+                </TableHead>
+              ))
+            ) : (
+              <>
+                <TableHead className="px-4 py-3 font-semibold">
+                  Client Name
+                </TableHead>
+                <TableHead className="px-4 py-3 font-semibold">Time</TableHead>
+                <TableHead className="px-4 py-3 font-semibold">Date</TableHead>
+                <TableHead className="px-4 py-3 font-semibold">
+                  Location
+                </TableHead>
+                {showActionColumn && (
+                  <TableHead className="px-4 py-3 font-semibold">
+                    Action
+                  </TableHead>
+                )}
+              </>
             )}
           </TableRow>
         </thead>
@@ -109,39 +126,55 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
               key={item.id}
               className="text-[#575757] font-normal text-sm"
             >
-              <TableCell
-                className="px-4 py-3 text-left align-middle cursor-pointer"
-                onClick={() => navigate("/dashboard/clientoverview")}
-              >
-                {item.client}
-              </TableCell>
-              <TableCell className="px-4 py-3 text-left align-middle">
-                {item.appointmentTime}
-              </TableCell>
-              <TableCell className="px-4 py-3 text-left align-middle">
-                {item.appointmentDate}
-              </TableCell>
-              <TableCell className="px-4 py-3 text-left align-middle w-[200px] mx-auto">
-                {item.location || "N/A"}
-              </TableCell>
-              {showActionColumn && (
-                <TableCell className="px-4 py-3 text-left align-middle">
-                  <button
-                    className="bg-transparent"
-                    onClick={() => toggleDropdown(index)}
+              {columns ? (
+                columns.map((column) => (
+                  <TableCell
+                    key={column.key}
+                    className="px-4 py-3 text-left align-middle"
                   >
-                    <Ellipsis size={24} />
-                  </button>
-                  <EllipsisDropdown
-                    items={dropdownItemsGenerator(item.id, openSuccess, () => {
-                      setActionLoading(true); // Show loading
-                      // Remove item from state immediately after action (optimistic update)
-                      setTimeout(() => setActionLoading(false), 1000); // Simulate delay
-                    })}
-                    isOpen={openDropdownIndex === index}
-                    onClose={closeDropdown}
-                  />
-                </TableCell>
+                    {column.render(item)}
+                  </TableCell>
+                ))
+              ) : (
+                <>
+                  <TableCell
+                    className="px-4 py-3 text-left align-middle cursor-pointer"
+                    onClick={() => navigate("/dashboard/clientoverview")}
+                  >
+                    {item.client}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-left align-middle">
+                    {item.appointmentTime}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-left align-middle">
+                    {item.appointmentDate}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-left align-middle w-[200px] mx-auto">
+                    {item.location || "N/A"}
+                  </TableCell>
+                  {showActionColumn && (
+                    <TableCell className="px-4 py-3 text-left align-middle">
+                      <button
+                        className="bg-transparent"
+                        onClick={() => toggleDropdown(index)}
+                      >
+                        <Ellipsis size={24} />
+                      </button>
+                      <EllipsisDropdown
+                        items={dropdownItemsGenerator(
+                          item.id,
+                          openSuccess,
+                          () => {
+                            setActionLoading(true); // Show loading
+                            setTimeout(() => setActionLoading(false), 1000); // Simulate delay
+                          }
+                        )}
+                        isOpen={openDropdownIndex === index}
+                        onClose={closeDropdown}
+                      />
+                    </TableCell>
+                  )}
+                </>
               )}
             </TableRow>
           ))}
@@ -151,7 +184,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
       {/* Pagination Section */}
       <div className="py-3 mt-4">
         <div className="border p-[0.1px] w-[100%]"></div>
-        <Pagination className="flex justify-center">
+        <Pagination className=" mt-10 flex  items-start justify-start">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious onClick={goToPreviousPage} />
