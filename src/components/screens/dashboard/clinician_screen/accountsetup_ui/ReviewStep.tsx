@@ -5,7 +5,7 @@ import { formatTime } from "@/lib/utils";
 
 // Define AppointmentAddress type
 interface AppointmentAddress {
-  id: number; // Ensure the type matches the ID format used in the store
+  id: string;
   street_address: string;
   city: string;
   state: string;
@@ -24,7 +24,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ appointmentAddresses }) => {
     return locationIds
       .map((id) => {
         const location = appointmentAddresses.find(
-          (addr) => String(addr.id) === id // Ensure the comparison uses the same type
+          (addr) => addr.id === id // Ensure the comparison uses the same type
         );
         return location
           ? `${location.street_address}, ${location.city}, ${location.state} ${location.postal_code}`

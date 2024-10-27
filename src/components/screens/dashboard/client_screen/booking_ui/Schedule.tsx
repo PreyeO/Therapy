@@ -16,6 +16,7 @@ type CalendarSlot = {
 interface ScheduleProps {
   onContinue: (data: BookingData) => void;
   businessPeriods: BusinessPeriod[];
+  loading: boolean; // Include the loading prop
 }
 
 // Define a type guard to ensure the selectedClinician has a valid clinician_profile
@@ -30,20 +31,21 @@ const hasClinicianProfile = (
   );
 };
 
-const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
+const Schedule: React.FC<ScheduleProps> = ({
+  onContinue,
+  businessPeriods,
+  loading,
+}) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(today);
   const [blockedSlots, setBlockedSlots] = useState<
     Array<{ start: Date; end: Date }>
   >([]);
-  const [loading, setLoading] = useState<boolean>(false); // Add loading state
-
   const { selectedClinician } = useAppointmentsStore(); // Access clinician
 
   useEffect(() => {
     if (hasClinicianProfile(selectedClinician)) {
       const fetchClinicianAvailability = async () => {
-        setLoading(true); // Set loading to true before fetching data
         try {
           const startOfWeekDate = format(currentDate, "yyyy-MM-dd");
           const endOfWeekDate = format(addDays(currentDate, 6), "yyyy-MM-dd");
@@ -63,8 +65,6 @@ const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
           setBlockedSlots(parsedBlockedSlots); // Update blocked slots
         } catch (error) {
           console.error("Failed to fetch clinician calendar:", error);
-        } finally {
-          setLoading(false); // Set loading to false after data is fetched
         }
       };
 
@@ -88,20 +88,20 @@ const Schedule: React.FC<ScheduleProps> = ({ onContinue, businessPeriods }) => {
         </span>
       </div>
 
-      <div className="relative" style={{ minHeight: "400px" }}>
-        {" "}
-        {/* Set a minimum height for the calendar */}
-        {loading && (
+      <div className="relative" style={{ minHeight: "600px" }}>
+        {loading ? (
           <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 bg-gray-200 z-50">
-            <SmallLoader />
+            <SmallLoader />{" "}
+            {/* Show loader while business periods are loading */}
           </div>
+        ) : (
+          <BookingScheduleSheet
+            weekStartDate={currentDate}
+            blockedSlots={blockedSlots}
+            businessPeriods={businessPeriods}
+            onContinue={onContinue}
+          />
         )}
-        <BookingScheduleSheet
-          weekStartDate={currentDate}
-          blockedSlots={blockedSlots}
-          businessPeriods={businessPeriods}
-          onContinue={onContinue}
-        />
       </div>
     </div>
   );

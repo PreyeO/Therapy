@@ -225,48 +225,48 @@ export const appointmentsData = [
   },
 ];
 
-export const bookingData = [
-  {
-    name: "Preye Omusuku",
-    date: "September 24th, 2024 10:00 AM",
-    email: "p@billionaire.com",
-    service: "psychology",
-    src: Avatar,
-    status: "canceled",
-  },
-  {
-    name: "Preye Omusuku",
-    date: "September 24th, 2024 10:00 AM",
-    email: "p@billionaire.com",
-    service: "psychology",
-    src: Avatar,
-    status: "Attented",
-  },
-  {
-    name: "Preye Omusuku",
-    date: "September 24th, 2024 10:00 AM",
-    email: "p@billionaire.com",
-    service: "psychology",
-    src: Avatar,
-    status: "Waitlisted",
-  },
-  {
-    name: "Preye Omusuku",
-    date: "September 24th, 2024 10:00 AM",
-    email: "p@billionaire.com",
-    service: "psychology",
-    src: Avatar,
-    status: "Clinician canceled",
-  },
-  {
-    name: "Preye Omusuku",
-    date: "September 24th, 2024 10:00 AM",
-    email: "p@billionaire.com",
-    service: "psychology",
-    src: Avatar,
-    status: "Clinician canceled",
-  },
-];
+// export const bookingData = [
+//   {
+//     name: "Preye Omusuku",
+//     date: "September 24th, 2024 10:00 AM",
+//     email: "p@billionaire.com",
+//     service: "psychology",
+//     src: Avatar,
+//     status: "canceled",
+//   },
+//   {
+//     name: "Preye Omusuku",
+//     date: "September 24th, 2024 10:00 AM",
+//     email: "p@billionaire.com",
+//     service: "psychology",
+//     src: Avatar,
+//     status: "Attented",
+//   },
+//   {
+//     name: "Preye Omusuku",
+//     date: "September 24th, 2024 10:00 AM",
+//     email: "p@billionaire.com",
+//     service: "psychology",
+//     src: Avatar,
+//     status: "Waitlisted",
+//   },
+//   {
+//     name: "Preye Omusuku",
+//     date: "September 24th, 2024 10:00 AM",
+//     email: "p@billionaire.com",
+//     service: "psychology",
+//     src: Avatar,
+//     status: "Clinician canceled",
+//   },
+//   {
+//     name: "Preye Omusuku",
+//     date: "September 24th, 2024 10:00 AM",
+//     email: "p@billionaire.com",
+//     service: "psychology",
+//     src: Avatar,
+//     status: "Clinician canceled",
+//   },
+// ];
 
 export const clinicianProfileData = [
   {
@@ -292,34 +292,34 @@ export const clinicianProfileData = [
   },
 ];
 
-export const TimesData = [
-  {
-    day: "Monday",
-    open_hour: "8:00AM",
-    closing_hour: "3:00PM",
-    location: "7521 Morgan rd Suite 1 Liverpool, NY 13090",
-  },
+// export const TimesData = [
+//   {
+//     day: "Monday",
+//     open_hour: "8:00AM",
+//     closing_hour: "3:00PM",
+//     location: "7521 Morgan rd Suite 1 Liverpool, NY 13090",
+//   },
 
-  {
-    day: "Tuesday",
-    open_hour: "12:00PM",
-    closing_hour: "4:00PM",
-    location: "7523 Morgan rd Liverpool, NY 13090 ",
-  },
-  {
-    day: "Wednesday",
-    open_hour: "10:00AM",
-    closing_hour: "5:00PM",
-    location: "620 Erie Blvd West Suite 300D Syracuse, NY 13204",
-  },
+//   {
+//     day: "Tuesday",
+//     open_hour: "12:00PM",
+//     closing_hour: "4:00PM",
+//     location: "7523 Morgan rd Liverpool, NY 13090 ",
+//   },
+//   {
+//     day: "Wednesday",
+//     open_hour: "10:00AM",
+//     closing_hour: "5:00PM",
+//     location: "620 Erie Blvd West Suite 300D Syracuse, NY 13204",
+//   },
 
-  {
-    day: "Friday",
-    open_hour: "12:00PM",
-    closing_hour: "4:00PM",
-    location: "Virtual",
-  },
-];
+//   {
+//     day: "Friday",
+//     open_hour: "12:00PM",
+//     closing_hour: "4:00PM",
+//     location: "Virtual",
+//   },
+// ];
 
 // DataManager.ts
 
@@ -390,4 +390,88 @@ export const accordionData = [
     answer:
       "Lorem ipsum dolor sit amet consectetur. Amet porttitor et vitae aliquet convallis arcu libero.",
   },
+];
+
+export const dosageUnits = [
+  { value: "mg", label: "Milligrams" },
+  { value: "g", label: "Grams" },
+  { value: "mcg", label: "Micrograms" },
+  { value: "mL", label: "Milliliters" },
+  { value: "L", label: "Liters" },
+  { value: "IU", label: "International Units" },
+  { value: "tsp", label: "Teaspoons" },
+  { value: "tbsp", label: "Tablespoons" },
+  { value: "oz", label: "Ounces" },
+  { value: "drops", label: "Drops" },
+  { value: "patches", label: "Patches" },
+  { value: "sprays", label: "Sprays" },
+  { value: "inhalations", label: "Inhalations" },
+  { value: "suppositories", label: "Suppositories" },
+  { value: "capsules", label: "Capsules" },
+  { value: "tablets", label: "Tablets" },
+  { value: "puffs", label: "Puffs" },
+  { value: "vials", label: "Vials" },
+  { value: "units", label: "Units" },
+  { value: "creams", label: "Creams" },
+  { value: "gels", label: "Gels" },
+  { value: "other", label: "Other" },
+];
+export const encounterTypes = [
+  { value: "annual_visit", label: "Annual Visit" },
+  { value: "physical_exam", label: "Physical Exam" },
+  { value: "specialist_appointment", label: "Specialist Appointment" },
+  { value: "wellness_visit", label: "Wellness Visit" },
+  { value: "follow_up_appointment", label: "Follow-up Appointment" },
+  { value: "urgent_care_visit", label: "Urgent Care Visit" },
+  {
+    value: "diagnostic_assessment_visit",
+    label: "Diagnostic/Assessment Visit",
+  },
+  { value: "chronic_disease_management", label: "Chronic Disease Management" },
+  { value: "intake_visit", label: "Intake Visit" },
+  { value: "other", label: "Other" },
+];
+
+export const socialSupportTypes = [
+  { value: "family", label: "Family" },
+  { value: "friend", label: "Friend" },
+  { value: "peer_support", label: "Peer Support" },
+  { value: "spiritual_community", label: "Spiritual Community" },
+  { value: "faith_based_community", label: "Faith-based Community" },
+  { value: "online_community", label: "Online Community" },
+  { value: "recreational_club", label: "Recreational Club" },
+  { value: "sports_team", label: "Sports Team" },
+  { value: "mentor", label: "Mentor" },
+  { value: "cultural_organization", label: "Cultural Organization" },
+  { value: "other", label: "Other" },
+];
+
+export const strengthChoices = [
+  { value: "weak", label: "Weak" },
+  { value: "moderate", label: "Moderate" },
+  { value: "strong", label: "Strong" },
+];
+
+export const protectiveFactorChoices = [
+  {
+    value: "responsibility_to_family_or_children",
+    label: "Responsibility to Family or Children",
+  },
+  {
+    value: "spiritual_religious_beliefs",
+    label: "Spiritual/Religious Beliefs",
+  },
+  { value: "perceived_social_support", label: "Perceived Social Support" },
+  { value: "other", label: "Other" },
+];
+
+export const substanceTypeChoices = [
+  { value: "alcohol", label: "Alcohol" },
+  { value: "tobacco", label: "Tobacco" },
+  { value: "cannabis", label: "Cannabis" },
+  { value: "opioids", label: "Opioids" },
+  { value: "cocaine", label: "Cocaine" },
+  { value: "amphetamines", label: "Amphetamines" },
+  { value: "hallucinogens", label: "Hallucinogens" },
+  { value: "other", label: "Other" },
 ];

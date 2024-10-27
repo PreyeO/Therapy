@@ -12,10 +12,21 @@ import {
   FetchedBusinessPeriod,
   Service,
   ClientSetup,
+  ClientProfileSetup,
+  Medication,
+  Allergy,
+  MedicalCondition,
+  Encounter,
+  SocialSupport,
+  ProtectiveFactor,
+  SubstanceUse,
 } from "@/types/formSchema";
 import { getUserData } from "@/services/api/authentication/auth";
 import { getServices } from "@/services/api/clinicians/appointment";
-import { setupClientProfile } from "@/services/api/clients/account_setup";
+import {
+  getClientProfile,
+  setupClientProfile,
+} from "@/services/api/clients/account_setup";
 import { getIndividualClinicianBusinessPeriod } from "@/services/api/clients/appointments";
 
 // Utility functions to manage localStorage
@@ -38,12 +49,25 @@ interface BusinessPeriodsState {
   fetchedBusinessPeriods: FetchedBusinessPeriod[]; // For fetched periods from backend
   services: Service[];
   appointmentAddresses: AppointmentAddress[];
-  clientProfileData: ClientSetup; // State for client profile setup data
+  clientProfileData: ClientSetup;
+  clientProfileDetails: ClientProfileSetup;
+  clientProfileId: string | null;
   loading: boolean;
   profileLoading: boolean; // Loading state for profile data
   error: string | null;
   isSetupComplete: boolean;
   profile: { firstName: string; lastName: string; email: string } | null;
+  medications: Medication[];
+  allergies: Allergy[];
+  medicalConditions: MedicalCondition[];
+  encounters: Encounter[];
+  socialSupports: SocialSupport[];
+  protectiveFactors: ProtectiveFactor[];
+  substanceUses: SubstanceUse[];
+  updateState: <K extends keyof BusinessPeriodsState>(
+    key: K,
+    value: BusinessPeriodsState[K]
+  ) => void;
 
   fetchBusinessPeriodsByClinicianId: (
     clinician_profile_id: string
@@ -60,8 +84,21 @@ interface BusinessPeriodsState {
   fetchServices: () => Promise<void>;
   fetchAppointmentAddresses: () => Promise<void>;
   setupBusinessPeriods: () => Promise<void>;
+
   setupCustomBusinessPeriods: (periods: BusinessPeriod[]) => Promise<void>;
   fetchProfileData: () => Promise<void>;
+  fetchProfileMedicals: (clientProfileId: string) => Promise<void>;
+  updateMedications: (medications: Medication[]) => Promise<void>;
+  updateAllergies: (allergies: Allergy[]) => Promise<void>;
+  updateMedicalConditions: (
+    medicalConditions: MedicalCondition[]
+  ) => Promise<void>;
+  updateEncounters: (encounters: Encounter[]) => Promise<void>;
+  updateSocialSupports: (socialSupports: SocialSupport[]) => Promise<void>;
+  updateSubtanceUses: (substanceUses: SubstanceUse[]) => Promise<void>;
+  updateProtectiveFactors: (
+    protectiveFactors: ProtectiveFactor[]
+  ) => Promise<void>;
 
   // Setting business periods and profile data
   setBusinessPeriods: (periods: BusinessPeriod[]) => void;
@@ -74,6 +111,7 @@ interface BusinessPeriodsState {
 
   // Methods for managing client profile setup
   setClientProfileData: (data: Partial<ClientSetup>) => void;
+  setClientProfileDetails: (data: Partial<ClientProfileSetup>) => void;
   completeClientSetup: (clientProfileId: string) => Promise<void>;
 }
 
@@ -126,6 +164,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
   (set, get) => ({
     businessPeriods:
       getLocalStorage("businessPeriods") || initialBusinessPeriods,
+    clientProfileId: null,
 
     fetchedBusinessPeriods: [],
 
@@ -137,9 +176,24 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     services: [],
     appointmentAddresses: [],
     clientProfileData: getLocalStorage("clientProfileData") || {},
+    clientProfileDetails: getLocalStorage("clientProfileDetails") || {},
+
+    medications: [],
+    allergies: [],
+    medicalConditions: [],
+    encounters: [],
+    socialSupports: [],
+    protectiveFactors: [],
+    substanceUses: [],
 
     setFetchedBusinessPeriods: (periods: FetchedBusinessPeriod[]) => {
       set({ fetchedBusinessPeriods: periods });
+    },
+    updateState: (key, value) => {
+      set((state) => ({
+        ...state,
+        [key]: value,
+      }));
     },
 
     // Fetch business periods from the backend and sync with state
@@ -232,31 +286,24 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     fetchProfileData: async () => {
       set({ profileLoading: true });
       try {
-        const userData = getUserData(); // Fetch user data
+        const userData = getUserData();
         if (userData && userData.user) {
           const { first_name, last_name, email, client_profile } =
             userData.user;
+          const clientProfileId = client_profile?.id || null;
 
-          // Extract client profile ID if available
-          const clientProfileId = client_profile?.id;
-
-          // Set profile data and client profile ID in state
+          // Set profile data and client profile ID in separate properties
           set({
             profile: { firstName: first_name, lastName: last_name, email },
-            clientProfileData: {
-              ...get().clientProfileData,
-              id: clientProfileId,
-            },
+            clientProfileData: { ...get().clientProfileData },
+            clientProfileId, // Store client profile ID separately
             profileLoading: false,
           });
         } else {
           throw new Error("Profile data not found");
         }
       } catch (error) {
-        set({
-          error: "Error fetching profile data",
-          profileLoading: false,
-        });
+        set({ error: "Error fetching profile data", profileLoading: false });
       }
     },
 
@@ -331,6 +378,16 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
         return { clientProfileData: updatedProfileData };
       });
     },
+    setClientProfileDetails: (data: Partial<ClientProfileSetup>) => {
+      set((state) => {
+        const updatedProfileDetails = {
+          ...state.clientProfileDetails,
+          ...data,
+        };
+        setLocalStorage("clientProfileDetails", updatedProfileDetails);
+        return { clientProfileDetails: updatedProfileDetails };
+      });
+    },
 
     // Complete the client setup by sending data to backend
     completeClientSetup: async (clientProfileId: string) => {
@@ -340,22 +397,140 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
 
       set({ loading: true, error: null });
       try {
-        const { clientProfileData } = get();
+        const { clientProfileData, clientProfileDetails } = get();
         const payload = {
-          preferred_name: clientProfileData.preferred_name,
-          date_of_birth: clientProfileData.date_of_birth,
-          gender: clientProfileData.gender,
-          pronouns: clientProfileData.pronouns,
-          phone_number: clientProfileData.phone_number,
-          address: clientProfileData.address,
-          emergency: clientProfileData.emergency,
+          ...clientProfileData,
+          ...clientProfileDetails,
         };
+
         await setupClientProfile(clientProfileId, payload);
         set({ isSetupComplete: true, loading: false });
       } catch (error) {
         set({ error: "Error completing client setup", loading: false });
       }
     },
+    fetchProfileMedicals: async (clientProfileId: string) => {
+      set({ loading: true, error: null });
+      try {
+        const response = await getClientProfile(clientProfileId);
+
+        set({
+          medications: response.medications || [],
+          allergies: response.allergies || [],
+          medicalConditions: response.medical_conditions || [],
+          encounters: response.encounters || [],
+          socialSupports: response.social_supports || [],
+          protectiveFactors: response.protective_factors || [],
+          substanceUses: response.substance_uses || [],
+          loading: false,
+        });
+      } catch (error) {
+        set({ error: "Failed to fetch profile data", loading: false });
+      }
+    },
+
+    updateMedications: async (medications: Medication[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, { medications });
+        set({ medications, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medications", loading: false });
+      }
+    },
+
+    updateAllergies: async (allergies: Allergy[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) {
+        return;
+      }
+
+      set({ loading: true });
+      try {
+        await setupClientProfile(clientProfileId, { allergies });
+
+        set({ allergies });
+      } catch (error) {
+        set({ error: "Failed to update allergies" });
+      } finally {
+        set({ loading: false });
+      }
+    },
+
+    updateMedicalConditions: async (medicalConditions: MedicalCondition[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, {
+          medical_conditions: medicalConditions,
+        });
+        set({ medicalConditions, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+    updateSocialSupports: async (socialSupports: SocialSupport[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, {
+          social_supports: socialSupports,
+        });
+        set({ socialSupports, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+    updateEncounters: async (encounters: Encounter[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, {
+          encounters: encounters,
+        });
+        set({ encounters, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+    updateSubtanceUses: async (substanceUses: SubstanceUse[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, {
+          substance_uses: substanceUses,
+        });
+        set({ substanceUses, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+    updateProtectiveFactors: async (protectiveFactors: ProtectiveFactor[]) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, {
+          protective_factors: protectiveFactors,
+        });
+        set({ protectiveFactors, loading: false });
+      } catch (error) {
+        set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+
     updateclinicianBusinessPeriods: async (
       periodId: string,
       updatedPeriod: Partial<BusinessPeriod>

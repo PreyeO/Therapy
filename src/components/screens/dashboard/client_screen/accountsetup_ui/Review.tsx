@@ -64,15 +64,17 @@ const Review = () => {
           <div className="flex justify-between flex-wrap">
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">First Name</h4>
-              <p>{clientProfileData.emergency?.first_name || "N/A"}</p>
+              <p>{clientProfileData.emergency_contact?.first_name || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">Last Name</h4>
-              <p>{clientProfileData.emergency?.last_name || "N/A"}</p>
+              <p>{clientProfileData.emergency_contact?.last_name || "N/A"}</p>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="text-[#041827B2]">Phone Number</h4>
-              <p>{clientProfileData.emergency?.phone_number || "N/A"}</p>
+              <p>
+                {clientProfileData.emergency_contact?.phone_number || "N/A"}
+              </p>
             </div>
           </div>
         </div>

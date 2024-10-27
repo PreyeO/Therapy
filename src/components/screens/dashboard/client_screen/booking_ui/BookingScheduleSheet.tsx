@@ -21,13 +21,37 @@ import {
 import AvailableTime from "./AvailableTime";
 import { Plus } from "lucide-react";
 import { BookingData, BusinessPeriod } from "@/types/formSchema";
-import { isSlotBlocked, mapBusinessHours, getSlotStyle } from "@/lib/utils";
+import { mapBusinessHours } from "@/lib/utils";
 
 type SimpleScheduleSheetProps = {
   weekStartDate: Date;
   blockedSlots: Array<{ start: Date; end: Date }>;
   onContinue: (data: BookingData) => void;
   businessPeriods?: BusinessPeriod[];
+};
+
+// Overlap checking function
+const isSlotBlocked = (
+  day: Date,
+  timeSlot: string,
+  blockedSlots: Array<{ start: Date; end: Date }>
+): boolean => {
+  const [slotHour, slotMinute] = timeSlot.split(":");
+  const slotStart = new Date(day);
+  slotStart.setHours(Number(slotHour), Number(slotMinute), 0, 0);
+
+  // Calculate the end time for the current slot (assuming each slot is 20 minutes)
+  const slotEnd = new Date(slotStart);
+  slotEnd.setMinutes(slotEnd.getMinutes() + 20);
+
+  // Updated overlap logic: check if the new slot overlaps any blocked time
+  return blockedSlots.some(({ start, end }) => {
+    // Ensure the end time of a slot is not counted as an overlap if it matches the start time of the next slot
+    return (
+      (slotStart >= start && slotStart < end) || // Start falls within blocked slot
+      (slotEnd > start && slotEnd <= end) // End falls within blocked slot
+    );
+  });
 };
 
 const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
@@ -73,11 +97,10 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
     const minute = slotStart.getMinutes();
 
     // Block all hours before opening and after closing
-    // And block the closing hour entirely (including 00 minute)
     if (
-      hour < businessDayHours.openingHour || // Before opening hour
-      hour > businessDayHours.closingHour || // After closing hour
-      (hour === businessDayHours.closingHour && minute >= 0) // Block entire closing hour
+      hour < businessDayHours.openingHour ||
+      hour > businessDayHours.closingHour ||
+      (hour === businessDayHours.closingHour && minute >= 0)
     ) {
       return true; // Block time slot
     }
@@ -144,7 +167,7 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                 >
                   {isSameDay(day, currentTime) && (
                     <div
-                      className="absolute left-0 w-full border-red-500"
+                      className="absolute left-0 w-full border-red-500 h-[100px]"
                       style={{
                         borderTopWidth: "2px",
                         top: getCurrentTimePosition(),
@@ -207,18 +230,13 @@ const BookingScheduleSheet: React.FC<SimpleScheduleSheetProps> = ({
                                           slotStart >= blockedSlot.start &&
                                           slotStart < blockedSlot.end
                                         ) {
-                                          const slotStyle = getSlotStyle(
-                                            blockedSlot.start,
-                                            blockedSlot.end
-                                          );
                                           return (
                                             <div
                                               key={`${day}-${slot}`}
-                                              className="absolute left-0 w-full rounded flex items-center justify-center text-[#FFFFFF] font-bold"
+                                              className="absolute inset-0 bg-[#FF2626] flex items-center justify-center text-[#FFFFFF] font-bold"
                                               style={{
-                                                backgroundColor: "#FF2626",
-                                                height: `${slotStyle.height}`,
-                                                top: `${slotStyle.top}`,
+                                                height: "100%", // Ensure it covers only the 20-minute block
+                                                top: "0", // Start from the top of the current slot
                                               }}
                                             >
                                               Booked

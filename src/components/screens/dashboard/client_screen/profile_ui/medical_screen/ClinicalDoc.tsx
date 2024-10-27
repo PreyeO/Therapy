@@ -1,8 +1,8 @@
 import { useDialogState } from "@/store";
 import MedicalDocForm from "./forms/MedicalDocsForm";
 import ProfileHeader from "./ui/ProfileHeader";
-import { Plus, Trash2 } from "lucide-react";
-import ProfileButton from "./ui/ProfileButton";
+import { File, Plus, Trash } from "lucide-react";
+
 import MedicalDialog from "./ui/MedicalDialog";
 
 const ClinicalDoc = () => {
@@ -19,20 +19,45 @@ const ClinicalDoc = () => {
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />
-      <div className="flex flex-col gap-[28px]">
-        <ProfileButton
-          icon={<Trash2 size={18} color="white" />}
-          label="Delete encounter"
-          className="bg-[#FF2626]"
-        />
-
-        <MedicalDialog
-          open={isOpen}
-          onClose={closeDialog}
-          title="Add Clinical Document"
-          formComponent={<MedicalDocForm />}
-        />
+      <div className="grid grid-cols-2 gap-[11px]">
+        <div className="w-[399px] h-[76px] bg-[#6D7C430D] flex justify-between items-center px-5 rounded-[15px]">
+          <div className="flex gap-1">
+            <File size={34} color="#6D7C43" />
+            <div className="flex flex-col w-[169px]">
+              <p className="text-sm font-normal">Medical checkup report.pdf</p>
+              <p className="text-[#BCBCBC] text-[12px]">2MB</p>
+            </div>
+          </div>
+          <Trash size={20} color="#FF2626" />
+        </div>
+        <div className="w-[399px] h-[76px] bg-[#6D7C430D] flex justify-between items-center px-5 rounded-[15px]">
+          <div className="flex gap-1">
+            <File size={34} color="#6D7C43" />
+            <div className="flex flex-col w-[169px]">
+              <p className="text-sm font-normal">Medical checkup report.pdf</p>
+              <p className="text-[#BCBCBC] text-[12px]">2MB</p>
+            </div>
+          </div>
+          <Trash size={20} color="#FF2626" />
+        </div>
+        <div className="w-[399px] h-[76px] bg-[#6D7C430D] flex justify-between items-center px-5 rounded-[15px]">
+          <div className="flex gap-1">
+            <File size={34} color="#6D7C43" />
+            <div className="flex flex-col w-[169px]">
+              <p className="text-sm font-normal">Medical checkup report.pdf</p>
+              <p className="text-[#BCBCBC] text-[12px]">2MB</p>
+            </div>
+          </div>
+          <Trash size={20} color="#FF2626" />
+        </div>
       </div>
+
+      <MedicalDialog
+        open={isOpen}
+        onClose={closeDialog}
+        title="Add Clinical Document"
+        formComponent={<MedicalDocForm />}
+      />
     </div>
   );
 };

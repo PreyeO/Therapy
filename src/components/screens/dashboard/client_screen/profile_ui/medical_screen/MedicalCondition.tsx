@@ -6,9 +6,20 @@ import ProfileButton from "./ui/ProfileButton";
 import { useDialogState } from "@/store";
 import MedicalConditionForm from "./forms/MedicalConditionForm";
 import MedicalDialog from "./ui/MedicalDialog";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { useEffect } from "react";
+import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 
 const MedicalCondition = () => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
+  const { medicalConditions, fetchProfileMedicals, clientProfileId, loading } =
+    useBusinessPeriodsStore();
+
+  useEffect(() => {
+    if (clientProfileId) {
+      fetchProfileMedicals(clientProfileId);
+    }
+  }, [clientProfileId, fetchProfileMedicals]);
 
   const handleOpenDialog = () => {
     setDialogContent(<MedicalConditionForm />);
@@ -21,29 +32,38 @@ const MedicalCondition = () => {
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />
-      <div className="flex flex-col gap-[28px]">
-        <div className="flex  gap-[114px]">
-          <div className="flex flex-col gap-[6px]">
-            <ContentTitle title="Name of medical condition" />
-            <ContentSubtitle content="Asthma" />
-          </div>
 
-          <div className="flex flex-col gap-[6px]">
-            <ContentTitle title="Diagnosis date" />
-            <ContentSubtitle content="2/10/2024" />
-          </div>
+      {loading ? (
+        <div className="relative w-full h-[200px] flex justify-center items-center">
+          <SmallLoader />
         </div>
+      ) : (
+        medicalConditions.map((condition, index) => (
+          <div className="flex flex-col gap-[28px]" key={index}>
+            <div className="flex  gap-[114px]">
+              <div className="flex flex-col gap-[6px]">
+                <ContentTitle title="Name of medical condition" />
+                <ContentSubtitle content={condition.name || "N/A"} />
+              </div>
 
-        <div className="flex flex-col gap-[6px]  ">
-          <ContentTitle title="Note" />
-          <ContentSubtitle content="Lorem ipsum dolor sit amet consectetur. Faucibus sit facilisi ultrices risus phasellus sodales bibendum. Viverra ac pretium leo orci pharetra facilisi augue. Fermentum commodo et diam dignissim. Semper molestie ut quis in et id mattis cursus lectus." />
-        </div>
-        <ProfileButton
-          icon={<Trash2 size={18} color="white" />}
-          label="Delete medical info"
-          className="bg-[#FF2626]"
-        />
-      </div>
+              <div className="flex flex-col gap-[6px]">
+                <ContentTitle title="Diagnosis date" />
+                <ContentSubtitle content={condition.diagnosis_date || "N/A"} />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-[6px]  ">
+              <ContentTitle title="Note" />
+              <ContentSubtitle content={condition.notes || "N/A"} />
+            </div>
+            <ProfileButton
+              icon={<Trash2 size={18} color="white" />}
+              label="Delete medical info"
+              className="bg-[#FF2626]"
+            />
+          </div>
+        ))
+      )}
       <MedicalDialog
         open={isOpen}
         onClose={closeDialog}

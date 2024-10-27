@@ -1,96 +1,90 @@
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { medicationSchema } from "@/types/formSchema";
+import { MedicalCondition, medicalConditionSchema } from "@/types/formSchema";
 
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import FormFieldComponent from "../../../../../../ui/form_fields/FormFieldComponent";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { ToastContainer } from "react-toastify";
+import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
+import { useDialogState } from "@/store";
+import FormTextArea from "../../../../../../ui/form_fields/FormTextArea";
 
 const MedicalConditionForm = () => {
-  const form = useForm({
-    resolver: zodResolver(medicationSchema),
+  const form = useForm<MedicalCondition>({
+    resolver: zodResolver(medicalConditionSchema),
   });
+
+  const {
+    clientProfileId,
+    fetchProfileData,
+    updateMedicalConditions,
+    medicalConditions,
+  } = useBusinessPeriodsStore();
+  // const { loading, setLoading } = useAuthState();
+  const { closeDialog } = useDialogState();
+  const { loading, handleFormSubmit } = useMedicalsSubmit();
+
+  // Fetch client profile ID if not present
+  if (!clientProfileId) {
+    fetchProfileData();
+  }
+
+  // Form submission handler
+  const onSubmit = (data: MedicalCondition) => {
+    if (!clientProfileId) return;
+    const updatedConditions = [...medicalConditions, data];
+
+    handleFormSubmit(
+      () => updateMedicalConditions(updatedConditions),
+      form.reset,
+      closeDialog
+    );
+  };
 
   return (
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
-        <form className="flex flex-col gap-5">
-          <FormField
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormFieldComponent
             control={form.control}
-            name="medication_name"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Name of medical condition
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the name of medication"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="medication_prescriber"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Diagnosis date
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the name of medication"
-                    type="date"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
+            name="name"
+            label="Medical Condition Name"
+            placeholder="Enter the name of the condition"
+            type="text"
           />
 
-          <FormField
+          <FormFieldComponent
             control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Note
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter any additional details or notes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
+            name="diagnosis_date"
+            label="  Diagnosis date"
+            type="date"
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
-            Add
-          </Button>
+
+          <FormTextArea
+            control={form.control}
+            name="notes"
+            label="Notes"
+            placeholder="Enter any additional details or notes"
+          />
+
+          <ButtonLoader
+            loading={loading} // Show loader during submission
+            text="Add"
+            className="rounded-full h-[63px] text-xl font-medium"
+          />
         </form>
       </Form>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };
+
 export default MedicalConditionForm;

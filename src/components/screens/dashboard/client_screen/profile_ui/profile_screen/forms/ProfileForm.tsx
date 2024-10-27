@@ -4,21 +4,14 @@ import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ClientSetup } from "@/types/formSchema"; // Importing the type for default values
 
 const ProfileForm = () => {
   const { profileLoading, profile, fetchProfileData, clientProfileData } =
     useBusinessPeriodsStore();
 
-  const form = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      preferred_name: clientProfileData?.preferred_name || "",
-      pronouns: clientProfileData?.pronouns || "",
-      date_of_birth: clientProfileData?.date_of_birth || "",
-      phone_number: clientProfileData?.phone_number || "",
-    },
+  const form = useForm<ClientSetup>({
+    defaultValues: clientProfileData, // Set directly from the Zustand store
   });
 
   // Fetch profile data when the component mounts
@@ -33,6 +26,7 @@ const ProfileForm = () => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col gap-10">
       <h3 className=" font-bold text-lg">Personal Info</h3>
@@ -48,7 +42,7 @@ const ProfileForm = () => {
                   className="h-16 text-placeholder_text font-sm font-normal"
                   autoComplete="off"
                   placeholder="Enter your legal first name"
-                  value={profile?.firstName}
+                  value={profile?.firstName || ""}
                   readOnly
                 />
               </FormControl>

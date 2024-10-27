@@ -91,7 +91,7 @@ const BusinessPeriodStep: React.FC<BusinessPeriodStepProps> = ({
                   {appointmentAddresses.map((address, addressIndex) => (
                     <SelectItem
                       key={`address-${address.id || addressIndex}`} // Fixed key syntax
-                      value={String(address.id)}
+                      value={address.id}
                     >
                       {`${address.street_address}, ${address.city}, ${address.state} ${address.postal_code}`}
                     </SelectItem>

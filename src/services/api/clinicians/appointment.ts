@@ -152,3 +152,12 @@ export const getAllClients = async () => {
     handleError(error);
   }
 };
+
+export const getAllClinicianProfiles = async () => {
+  try {
+    const response = await api.get(`api/clinician-profiles/`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};

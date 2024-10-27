@@ -1,16 +1,7 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { medicationSchema } from "@/types/formSchema";
-
-import { Button } from "@/components/ui/button";
+import { ProtectiveFactor, protectiveFactorSchema } from "@/types/formSchema";
 import {
   Select,
   SelectContent,
@@ -18,81 +9,105 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { useDialogState } from "@/store";
+
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { ToastContainer } from "react-toastify";
+import { protectiveFactorChoices } from "@/constants/DataManager";
+import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
+import FormTextArea from "@/components/ui/form_fields/FormTextArea";
 
 const ProtectiveForm = () => {
-  const form = useForm({
-    resolver: zodResolver(medicationSchema),
+  const {
+    clientProfileId,
+    protectiveFactors,
+    updateProtectiveFactors,
+    fetchProfileData,
+  } = useBusinessPeriodsStore();
+
+  const { closeDialog } = useDialogState();
+
+  const form = useForm<ProtectiveFactor>({
+    resolver: zodResolver(protectiveFactorSchema),
   });
+  const { loading, handleFormSubmit } = useMedicalsSubmit();
+
+  // Fetch client profile ID if not present
+  if (!clientProfileId) {
+    fetchProfileData();
+  }
+
+  const onSubmit = async (data: ProtectiveFactor) => {
+    if (!clientProfileId) return;
+    const updatedProtectiveFactors = [...protectiveFactors, data];
+
+    handleFormSubmit(
+      () => updateProtectiveFactors(updatedProtectiveFactors),
+      form.reset,
+      closeDialog
+    );
+  };
 
   return (
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
-        <form className="flex flex-col gap-5">
-          <FormItem className="">
-            <FormLabel className="text-base font-medium text-primary_black_text">
-              Protective Factor
-            </FormLabel>
-            <Select>
-              <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                <SelectValue placeholder="Select protective factor" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="daily">
-                  Responsibility to family or children
-                </SelectItem>
-                <SelectItem value="BID">Spiritual/religious beliefs</SelectItem>
-                <SelectItem value="TID">Perceived social support</SelectItem>
-                <SelectItem value="QID">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </FormItem>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
-            name="note"
+            name="factor"
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Description
+                <FormLabel className="text-base font-medium text-primary_black_text">
+                  Protective Factor
                 </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter a description of how this factor protects you"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Note
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter any additional notes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => form.setValue("factor", value)}
+                >
+                  <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
+                    <SelectValue placeholder="Select protective factor" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {protectiveFactorChoices.map((factor) => (
+                      <SelectItem key={factor.value} value={factor.value}>
+                        {factor.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormItem>
             )}
           />
 
-          <Button className="rounded-full h-[63px] text-xl font-medium mt-[10px]">
-            Add
-          </Button>
+          <FormTextArea
+            control={form.control}
+            name="description"
+            label="   Description"
+            placeholder="Enter a description of how this factor protects you"
+          />
+          <FormTextArea
+            control={form.control}
+            name="notes"
+            label="Note"
+            placeholder="Enter any additional details or notes"
+          />
+
+          <ButtonLoader
+            loading={loading} // Show loader during submission
+            text="Add"
+            className="rounded-full h-[63px] text-xl font-medium"
+          />
         </form>
       </Form>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };

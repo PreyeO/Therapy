@@ -57,7 +57,7 @@ const EmergencyForm = forwardRef((_, ref) => {
           <div className="flex gap-4 flex-wrap w-full">
             <FormField
               control={form.control}
-              name="emergency.first_name"
+              name="emergency_contact.first_name"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -77,7 +77,7 @@ const EmergencyForm = forwardRef((_, ref) => {
             />
             <FormField
               control={form.control}
-              name="emergency.last_name"
+              name="emergency_contact.last_name"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -99,7 +99,7 @@ const EmergencyForm = forwardRef((_, ref) => {
           <div className="flex gap-4 flex-wrap w-full items-center">
             <FormField
               control={form.control}
-              name="emergency.email"
+              name="emergency_contact.email"
               render={({ field }) => (
                 <FormItem className="flex-grow ">
                   <FormLabel className="text-base font-medium text-primary_black_text">
@@ -137,7 +137,7 @@ const EmergencyForm = forwardRef((_, ref) => {
           </div>
           <FormField
             control={form.control}
-            name="emergency.phone_number"
+            name="emergency_contact.phone_number"
             render={({ field }) => (
               <FormItem className="flex-grow">
                 <FormLabel className="text-base font-medium text-primary_black_text">

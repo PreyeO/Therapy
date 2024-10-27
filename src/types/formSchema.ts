@@ -247,7 +247,7 @@ export interface FetchedBusinessPeriod {
   }> | null;
 }
 export type AppointmentAddress = {
-  id: number;
+  id: string;
   street_address: string;
   city: string;
   state: string;
@@ -310,11 +310,9 @@ export type Services = {
   price: number;
 };
 
-// CLIENTS
+// client complete profile setup
 
-// Update the schema to include nested address and emergency objects
 export const clientSetupFormSchema = z.object({
-  id: z.string().optional(),
   preferred_name: z.string().optional(),
   date_of_birth: z.string().optional(),
   phone_number: z.string().optional(),
@@ -328,7 +326,7 @@ export const clientSetupFormSchema = z.object({
       postal_code: z.string().optional(),
     })
     .optional(),
-  emergency: z
+  emergency_contact: z
     .object({
       first_name: z.string().optional(),
       last_name: z.string().optional(),
@@ -339,8 +337,98 @@ export const clientSetupFormSchema = z.object({
     .optional(),
 });
 
-// Infer the ClientSetup type from the schema
 export type ClientSetup = z.infer<typeof clientSetupFormSchema>;
+
+// Medication schema
+export const medicationSchema = z.object({
+  id: z.string(),
+  name: z.string({
+    required_error: "Medication name is required",
+  }),
+  dosage_quantity: z.string().optional(),
+  dosage_unit: z.string().optional(),
+  purpose: z.string().optional(),
+  frequency: z.string().optional(),
+  prescriber: z.string().optional(),
+  start_date: z.string().optional(),
+  end_date: z.string().optional(),
+  notes: z.string().optional(),
+});
+export type Medication = z.infer<typeof medicationSchema>;
+
+// Allergy schema
+export const allergySchema = z.object({
+  name: z.string({
+    required_error: "Allergy name is required",
+  }),
+});
+export type Allergy = z.infer<typeof allergySchema>;
+
+// Medical Condition schema
+export const medicalConditionSchema = z.object({
+  id: z.string().optional(),
+  name: z.string({
+    required_error: "Condition name is required",
+  }),
+  diagnosis_date: z.string().optional(),
+  notes: z.string().optional(),
+});
+export type MedicalCondition = z.infer<typeof medicalConditionSchema>;
+
+// Encounter schema
+export const encounterSchema = z.object({
+  clinician_profile: z.string({
+    required_error: "Clinician profile ID is required",
+  }),
+  encounter_type: z.string({
+    required_error: "Encounter type is required",
+  }),
+  progress_note: z.string().optional(),
+  notes: z.string().optional(),
+});
+export type Encounter = z.infer<typeof encounterSchema>;
+
+// Social Support schema
+export const socialSupportSchema = z.object({
+  social_support_type: z.string({
+    required_error: "Social support type is required",
+  }),
+  description: z.string(),
+  strength: z.string(),
+  notes: z.string().optional(),
+});
+export type SocialSupport = z.infer<typeof socialSupportSchema>;
+
+// Protective Factor schema
+export const protectiveFactorSchema = z.object({
+  factor: z.string({
+    required_error: "Protective factor is required",
+  }),
+  description: z.string(),
+  notes: z.string().optional(),
+});
+export type ProtectiveFactor = z.infer<typeof protectiveFactorSchema>;
+
+// Substance Use schema
+export const substanceUseSchema = z.object({
+  substance_type: z.string({
+    required_error: "Substance type is required",
+  }),
+  frequency: z.string(),
+});
+export type SubstanceUse = z.infer<typeof substanceUseSchema>;
+
+export const clientProfileFormSchema = z.object({
+  medications: z.array(medicationSchema).optional(),
+  allergies: z.array(allergySchema).optional(),
+  medical_conditions: z.array(medicalConditionSchema).optional(),
+  encounters: z.array(encounterSchema).optional(),
+  social_supports: z.array(socialSupportSchema).optional(),
+  protective_factors: z.array(protectiveFactorSchema).optional(),
+  substance_uses: z.array(substanceUseSchema).optional(),
+});
+
+export type ClientProfileSetup = z.infer<typeof clientProfileFormSchema>;
 
 export const ApointmentBookingFormSchema = z.object({
   date: z.string().optional(),
@@ -391,30 +479,3 @@ export type AppointmentCalender = {
 };
 
 // Client profile structure
-
-export const medicationSchema = z.object({
-  medicaton_name: z.string({
-    required_error: "Provide your business street to continue",
-  }),
-  medication_dosage: z.string({
-    required_error: "Provide your business city to continue",
-  }),
-  medication_prescriber: z.string({
-    required_error: "Provide your business state to continue",
-  }),
-  medication_start_date: z.string({
-    required_error: "Provide your business postal code to continue",
-  }),
-  medication_end_date: z.string({
-    required_error: "Provide your business postal code to continue",
-  }),
-  medication_frequency: z.string({
-    required_error: "Provide your business postal code to continue",
-  }),
-  medication_note: z.string({
-    required_error: "Provide your business postal code to continue",
-  }),
-  medication_purpose: z.string({
-    required_error: "Provide your business postal code to continue",
-  }),
-});

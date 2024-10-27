@@ -1,9 +1,9 @@
-import ClientOverview from "@/components/screens/dashboard/clinician_screen/appointment_ui/ClientOverview";
+import ClientOverviewScreen from "@/components/screens/dashboard/clinician_screen/client_ui/ClientOverviewScreen";
 
 const clientsOverview = () => {
   return (
-    <main className="py-20">
-      <ClientOverview />
+    <main className="">
+      <ClientOverviewScreen />
     </main>
   );
 };

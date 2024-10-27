@@ -32,9 +32,8 @@ const ClinicianCards = () => {
 
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [businessPeriods, setBusinessPeriods] = useState<BusinessPeriod[]>([]);
-
-  // State to manage loading for individual clinician cards
-  const [loadingClinician, setLoadingClinician] = useState<string | null>(null); // Track which clinician is loading
+  const [loadingClinician, setLoadingClinician] = useState<string | null>(null);
+  const [isBusinessPeriodsLoading, setBusinessPeriodsLoading] = useState(false); // Track loading of business periods
 
   useEffect(() => {
     fetchClinicianList();
@@ -46,7 +45,7 @@ const ClinicianCards = () => {
   };
 
   const handleContinue = (data: BookingData) => {
-    setBookingData(data); // Store booking data
+    setBookingData(data);
     openReview();
   };
 
@@ -63,16 +62,17 @@ const ClinicianCards = () => {
 
   const handleBookAppointment = async (clinicianId: string, clinician) => {
     setLoadingClinician(clinicianId); // Set loading for the specific clinician
-
     setSelectedClinician(clinician);
 
     if (clinician?.clinician_profile?.id) {
+      setBusinessPeriodsLoading(true); // Set loading state for business periods
       await fetchBusinessPeriodsByClinicianId(clinician.clinician_profile.id);
-      setBusinessPeriods(fetchedBusinessPeriods); // Set the fetched business periods to local state
+      setBusinessPeriods(fetchedBusinessPeriods); // Set fetched business periods to local state
+      setBusinessPeriodsLoading(false); // Reset loading after the data is fetched
     }
 
     setLoadingClinician(null); // Reset loading after the data is fetched
-    openSchedule();
+    openSchedule(); // Open the schedule dialog once business periods are available
   };
 
   return (
@@ -106,7 +106,7 @@ const ClinicianCards = () => {
                   <ButtonLoader
                     loading={
                       loadingClinician === clinician.clinician_profile?.id
-                    } // Safely access id with optional chaining
+                    }
                     className="flex gap-3 rounded-full w-[190px] text-[12px] font-medium flex-shrink-0"
                     onClick={() => {
                       const clinicianId = clinician.clinician_profile?.id;
@@ -116,7 +116,7 @@ const ClinicianCards = () => {
                     }}
                     disabled={
                       loadingClinician === clinician.clinician_profile?.id
-                    } // Safely access id with optional chaining
+                    }
                   >
                     Book Appointment
                     <CalendarClock size={18} />
@@ -143,12 +143,14 @@ const ClinicianCards = () => {
         className={showReview ? "w-[649px]" : "max-w-6xl scale-90"}
         buttonAction={handleViewAppointment}
       >
-        {showReview && bookingData ? ( // Conditionally render BookingReview when bookingData is not null
+        {showReview && bookingData ? (
           <BookingReview bookingData={bookingData} onBookNow={handleBookNow} />
         ) : (
+          // Only show the schedule when business periods are fully loaded
           <Schedule
             onContinue={handleContinue}
             businessPeriods={businessPeriods}
+            loading={isBusinessPeriodsLoading} // Pass loading state to the Schedule component
           />
         )}
       </DialogCard>

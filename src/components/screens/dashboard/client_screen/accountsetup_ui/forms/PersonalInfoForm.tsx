@@ -43,6 +43,7 @@ const PersonalInfoForm = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({
     submitForm: () => handleSubmit((data) => data)(),
   }));
+
   return (
     <div className="flex flex-col lg:gap-20 gap-10 items-center py-2">
       <div className="text-center py-6 mt-6">
@@ -106,7 +107,7 @@ const PersonalInfoForm = forwardRef((_, ref) => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                      className="h-16 text-placeholder_text text-sm font-normal w-full"
                       autoComplete="off"
                       placeholder="DD/MM/YYYY"
                       {...field}
@@ -124,7 +125,7 @@ const PersonalInfoForm = forwardRef((_, ref) => {
               <Select
                 onValueChange={(value) => setValue("gender", value)} // Update form value on select change
               >
-                <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full  rounded-xl">
+                <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
@@ -145,7 +146,7 @@ const PersonalInfoForm = forwardRef((_, ref) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    className="h-16 text-placeholder_text text-sm  font-normal w-full"
+                    className="h-16 text-placeholder_text text-sm font-normal w-full"
                     autoComplete="off"
                     placeholder="Enter Phone number"
                     {...field}

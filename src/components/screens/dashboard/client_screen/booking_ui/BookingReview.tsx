@@ -29,9 +29,9 @@ const BookingReview: React.FC<BookingReviewProps> = ({
   const serviceId =
     services.find((service) => service.name === bookingData.service)?.id || "";
   const locationId =
-    appointmentAddresses
-      .find((loc) => loc.street_address === bookingData.location)
-      ?.id.toString() || "";
+    appointmentAddresses.find(
+      (loc) => loc.street_address === bookingData.location
+    )?.id || "";
 
   const handleBookNow = async () => {
     if (!bookingData || !selectedClinician || !serviceId || !locationId) {

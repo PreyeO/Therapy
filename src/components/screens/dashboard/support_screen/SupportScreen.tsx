@@ -13,7 +13,7 @@ const SupportScreen = () => {
         <div className="max-w-[705px]">
           <h2 className="text-[40px] font-bold ">Welcome, How Can We Help?</h2>
           <p className="font-normal text-base leading-[19.84px] pt-[7px]">
-            Browse FAQs, Chat with Us Live, or Drop Us an Email.
+            Browse FAQs, Live Chat or Email Us.
           </p>
           <div className="backdrop-blur-lg border-3px shadow-md p-2 mt-4 border-army_green bg-transparent rounded-lg  flex items-center px-6 ">
             <Search

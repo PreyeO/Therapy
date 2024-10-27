@@ -92,7 +92,8 @@ const AppointmentActions = ({
         <DialogContent className=" z-50">
           <VerificationCard
             onYes={handleVerificationYes}
-            onNo={() => setCurrentModal(null)} // Close modal when "No" is clicked
+            onNo={() => setCurrentModal(null)}
+            title="  Are you sure you want to cancel your appointment?"
           />
         </DialogContent>
       </Dialog>

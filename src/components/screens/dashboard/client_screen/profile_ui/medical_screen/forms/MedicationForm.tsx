@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { medicationSchema } from "@/types/formSchema";
+import { Medication, medicationSchema } from "@/types/formSchema";
 import {
   Select,
   SelectContent,
@@ -17,217 +17,172 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { dosageUnits } from "@/constants/DataManager";
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { ToastContainer } from "react-toastify";
+import { useDialogState } from "@/store";
+import FormFieldComponent from "../../../../../../ui/form_fields/FormFieldComponent";
+import FormTextArea from "@/components/ui/form_fields/FormTextArea";
+import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
 
 const MedicationForm = () => {
-  const form = useForm({
+  const { clientProfileId, medications, updateMedications, fetchProfileData } =
+    useBusinessPeriodsStore();
+
+  const { closeDialog } = useDialogState();
+
+  const form = useForm<Medication>({
     resolver: zodResolver(medicationSchema),
   });
+  const { loading, handleFormSubmit } = useMedicalsSubmit();
+
+  // Fetch client profile ID if not present
+  if (!clientProfileId) {
+    fetchProfileData();
+    console.warn("Client profile ID is missing; cannot submit data.");
+  }
+
+  const onSubmit = async (data: Medication) => {
+    if (!data.name) {
+      return;
+    }
+    if (!clientProfileId) return;
+    const updatedMedications = [...medications, data];
+
+    handleFormSubmit(
+      () => updateMedications(updatedMedications),
+      form.reset,
+      closeDialog
+    );
+  };
 
   return (
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
-        <form className="flex flex-col gap-5">
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <div className="flex gap-5 w-full">
-            <FormField
+            <FormFieldComponent
               control={form.control}
-              name="medication_name"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    Medication Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter the name of medication"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
+              name="name"
+              label="Medication Name"
+              placeholder="Enter medication name"
+              type="text"
             />
-            <FormField
+            <FormFieldComponent
               control={form.control}
-              name="medication_prescriber"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    Prescriber Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter name of medication prescriber"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
+              name="prescriber"
+              label="Prescriber Name"
+              placeholder="Enter prescriber name"
+              type="text"
             />
           </div>
 
           <div className="flex gap-5 w-full">
             <div className="flex w-1/2 gap-2">
+              <FormFieldComponent
+                control={form.control}
+                name="dosage_quantity"
+                label="Enter dosage"
+                placeholder="     Dosage"
+                type="text"
+              />
               <FormField
                 control={form.control}
-                name="medical_dosage"
+                name="dosage_unit"
                 render={({ field }) => (
-                  <FormItem className="flex-grow">
-                    <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                      Dosage
+                  <FormItem className="w-[100px]">
+                    <FormLabel className="text-base font-medium text-primary_black_text">
+                      Unit
                     </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="h-16 text-placeholder_text font-sm font-normal w-full"
-                        autoComplete="off"
-                        placeholder="Enter dosage"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) =>
+                        form.setValue("dosage_unit", value)
+                      }
+                    >
+                      <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
+                        <SelectValue placeholder="mg" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {dosageUnits.map((unit) => (
+                          <SelectItem key={unit.value} value={unit.value}>
+                            {unit.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
-              <FormItem className="w-[100px]">
-                <FormLabel className="text-base font-medium text-primary_black_text">
-                  Unit
-                </FormLabel>
-                <Select>
-                  <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                    <SelectValue placeholder="mg" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="capsule">Capsule</SelectItem>
-                    <SelectItem value="tablet">Tablet</SelectItem>
-                    <SelectItem value="ml">ml</SelectItem>
-                    <SelectItem value="mg">mg</SelectItem>
-                    <SelectItem value="g">g</SelectItem>
-                    <SelectItem value="tsp">Tsp</SelectItem>
-                    <SelectItem value="tbsp">Tbsp</SelectItem>
-                    <SelectItem value="oral">Oral</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormItem>
             </div>
 
-            {/* Frequency field with same width as Dosage + Unit group */}
-            <FormItem className="w-1/2">
-              <FormLabel className="text-base font-medium text-primary_black_text">
-                Frequency
-              </FormLabel>
-              <Select>
-                <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                  <SelectValue placeholder="Select frequency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="BID">BID</SelectItem>
-                  <SelectItem value="TID">TID</SelectItem>
-                  <SelectItem value="QID">QID</SelectItem>
-                  <SelectItem value="PRN">PRN</SelectItem>
-                  <SelectItem value="once_a_week">Once a week</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
+            <FormField
+              control={form.control}
+              name="frequency"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
+                    Frequency
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-16 text-placeholder_text font-sm font-normal w-full"
+                      autoComplete="off"
+                      placeholder="Enter frequency"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className="flex gap-5 w-full">
-            <FormField
+            <FormFieldComponent
               control={form.control}
               name="start_date"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    Start Date
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter start date"
-                      type="date"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
+              label=" Start Date"
+              type="date"
             />
-            <FormField
+
+            <FormFieldComponent
               control={form.control}
               name="end_date"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    End Date
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter end date"
-                      type="date"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
+              label=" End Date"
+              type="date"
             />
           </div>
 
-          <FormField
+          <FormTextArea
             control={form.control}
             name="purpose"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Purpose
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="What is the medication for"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
+            label="Purpose"
+            placeholder="What is the medication for"
           />
-          <FormField
+          <FormTextArea
             control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Note
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter any additional details or notes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
+            name="notes"
+            label="Note"
+            placeholder="Enter any additional details or notes"
           />
 
-          <Button className="rounded-full h-[63px] text-xl font-medium ">
-            Add
-          </Button>
+          <ButtonLoader
+            loading={loading} // Use loading from the store
+            text="Add"
+            className="rounded-full h-[63px] text-xl font-medium"
+          />
         </form>
       </Form>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };

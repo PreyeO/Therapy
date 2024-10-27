@@ -1,7 +1,5 @@
-import { Input } from "@/components/ui/input";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -9,9 +7,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { medicationSchema } from "@/types/formSchema";
-
-import { Button } from "@/components/ui/button";
+import { Encounter, encounterSchema } from "@/types/formSchema";
 import {
   Select,
   SelectContent,
@@ -19,155 +15,143 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+
+import { encounterTypes } from "@/constants/DataManager";
+import { useDialogState } from "@/store";
+import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+
+import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
+import { ToastContainer } from "react-toastify";
+import { useAppointmentsStore } from "@/store/useAppointment";
+import { useEffect } from "react";
+import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
+import FormTextArea from "@/components/ui/form_fields/FormTextArea";
 
 const EncountersForm = () => {
-  const form = useForm({
-    resolver: zodResolver(medicationSchema),
+  const form = useForm<Encounter>({
+    resolver: zodResolver(encounterSchema),
   });
+
+  const { clientProfileId, fetchProfileData, updateEncounters, encounters } =
+    useBusinessPeriodsStore();
+  const { clinicians, fetchClinicianList } = useAppointmentsStore();
+
+  const { closeDialog } = useDialogState();
+  const { loading, handleFormSubmit } = useMedicalsSubmit();
+
+  // Fetch clinician list and client profile if not present
+  useEffect(() => {
+    if (!clientProfileId) fetchProfileData();
+    fetchClinicianList();
+  }, [clientProfileId, fetchProfileData, fetchClinicianList]);
+
+  // Form submission handler
+
+  const onSubmit = async (data: Encounter) => {
+    if (!clientProfileId) return;
+    const updatedEncounters = [...encounters, data];
+
+    handleFormSubmit(
+      () => updateEncounters(updatedEncounters),
+      form.reset,
+      closeDialog
+    );
+  };
 
   return (
     <div className="flex flex-col gap-5 scale-95">
       <Form {...form}>
-        <form className="flex flex-col gap-5">
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          {/* Clinician Profile Selection */}
           <FormField
             control={form.control}
-            name="medication_name"
-            render={({ field }) => (
-              <FormItem className="flex-grow">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Clinician Name
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="h-16 text-placeholder_text font-sm font-normal w-full"
-                    autoComplete="off"
-                    placeholder="Enter the clinician name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-              </FormItem>
-            )}
-          />
-          <div className="flex gap-5 w-full">
-            <FormField
-              control={form.control}
-              name="medication_prescriber"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    Date of encounter
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter the name of medication"
-                      type="date"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="medication_prescriber"
-              render={({ field }) => (
-                <FormItem className="flex-grow">
-                  <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                    Time of encounter
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="h-16 text-placeholder_text font-sm font-normal w-full"
-                      autoComplete="off"
-                      placeholder="Enter the name of medication"
-                      type="time"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#E75F51] text-[13px] font-light" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormItem className="">
-            <FormLabel className="text-base font-medium text-primary_black_text">
-              Meeting Type
-            </FormLabel>
-            <Select>
-              <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                <SelectValue placeholder="Select a type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="daily"> Annual Visit</SelectItem>
-                <SelectItem value="BID">Physical Exam</SelectItem>
-                <SelectItem value="TID">Specialist Appointment</SelectItem>
-                <SelectItem value="QID">Wellness Visit</SelectItem>
-                <SelectItem value="PRN">Follow-up Appointment</SelectItem>
-                <SelectItem value="once_a_week">Urgent Care Visit</SelectItem>
-                <SelectItem value="once_a_week">
-                  Diagnostic/Assessment Visit
-                </SelectItem>
-                <SelectItem value="once_a_week">
-                  Chronic Disease Management
-                </SelectItem>
-                <SelectItem value="once_a_week">Intake Visit</SelectItem>
-                <SelectItem value="once_a_week">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </FormItem>
-
-          <FormField
-            control={form.control}
-            name="note"
+            name="clinician_profile"
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Progress Note
+                <FormLabel className="text-base font-medium text-primary_black_text">
+                  Select Clinician Name
                 </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter a brief summary of what happened during the encounter"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                <Select
+                  value={field.value}
+                  onValueChange={(value) =>
+                    form.setValue("clinician_profile", value)
+                  }
+                >
+                  <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
+                    <SelectValue placeholder="Select encountered clinician" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {clinicians.map((clinician) => (
+                      <SelectItem
+                        key={clinician.clinician_profile?.id || clinician.id}
+                        value={clinician.clinician_profile?.id || ""}
+                      >
+                        {`${clinician.first_name} ${clinician.last_name}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
               </FormItem>
             )}
           />
 
+          {/* Encounter Type */}
           <FormField
             control={form.control}
-            name="note"
+            name="encounter_type"
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="md:text-base text-sm font-medium text-primary_black_text">
-                  Note
+                <FormLabel className="text-base font-medium text-primary_black_text">
+                  Meeting Type
                 </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-16 text-placeholder_text font-sm font-normal w-full bg-white"
-                    autoComplete="off"
-                    placeholder="Enter any additional notes"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-[#E75F51] text-[13px] font-light" />
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
+                    <SelectValue placeholder="Select a type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {encounterTypes.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="rounded-full h-[63px] text-xl font-medium ">
-            Add
-          </Button>
+
+          <FormTextArea
+            control={form.control}
+            name="progress_note"
+            label="Progress Note"
+            placeholder="Enter a brief summary of what happened during the encounter"
+          />
+          <FormTextArea
+            control={form.control}
+            name="notes"
+            label="Note"
+            placeholder="Enter any additional details or notes"
+          />
+
+          {/* Submit Button */}
+          <ButtonLoader
+            loading={loading}
+            text="Add"
+            className="rounded-full h-[63px] text-xl font-medium"
+          />
         </form>
       </Form>
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
+        className="text-white"
+      />
     </div>
   );
 };
+
 export default EncountersForm;
