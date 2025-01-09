@@ -18,12 +18,13 @@ import { ToastContainer } from "react-toastify";
 import { protectiveFactorChoices } from "@/constants/DataManager";
 import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
 import FormTextArea from "@/components/ui/form_fields/FormTextArea";
+import { setupClientProfile } from "@/services/api/clients/account_setup";
 
 const ProtectiveForm = () => {
   const {
     clientProfileId,
     protectiveFactors,
-    updateProtectiveFactors,
+    fetchProfileMedicals,
     fetchProfileData,
   } = useBusinessPeriodsStore();
 
@@ -32,6 +33,7 @@ const ProtectiveForm = () => {
   const form = useForm<ProtectiveFactor>({
     resolver: zodResolver(protectiveFactorSchema),
   });
+
   const { loading, handleFormSubmit } = useMedicalsSubmit();
 
   // Fetch client profile ID if not present
@@ -41,13 +43,20 @@ const ProtectiveForm = () => {
 
   const onSubmit = async (data: ProtectiveFactor) => {
     if (!clientProfileId) return;
-    const updatedProtectiveFactors = [...protectiveFactors, data];
-
-    handleFormSubmit(
-      () => updateProtectiveFactors(updatedProtectiveFactors),
-      form.reset,
-      closeDialog
-    );
+    try {
+      await handleFormSubmit(
+        async () => {
+          await setupClientProfile(clientProfileId, {
+            protective_factors: [...protectiveFactors, data],
+          });
+          await fetchProfileMedicals(clientProfileId); // Refresh the list
+        },
+        form.reset,
+        closeDialog
+      );
+    } catch (error) {
+      console.error("Error creating protective factor:", error);
+    }
   };
 
   return (
@@ -61,7 +70,7 @@ const ProtectiveForm = () => {
             control={form.control}
             name="factor"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem>
                 <FormLabel className="text-base font-medium text-primary_black_text">
                   Protective Factor
                 </FormLabel>
@@ -73,9 +82,9 @@ const ProtectiveForm = () => {
                     <SelectValue placeholder="Select protective factor" />
                   </SelectTrigger>
                   <SelectContent>
-                    {protectiveFactorChoices.map((factor) => (
-                      <SelectItem key={factor.value} value={factor.value}>
-                        {factor.label}
+                    {protectiveFactorChoices.map((choice) => (
+                      <SelectItem key={choice.value} value={choice.value}>
+                        {choice.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -87,13 +96,13 @@ const ProtectiveForm = () => {
           <FormTextArea
             control={form.control}
             name="description"
-            label="   Description"
+            label="Description"
             placeholder="Enter a description of how this factor protects you"
           />
           <FormTextArea
             control={form.control}
             name="notes"
-            label="Note"
+            label="Notes"
             placeholder="Enter any additional details or notes"
           />
 
@@ -111,4 +120,5 @@ const ProtectiveForm = () => {
     </div>
   );
 };
+
 export default ProtectiveForm;

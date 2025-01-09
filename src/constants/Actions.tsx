@@ -40,6 +40,7 @@ export const handleActionClick = async (
 // Modify `getDropdownItemsOne` to use the new `refreshTable` parameter
 export const getDropdownItemsOne = (
   appointmentId: string,
+  // navigate: (path: string) => void,
   openSuccess: (message: { title: string; subtitle: string }) => void,
   refreshTable: () => void,
   updateState: (
@@ -47,6 +48,13 @@ export const getDropdownItemsOne = (
     updatedData: { status?: string; acceptance_status?: string }
   ) => void // New parameter for state update
 ): DropdownItem[] => [
+  // {
+  //   label: "View",
+  //   color: "text-[#8BA05F]",
+  //   onClick: () =>
+  //     navigate(`/clinician_dashboard/clientoverview/${appointmentId}`),
+  //   icons: <EditIcon width={18} height={18} />,
+  // },
   {
     label: "Waitlist",
     color: "text-[#E25D1A]",
@@ -102,6 +110,7 @@ export const getDropdownItemsOne = (
 
 export const getDropdownItemsTwo = (
   appointmentId: string,
+  navigate: (path: string) => void,
   openSuccess: (message: { title: string; subtitle: string }) => void,
   refreshTable: () => void,
   updateState: (
@@ -109,6 +118,13 @@ export const getDropdownItemsTwo = (
     updatedData: { status?: string; acceptance_status?: string }
   ) => void // New parameter for state update
 ): DropdownItem[] => [
+  {
+    label: "View",
+    color: "text-[#8BA05F]",
+    onClick: () =>
+      navigate(`/clinician_dashboard/clientoverview/${appointmentId}`),
+    icons: <EditIcon width={18} height={18} />,
+  },
   {
     label: "No Show",
     color: "text-[#E25D1A]",

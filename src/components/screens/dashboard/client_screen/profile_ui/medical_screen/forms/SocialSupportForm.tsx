@@ -12,26 +12,25 @@ import {
 
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
-
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
 import { ToastContainer } from "react-toastify";
 import { socialSupportTypes, strengthChoices } from "@/constants/DataManager";
 import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
 import FormTextArea from "@/components/ui/form_fields/FormTextArea";
+import { setupClientProfile } from "@/services/api/clients/account_setup";
 
 const SocialSupportForm = () => {
-  const {
-    clientProfileId,
-    socialSupports,
-    updateSocialSupports,
-    fetchProfileData,
-  } = useBusinessPeriodsStore();
-
-  const { closeDialog } = useDialogState();
-
   const form = useForm<SocialSupport>({
     resolver: zodResolver(socialSupportSchema),
   });
+
+  const {
+    clientProfileId,
+    socialSupports,
+    fetchProfileMedicals,
+    fetchProfileData,
+  } = useBusinessPeriodsStore();
+  const { closeDialog } = useDialogState();
   const { loading, handleFormSubmit } = useMedicalsSubmit();
 
   // Fetch client profile ID if not present
@@ -41,13 +40,20 @@ const SocialSupportForm = () => {
 
   const onSubmit = async (data: SocialSupport) => {
     if (!clientProfileId) return;
-    const updatedSocialSupports = [...socialSupports, data];
-
-    handleFormSubmit(
-      () => updateSocialSupports(updatedSocialSupports),
-      form.reset,
-      closeDialog
-    );
+    try {
+      await handleFormSubmit(
+        async () => {
+          await setupClientProfile(clientProfileId, {
+            social_supports: [...socialSupports, data],
+          });
+          await fetchProfileMedicals(clientProfileId); // Re-fetch social supports
+        },
+        form.reset,
+        closeDialog
+      );
+    } catch (error) {
+      console.error("Error creating social support:", error);
+    }
   };
 
   return (
@@ -61,7 +67,7 @@ const SocialSupportForm = () => {
             control={form.control}
             name="social_support_type"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem>
                 <FormLabel className="text-base font-medium text-primary_black_text">
                   Type of Support
                 </FormLabel>
@@ -97,7 +103,7 @@ const SocialSupportForm = () => {
             control={form.control}
             name="strength"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem>
                 <FormLabel className="text-base font-medium text-primary_black_text">
                   Strength
                 </FormLabel>
@@ -106,12 +112,12 @@ const SocialSupportForm = () => {
                   onValueChange={(value) => form.setValue("strength", value)}
                 >
                   <SelectTrigger className="h-16 text-placeholder_text text-sm font-normal w-full rounded-xl">
-                    <SelectValue placeholder="Select Strength type" />
+                    <SelectValue placeholder="Select strength type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {strengthChoices.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
+                    {strengthChoices.map((choice) => (
+                      <SelectItem key={choice.value} value={choice.value}>
+                        {choice.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -123,11 +129,12 @@ const SocialSupportForm = () => {
           <FormTextArea
             control={form.control}
             name="notes"
-            label="Note"
+            label="Notes"
             placeholder="Enter any additional details or notes"
           />
+
           <ButtonLoader
-            loading={loading} // Show loader during submission
+            loading={loading}
             text="Add"
             className="rounded-full h-[63px] text-xl font-medium"
           />
@@ -140,4 +147,5 @@ const SocialSupportForm = () => {
     </div>
   );
 };
+
 export default SocialSupportForm;

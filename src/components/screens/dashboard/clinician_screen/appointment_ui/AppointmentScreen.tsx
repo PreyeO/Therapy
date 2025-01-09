@@ -12,6 +12,7 @@ import { getStatusTextColor, mapToAppointmentTableFormat } from "@/lib/utils";
 import AllAppointmentSearch from "./AllAppointmentSearch";
 import { useSearchStore } from "@/store";
 import { getDropdownItemsOne, getDropdownItemsTwo } from "@/constants/Actions";
+import { useNavigate } from "react-router-dom";
 
 const AppointmentScreen = () => {
   const [activeTab, setActiveTab] = useState("request");
@@ -19,6 +20,7 @@ const AppointmentScreen = () => {
   const [isActionLoading, setActionLoading] = useState(false);
 
   const { resetFilters } = useSearchStore();
+  const navigate = useNavigate();
 
   // Using Zustand store state and actions
   const {
@@ -150,6 +152,7 @@ const AppointmentScreen = () => {
           dropdownItemsGenerator={(appointmentId, openSuccess, updateLoader) =>
             dropdownItemsGenerator(
               appointmentId,
+              navigate,
               openSuccess,
               updateLoader,
               updateAppointmentInState // Pass Zustand action for state update

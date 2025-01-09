@@ -161,3 +161,23 @@ export const getAllClinicianProfiles = async () => {
     handleError(error);
   }
 };
+
+export const getAllClientProfile = async () => {
+  try {
+    const response = await api.get(`api/client-profiles/`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const getClientProfileByAppointmentId = async (
+  appointmentId: string
+) => {
+  try {
+    const response = await api.get(`/api/client-profiles/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    throw error;
+  }
+};

@@ -1,4 +1,4 @@
-import ClientOverviewScreen from "@/components/screens/dashboard/clinician_screen/client_ui/ClientOverviewScreen";
+import ClientOverviewScreen from "@/components/screens/dashboard/clinician_screen/appointment_ui/ClientOverviewScreen";
 
 const clientsOverview = () => {
   return (

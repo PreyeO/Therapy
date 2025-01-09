@@ -2,7 +2,6 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MedicalCondition, medicalConditionSchema } from "@/types/formSchema";
-
 import FormFieldComponent from "../../../../../../ui/form_fields/FormFieldComponent";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import ButtonLoader from "@/components/ui/loader_effects/ButtonLoader";
@@ -10,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
 import { useDialogState } from "@/store";
 import FormTextArea from "../../../../../../ui/form_fields/FormTextArea";
+import { setupClientProfile } from "@/services/api/clients/account_setup";
 
 const MedicalConditionForm = () => {
   const form = useForm<MedicalCondition>({
@@ -19,8 +19,9 @@ const MedicalConditionForm = () => {
   const {
     clientProfileId,
     fetchProfileData,
-    updateMedicalConditions,
+    // updateMedicalConditions,
     medicalConditions,
+    fetchProfileMedicals,
   } = useBusinessPeriodsStore();
   // const { loading, setLoading } = useAuthState();
   const { closeDialog } = useDialogState();
@@ -31,16 +32,22 @@ const MedicalConditionForm = () => {
     fetchProfileData();
   }
 
-  // Form submission handler
-  const onSubmit = (data: MedicalCondition) => {
+  const onSubmit = async (data) => {
     if (!clientProfileId) return;
-    const updatedConditions = [...medicalConditions, data];
-
-    handleFormSubmit(
-      () => updateMedicalConditions(updatedConditions),
-      form.reset,
-      closeDialog
-    );
+    try {
+      await handleFormSubmit(
+        async () => {
+          await setupClientProfile(clientProfileId, {
+            medical_conditions: [...medicalConditions, data],
+          });
+          await fetchProfileMedicals(clientProfileId); // Re-fetch profile data
+        },
+        form.reset,
+        closeDialog
+      );
+    } catch (error) {
+      console.error("Error creating medical condition:", error);
+    }
   };
 
   return (

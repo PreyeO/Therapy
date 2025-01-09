@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Allergy, allergySchema } from "@/types/formSchema";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import { X } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
@@ -23,36 +23,31 @@ const AllergyForm = () => {
     resolver: zodResolver(allergySchema),
   });
 
-  const { clientProfileId, fetchProfileData, updateAllergies, allergies } =
-    useBusinessPeriodsStore();
+  const {
+    clientProfileId,
+    fetchProfileData,
+    fetchProfileMedicals,
+    updateAllergies,
+  } = useBusinessPeriodsStore();
   const { loading, setLoading } = useAuthState();
   const { closeDialog } = useDialogState();
 
   const [inputValue, setInputValue] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
 
-  // Load allergies from store when form opens
-  useEffect(() => {
-    setTags(allergies.map((allergy) => allergy.name));
-  }, [allergies]);
-
-  // Fetch client profile data if not present
+  // Ensure profile data is fetched
   useEffect(() => {
     if (!clientProfileId) fetchProfileData();
   }, [clientProfileId, fetchProfileData]);
 
-  // Clear form on dialog close
-  const resetFormOnClose = useCallback(() => {
-    setTags([]);
-    setInputValue("");
-    form.reset();
-  }, [form]);
+  // Clear form state when the modal is closed
+  const resetForm = () => {
+    setTags([]); // Clear the tags
+    setInputValue(""); // Clear the input field
+    form.reset(); // Reset the form
+  };
 
-  useEffect(() => {
-    return () => resetFormOnClose();
-  }, [resetFormOnClose]);
-
-  // Add tag to list on "Enter" or "," key press without submitting
+  // Add a new tag when pressing Enter or ,
   const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
@@ -64,18 +59,18 @@ const AllergyForm = () => {
     }
   };
 
-  // Remove individual tag without triggering form submission
+  // Remove a specific tag
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  // Remove all tags without triggering form submission
-  const removeAllTags = (e) => {
+  // Remove all tags
+  const removeAllTags = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setTags([]);
   };
 
-  // Submit form data to server and update the state
+  // Submit the form
   const onSubmit = async () => {
     if (!clientProfileId || tags.length === 0) return;
 
@@ -83,9 +78,10 @@ const AllergyForm = () => {
     const payload = tags.map((tag) => ({ name: tag }));
 
     try {
-      await updateAllergies(payload);
-      resetFormOnClose(); // Reset form after submission
-      closeDialog(); // Close the dialog/modal
+      await updateAllergies(payload); // Update the allergies in the store
+      await fetchProfileMedicals(clientProfileId); // Refresh profile data
+      resetForm(); // Clear form data
+      closeDialog(); // Close the modal
     } catch (error) {
       const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);

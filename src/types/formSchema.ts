@@ -341,7 +341,7 @@ export type ClientSetup = z.infer<typeof clientSetupFormSchema>;
 
 // Medication schema
 export const medicationSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string({
     required_error: "Medication name is required",
   }),
@@ -361,6 +361,7 @@ export const allergySchema = z.object({
   name: z.string({
     required_error: "Allergy name is required",
   }),
+  id: z.string().optional(),
 });
 export type Allergy = z.infer<typeof allergySchema>;
 
@@ -380,6 +381,7 @@ export const encounterSchema = z.object({
   clinician_profile: z.string({
     required_error: "Clinician profile ID is required",
   }),
+  id: z.string().optional(),
   encounter_type: z.string({
     required_error: "Encounter type is required",
   }),
@@ -393,6 +395,7 @@ export const socialSupportSchema = z.object({
   social_support_type: z.string({
     required_error: "Social support type is required",
   }),
+  id: z.string().optional(),
   description: z.string(),
   strength: z.string(),
   notes: z.string().optional(),
@@ -404,6 +407,7 @@ export const protectiveFactorSchema = z.object({
   factor: z.string({
     required_error: "Protective factor is required",
   }),
+  id: z.string().optional(),
   description: z.string(),
   notes: z.string().optional(),
 });
@@ -414,6 +418,7 @@ export const substanceUseSchema = z.object({
   substance_type: z.string({
     required_error: "Substance type is required",
   }),
+  id: z.string().optional(),
   frequency: z.string(),
 });
 export type SubstanceUse = z.infer<typeof substanceUseSchema>;
@@ -429,6 +434,21 @@ export const clientProfileFormSchema = z.object({
 });
 
 export type ClientProfileSetup = z.infer<typeof clientProfileFormSchema>;
+
+export type ClientProfileData = {
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  email: string;
+  gender: string;
+  phone_number: string;
+  address: {
+    street_address: string;
+    city: string;
+    state: string;
+    postal_code: string;
+  };
+};
 
 export const ApointmentBookingFormSchema = z.object({
   date: z.string().optional(),

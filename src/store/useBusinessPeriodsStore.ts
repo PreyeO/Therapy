@@ -409,15 +409,17 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
         set({ error: "Error completing client setup", loading: false });
       }
     },
+
     fetchProfileMedicals: async (clientProfileId: string) => {
       set({ loading: true, error: null });
       try {
         const response = await getClientProfile(clientProfileId);
 
+        // Update state with fetched profile data
         set({
           medications: response.medications || [],
-          allergies: response.allergies || [],
           medicalConditions: response.medical_conditions || [],
+          allergies: response.allergies || [],
           encounters: response.encounters || [],
           socialSupports: response.social_supports || [],
           protectiveFactors: response.protective_factors || [],
@@ -425,6 +427,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
           loading: false,
         });
       } catch (error) {
+        console.error("Error fetching profile data:", error);
         set({ error: "Failed to fetch profile data", loading: false });
       }
     },

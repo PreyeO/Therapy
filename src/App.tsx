@@ -76,7 +76,10 @@ function App() {
               <Route path="clients" element={<Clients />} />
               <Route path="appointment" element={<Appointment />} />
               <Route path="support" element={<Support />} />
-              <Route path="clientoverview" element={<ClientsOverview />} />
+              <Route
+                path="clientoverview/:appointmentId"
+                element={<ClientsOverview />}
+              />
               <Route path="empty" element={<Empty />} />
               <Route path="profile" element={<ProfileLayout />}>
                 <Route path="" element={<Profile />} />

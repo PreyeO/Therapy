@@ -7,28 +7,57 @@ import MedicalDialog from "./ui/MedicalDialog";
 import EncountersForm from "./forms/EncountersForm";
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
-import { useAppointmentsStore } from "@/store/useAppointment"; // Import the store with clinicians
+import { useAppointmentsStore } from "@/store/useAppointment";
 import { useEffect } from "react";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
+import useDeleteItem from "@/hooks/useDeleteItem";
+import { deleteEncounter } from "@/services/api/clients/account_setup";
+import { ToastContainer } from "react-toastify";
+import Success from "@/components/ui/notifications/Success";
+import VerificationCard from "../../../components/VerificationCard";
 
 const Encounter = () => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
-  const { encounters, fetchProfileMedicals, clientProfileId, loading } =
-    useBusinessPeriodsStore();
+  const {
+    encounters = [],
+    fetchProfileMedicals,
+    clientProfileId,
+    loading,
+    updateState,
+  } = useBusinessPeriodsStore();
   const { clinicians, fetchClinicianList } = useAppointmentsStore();
+
+  const {
+    isVerificationOpen,
+    isSuccessOpen,
+    isDeleting,
+    handleDeleteClick,
+    handleConfirmDelete,
+    handleCancelDelete,
+    handleSuccessClose,
+  } = useDeleteItem(
+    async (id) => {
+      await deleteEncounter(id);
+      if (clientProfileId) {
+        await fetchProfileMedicals(clientProfileId); // Refresh encounters
+      }
+    },
+    "encounters",
+    updateState,
+    clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
+  );
 
   useEffect(() => {
     if (clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-    fetchClinicianList(); // Fetch clinician list on component mount
+    fetchClinicianList();
   }, [clientProfileId, fetchProfileMedicals, fetchClinicianList]);
 
   const handleOpenDialog = () => {
     setDialogContent(<EncountersForm />);
   };
 
-  // Function to get clinician name from clinician profile ID
   const getClinicianName = (clinicianProfileId) => {
     const clinician = clinicians.find(
       (clinician) => clinician.clinician_profile?.id === clinicianProfileId
@@ -66,11 +95,11 @@ const Encounter = () => {
                 <ContentSubtitle content={encounter.encounter_type || ""} />
               </div>
             </div>
-            <div className="flex flex-col gap-[6px] ">
+            <div className="flex flex-col gap-[6px]">
               <ContentTitle title="Progress Note" />
               <ContentSubtitle content={encounter.progress_note || "N/A"} />
             </div>
-            <div className="flex flex-col gap-[6px]  ">
+            <div className="flex flex-col gap-[6px]">
               <ContentTitle title="Note" />
               <ContentSubtitle content={encounter.notes || "N/A"} />
             </div>
@@ -78,6 +107,7 @@ const Encounter = () => {
               icon={<Trash2 size={18} color="white" />}
               label="Delete encounter"
               className="bg-[#FF2626]"
+              onClick={() => handleDeleteClick(encounter.id)}
             />
           </div>
         ))
@@ -87,6 +117,47 @@ const Encounter = () => {
         onClose={closeDialog}
         title="Add Encounter"
         formComponent={<EncountersForm />}
+      />
+
+      {/* Verification Modal */}
+      {isVerificationOpen && (
+        <MedicalDialog
+          open={isVerificationOpen}
+          onClose={handleCancelDelete}
+          title="Confirm Deletion"
+          className="text-center text-red-600 "
+          formComponent={
+            <VerificationCard
+              onYes={handleConfirmDelete}
+              onNo={handleCancelDelete}
+              title="Are you sure you want to delete this encounter?"
+              loading={isDeleting}
+            />
+          }
+        />
+      )}
+
+      {/* Success Modal */}
+      {isSuccessOpen && (
+        <div className="text-center flex flex-col justify-center mx-auto items-center">
+          <MedicalDialog
+            open={isSuccessOpen}
+            onClose={handleSuccessClose}
+            formComponent={
+              <Success
+                title="Encounter Deleted"
+                subtitle="The encounter was successfully deleted from your records."
+                label="Close"
+                onButtonClick={handleSuccessClose}
+                className="bg-transparent w-[500px] rounded-xl h-fit"
+              />
+            }
+          />
+        </div>
+      )}
+
+      <ToastContainer
+        toastStyle={{ backgroundColor: "crimson", color: "white" }}
       />
     </div>
   );

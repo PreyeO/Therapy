@@ -7,11 +7,40 @@ import MedicalDialog from "./ui/MedicalDialog";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import { useEffect } from "react";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
+import useDeleteItem from "@/hooks/useDeleteItem";
+import { deleteAllergy } from "@/services/api/clients/account_setup";
+import VerificationCard from "../../../components/VerificationCard";
+import Success from "@/components/ui/notifications/Success";
 
 const Allergies = () => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
-  const { allergies, fetchProfileMedicals, clientProfileId, loading } =
-    useBusinessPeriodsStore();
+  const {
+    allergies,
+    fetchProfileMedicals,
+    clientProfileId,
+    loading,
+    updateState,
+  } = useBusinessPeriodsStore();
+
+  const {
+    isVerificationOpen,
+    isSuccessOpen,
+    isDeleting,
+    handleDeleteClick,
+    handleConfirmDelete,
+    handleCancelDelete,
+    handleSuccessClose,
+  } = useDeleteItem(
+    async (id) => {
+      await deleteAllergy(id);
+      if (clientProfileId) {
+        await fetchProfileMedicals(clientProfileId); // Refresh allergies
+      }
+    },
+    "allergies",
+    updateState,
+    clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
+  );
 
   useEffect(() => {
     if (clientProfileId) {
@@ -37,10 +66,12 @@ const Allergies = () => {
         </div>
       ) : (
         <div className="flex flex-wrap gap-2">
-          {" "}
-          {/* Flex container for row display */}
-          {allergies.map((allergy, index) => (
-            <AllergyButton key={index} label={allergy.name} />
+          {allergies.map((allergy) => (
+            <AllergyButton
+              key={allergy.id}
+              label={allergy.name}
+              onDelete={() => handleDeleteClick(allergy.id)}
+            />
           ))}
         </div>
       )}
@@ -50,6 +81,43 @@ const Allergies = () => {
         title="Add Allergy"
         formComponent={<AllergyForm />}
       />
+
+      {/* Verification Modal */}
+      {isVerificationOpen && (
+        <MedicalDialog
+          open={isVerificationOpen}
+          onClose={handleCancelDelete}
+          title="Confirm Deletion"
+          className="text-center text-red-600 "
+          formComponent={
+            <VerificationCard
+              onYes={handleConfirmDelete}
+              onNo={handleCancelDelete}
+              title="Are you sure you want to delete this allergy?"
+              loading={isDeleting}
+            />
+          }
+        />
+      )}
+
+      {/* Success Modal */}
+      {isSuccessOpen && (
+        <div className="text-center flex flex-col justify-center mx-auto items-center">
+          <MedicalDialog
+            open={isSuccessOpen}
+            onClose={handleSuccessClose}
+            formComponent={
+              <Success
+                title="Allergy Deleted"
+                subtitle="The allergy was successfully deleted from your records."
+                label="Close"
+                onButtonClick={handleSuccessClose}
+                className="bg-transparent w-[500px] rounded-xl h-fit"
+              />
+            }
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -29,6 +29,7 @@ interface ColumnConfig {
 interface AppointmentTableProps {
   dropdownItemsGenerator: (
     appointmentId: string,
+    navigate: (path: string) => void,
     openSuccess: (message: { title: string; subtitle: string }) => void,
     refreshTable: () => void
   ) => DropdownItem[];
@@ -163,6 +164,7 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                       <EllipsisDropdown
                         items={dropdownItemsGenerator(
                           item.id,
+                          navigate,
                           openSuccess,
                           () => {
                             setActionLoading(true); // Show loading

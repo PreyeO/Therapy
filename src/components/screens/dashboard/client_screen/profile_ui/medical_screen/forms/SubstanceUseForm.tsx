@@ -17,12 +17,13 @@ import { ToastContainer } from "react-toastify";
 import { substanceTypeChoices } from "@/constants/DataManager";
 import FormFieldComponent from "../../../../../../ui/form_fields/FormFieldComponent";
 import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
+import { setupClientProfile } from "@/services/api/clients/account_setup";
 
 const SubstanceUseForm = () => {
   const {
     clientProfileId,
     substanceUses,
-    updateSubtanceUses,
+    fetchProfileMedicals,
     fetchProfileData,
   } = useBusinessPeriodsStore();
 
@@ -40,13 +41,20 @@ const SubstanceUseForm = () => {
 
   const onSubmit = async (data: SubstanceUse) => {
     if (!clientProfileId) return;
-    const updatedSubstanceUses = [...substanceUses, data];
-
-    handleFormSubmit(
-      () => updateSubtanceUses(updatedSubstanceUses),
-      form.reset,
-      closeDialog
-    );
+    try {
+      await handleFormSubmit(
+        async () => {
+          await setupClientProfile(clientProfileId, {
+            substance_uses: [...substanceUses, data],
+          });
+          await fetchProfileMedicals(clientProfileId); // Refresh the list
+        },
+        form.reset,
+        closeDialog
+      );
+    } catch (error) {
+      console.error("Error creating substance use:", error);
+    }
   };
 
   return (
@@ -60,7 +68,7 @@ const SubstanceUseForm = () => {
             control={form.control}
             name="substance_type"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem>
                 <FormLabel className="text-base font-medium text-primary_black_text">
                   Substance Type
                 </FormLabel>
@@ -89,7 +97,7 @@ const SubstanceUseForm = () => {
             control={form.control}
             name="frequency"
             label="Frequency"
-            placeholder="Enter frequency of subastance usage"
+            placeholder="Enter frequency of substance usage"
             type="text"
           />
 
@@ -107,4 +115,5 @@ const SubstanceUseForm = () => {
     </div>
   );
 };
+
 export default SubstanceUseForm;

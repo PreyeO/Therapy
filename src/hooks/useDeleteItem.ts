@@ -1,31 +1,67 @@
-// // hooks/useDeleteItem.ts
-// import { useCallback } from "react";
-// import { toast } from "react-toastify";
-// import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "@/lib/utils";
 
-// type DeleteFunction = (id: string) => Promise<void>;
+const useDeleteItem = (
+  deleteService,
+  updateStateKey,
+  updateState,
+  fetchProfileCallback
+) => {
+  const [isVerificationOpen, setVerificationOpen] = useState(false);
+  const [isSuccessOpen, setSuccessOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
-// export const useDeleteItem = (
-//   deleteFunction: DeleteFunction,
-//   itemType: keyof BusinessPeriodsState
-// ) => {
-//   const updateState = useBusinessPeriodsStore((state) => state.updateState);
-//   const items = useBusinessPeriodsStore((state) => state[itemType]);
+  const handleDeleteClick = (itemId) => {
+    setSelectedItemId(itemId);
+    setVerificationOpen(true);
+  };
 
-//   const deleteItem = useCallback(
-//     async (itemId: string) => {
-//       try {
-//         await deleteFunction(itemId);
-//         const updatedItems = items.filter((item: any) => item.id !== itemId);
-//         updateState(itemType, updatedItems);
-//         toast.success("Item deleted successfully");
-//       } catch (error) {
-//         toast.error("Failed to delete item");
-//         console.error(`Error deleting ${itemType}:`, error);
-//       }
-//     },
-//     [deleteFunction, itemType, items, updateState]
-//   );
+  const handleConfirmDelete = async () => {
+    if (selectedItemId) {
+      setIsDeleting(true);
+      try {
+        await deleteService(selectedItemId);
 
-//   return { deleteItem };
-// };
+        // Re-fetch profile data after deletion
+        if (fetchProfileCallback) {
+          await fetchProfileCallback();
+        } else {
+          updateState(updateStateKey, (prevItems) =>
+            prevItems.filter((item) => item.id !== selectedItemId)
+          );
+        }
+
+        setSuccessOpen(true);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
+        setIsDeleting(false);
+        setVerificationOpen(false);
+        setSelectedItemId(null);
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setVerificationOpen(false);
+    setSelectedItemId(null);
+  };
+
+  const handleSuccessClose = () => {
+    setSuccessOpen(false);
+  };
+
+  return {
+    isVerificationOpen,
+    isSuccessOpen,
+    isDeleting,
+    handleDeleteClick,
+    handleConfirmDelete,
+    handleCancelDelete,
+    handleSuccessClose,
+  };
+};
+
+export default useDeleteItem;

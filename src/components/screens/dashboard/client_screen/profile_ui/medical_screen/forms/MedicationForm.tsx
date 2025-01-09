@@ -26,36 +26,36 @@ import { useDialogState } from "@/store";
 import FormFieldComponent from "../../../../../../ui/form_fields/FormFieldComponent";
 import FormTextArea from "@/components/ui/form_fields/FormTextArea";
 import useMedicalsSubmit from "@/hooks/useMedicalsSubmit";
+import { setupClientProfile } from "@/services/api/clients/account_setup";
 
 const MedicationForm = () => {
-  const { clientProfileId, medications, updateMedications, fetchProfileData } =
+  const { clientProfileId, medications, fetchProfileMedicals } =
     useBusinessPeriodsStore();
 
   const { closeDialog } = useDialogState();
-
   const form = useForm<Medication>({
     resolver: zodResolver(medicationSchema),
   });
   const { loading, handleFormSubmit } = useMedicalsSubmit();
 
-  // Fetch client profile ID if not present
-  if (!clientProfileId) {
-    fetchProfileData();
-    console.warn("Client profile ID is missing; cannot submit data.");
-  }
-
   const onSubmit = async (data: Medication) => {
-    if (!data.name) {
-      return;
-    }
     if (!clientProfileId) return;
-    const updatedMedications = [...medications, data];
 
-    handleFormSubmit(
-      () => updateMedications(updatedMedications),
-      form.reset,
-      closeDialog
-    );
+    try {
+      await handleFormSubmit(
+        async () => {
+          // Update the medications list and re-fetch the data
+          await setupClientProfile(clientProfileId, {
+            medications: [...medications, data],
+          });
+          await fetchProfileMedicals(clientProfileId);
+        },
+        form.reset,
+        closeDialog
+      );
+    } catch (error) {
+      console.error("Error creating medication:", error);
+    }
   };
 
   return (
@@ -88,7 +88,7 @@ const MedicationForm = () => {
                 control={form.control}
                 name="dosage_quantity"
                 label="Enter dosage"
-                placeholder="     Dosage"
+                placeholder="Dosage"
                 type="text"
               />
               <FormField
