@@ -423,6 +423,31 @@ export const substanceUseSchema = z.object({
 });
 export type SubstanceUse = z.infer<typeof substanceUseSchema>;
 
+// export const clinicalDocumentSchema = z.object({
+//   file_upload: z.any({
+//     required_error: "Substance type is required",
+//   }),
+
+//   id: z.string().optional(),
+// });
+// export type ClinicalDocument = z.infer<typeof clinicalDocumentSchema>;
+
+// export const clinicalDocumentSchema = z.object({
+//   file_upload: z
+//     .instanceof(File, { message: "A valid file must be provided." }) // Validate file type
+//     .refine((file) => !!file, { message: "File upload is required." }),
+// });
+// export type ClinicalDocument = z.infer<typeof clinicalDocumentSchema>;
+export const clinicalDocumentSchema = z.object({
+  file_upload: z
+    .instanceof(File, { message: "A valid file must be provided." })
+    .refine((file) => !!file, { message: "File upload is required." }),
+});
+
+export type ClinicalDocument = {
+  file_upload: File;
+};
+
 export const clientProfileFormSchema = z.object({
   medications: z.array(medicationSchema).optional(),
   allergies: z.array(allergySchema).optional(),
@@ -431,6 +456,7 @@ export const clientProfileFormSchema = z.object({
   social_supports: z.array(socialSupportSchema).optional(),
   protective_factors: z.array(protectiveFactorSchema).optional(),
   substance_uses: z.array(substanceUseSchema).optional(),
+  clinical_documents: z.array(clinicalDocumentSchema).optional(),
 });
 
 export type ClientProfileSetup = z.infer<typeof clientProfileFormSchema>;

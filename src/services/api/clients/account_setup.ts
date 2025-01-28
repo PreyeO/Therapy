@@ -98,3 +98,13 @@ export const deleteSubstanceUse = async (clientSubstanceId: string) => {
     handleError(error);
   }
 };
+export const deleteClinicalDocument = async (clientDocumentId: string) => {
+  try {
+    const response = await api.delete(
+      `/api/clinical-documents/${clientDocumentId}/`
+    );
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};

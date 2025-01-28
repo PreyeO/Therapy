@@ -1,12 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Allergies from "../client_screen/profile_ui/medical_screen/Allergies";
 import Encounter from "../client_screen/profile_ui/medical_screen/Encounter";
-import ClinicalDoc from "../client_screen/profile_ui/medical_screen/ClinicalDoc";
 import SocialSupport from "../client_screen/profile_ui/medical_screen/SocialSupport";
 import Medications from "../client_screen/profile_ui/medical_screen/Medications";
 import ProtectiveFactor from "../client_screen/profile_ui/medical_screen/ProtectiveFactor";
 import SubstanceUse from "../client_screen/profile_ui/medical_screen/SubstanceUse";
 import MedicalCondition from "../client_screen/profile_ui/medical_screen/MedicalCondition";
+import ClinicalDocument from "../client_screen/profile_ui/medical_screen/ClinicalDocument";
 
 interface MedicalTabProps {
   className?: string;
@@ -39,7 +39,7 @@ const MedicalTabs: React.FC<MedicalTabProps> = ({ className }) => {
         <Encounter />
       </TabsContent>
       <TabsContent value="clinicaldoc">
-        <ClinicalDoc />
+        <ClinicalDocument />
       </TabsContent>
       <TabsContent value="socialsupport">
         <SocialSupport />

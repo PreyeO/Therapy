@@ -20,6 +20,7 @@ import {
   SocialSupport,
   ProtectiveFactor,
   SubstanceUse,
+  ClinicalDocument,
 } from "@/types/formSchema";
 import { getUserData } from "@/services/api/authentication/auth";
 import { getServices } from "@/services/api/clinicians/appointment";
@@ -64,6 +65,7 @@ interface BusinessPeriodsState {
   socialSupports: SocialSupport[];
   protectiveFactors: ProtectiveFactor[];
   substanceUses: SubstanceUse[];
+  clinicalDocuments: ClinicalDocument[];
   updateState: <K extends keyof BusinessPeriodsState>(
     key: K,
     value: BusinessPeriodsState[K]
@@ -98,6 +100,9 @@ interface BusinessPeriodsState {
   updateSubtanceUses: (substanceUses: SubstanceUse[]) => Promise<void>;
   updateProtectiveFactors: (
     protectiveFactors: ProtectiveFactor[]
+  ) => Promise<void>;
+  updateClinicalDocuments: (
+    clinicalDocuments: ClinicalDocument[]
   ) => Promise<void>;
 
   // Setting business periods and profile data
@@ -185,6 +190,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
     socialSupports: [],
     protectiveFactors: [],
     substanceUses: [],
+    clinicalDocuments: [],
 
     setFetchedBusinessPeriods: (periods: FetchedBusinessPeriod[]) => {
       set({ fetchedBusinessPeriods: periods });
@@ -424,6 +430,7 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
           socialSupports: response.social_supports || [],
           protectiveFactors: response.protective_factors || [],
           substanceUses: response.substance_uses || [],
+          clinicalDocuments: response.clinical_documents || [],
           loading: false,
         });
       } catch (error) {
@@ -531,6 +538,20 @@ export const useBusinessPeriodsStore = create<BusinessPeriodsState>(
         set({ protectiveFactors, loading: false });
       } catch (error) {
         set({ error: "Failed to update medical conditions", loading: false });
+      }
+    },
+    updateClinicalDocuments: async (formData) => {
+      const { clientProfileId } = get();
+      if (!clientProfileId) return;
+
+      set({ loading: true, error: null });
+      try {
+        await setupClientProfile(clientProfileId, formData); // Pass FormData directly
+        await get().fetchProfileMedicals(clientProfileId); // Refresh clinical documents
+        set({ loading: false });
+      } catch (error) {
+        console.error("Error updating clinical documents:", error);
+        set({ error: "Failed to update clinical documents", loading: false });
       }
     },
 
