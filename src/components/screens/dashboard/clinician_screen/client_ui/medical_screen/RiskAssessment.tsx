@@ -1,36 +1,32 @@
 import { Plus, Trash2 } from "lucide-react";
-import ProfileHeader from "./ui/ProfileHeader";
-import ContentTitle from "./ui/ContentTitle";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ProfileButton from "./ui/ProfileButton";
+
 import { useDialogState } from "@/store";
-import SocialSupportForm from "./forms/SocialSupportForm";
-import MedicalDialog from "./ui/MedicalDialog";
-import { useEffect } from "react";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
+import { useAppointmentsStore } from "@/store/useAppointment";
+import { useEffect } from "react";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import useDeleteItem from "@/hooks/useDeleteItem";
-import { deleteSocialSupport } from "@/services/api/clients/account_setup";
-import VerificationCard from "../../../components/VerificationCard";
-import Success from "@/components/ui/notifications/Success";
+import { deleteEncounter } from "@/services/api/clients/account_setup";
 import { ToastContainer } from "react-toastify";
+import Success from "@/components/ui/notifications/Success";
+import VerificationCard from "../../../components/VerificationCard";
+import RiskAssessmentForm from "./forms/RiskAssessmentForm";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ProfileButton from "../../../components/medicals/ProfileButton";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 
-const SocialSupport = () => {
+const RiskAssessment = () => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
-
   const {
-    socialSupports,
+    encounters = [],
     fetchProfileMedicals,
     clientProfileId,
     loading,
     updateState,
   } = useBusinessPeriodsStore();
-
-  useEffect(() => {
-    if (clientProfileId) {
-      fetchProfileMedicals(clientProfileId);
-    }
-  }, [clientProfileId, fetchProfileMedicals]);
+  const { clinicians, fetchClinicianList } = useAppointmentsStore();
 
   const {
     isVerificationOpen,
@@ -42,25 +38,41 @@ const SocialSupport = () => {
     handleSuccessClose,
   } = useDeleteItem(
     async (id) => {
-      await deleteSocialSupport(id);
+      await deleteEncounter(id);
       if (clientProfileId) {
-        await fetchProfileMedicals(clientProfileId); // Refresh social supports
+        await fetchProfileMedicals(clientProfileId); // Refresh encounters
       }
     },
-    "socialSupports",
+    "encounters",
     updateState,
     clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
   );
 
+  useEffect(() => {
+    if (clientProfileId) {
+      fetchProfileMedicals(clientProfileId);
+    }
+    fetchClinicianList();
+  }, [clientProfileId, fetchProfileMedicals, fetchClinicianList]);
+
   const handleOpenDialog = () => {
-    setDialogContent(<SocialSupportForm />);
+    setDialogContent(<RiskAssessmentForm />);
+  };
+
+  const getClinicianName = (clinicianProfileId) => {
+    const clinician = clinicians.find(
+      (clinician) => clinician.clinician_profile?.id === clinicianProfileId
+    );
+    return clinician
+      ? `${clinician.first_name} ${clinician.last_name}`
+      : "Unknown Clinician";
   };
 
   return (
     <div className="flex flex-col gap-[67px]">
       <ProfileHeader
-        label="Add social support"
-        title="Social Support"
+        label="Add risk assessment"
+        title="Risk Assessment"
         icon={<Plus size={18} color="white" />}
         onAdd={handleOpenDialog}
       />
@@ -70,43 +82,42 @@ const SocialSupport = () => {
           <SmallLoader />
         </div>
       ) : (
-        socialSupports.map((support, index) => (
-          <div className="flex flex-col gap-[28px]" key={support.id || index}>
+        encounters.map((encounter, index) => (
+          <div className="flex flex-col gap-[28px]" key={index}>
             <div className="flex gap-[114px]">
               <div className="flex flex-col gap-[6px]">
-                <ContentTitle title="Type" />
+                <ContentTitle title="Clinician" />
                 <ContentSubtitle
-                  content={support.social_support_type || "N/A"}
+                  content={getClinicianName(encounter.clinician_profile)}
                 />
               </div>
               <div className="flex flex-col gap-[6px]">
-                <ContentTitle title="Strength" />
-                <ContentSubtitle content={support.strength || "N/A"} />
+                <ContentTitle title="Type" />
+                <ContentSubtitle content={encounter.encounter_type || ""} />
               </div>
             </div>
-            <div className="flex flex-col gap-[6px] ">
-              <ContentTitle title="Description" />
-              <ContentSubtitle content={support.description || "N/A"} />
+            <div className="flex flex-col gap-[6px]">
+              <ContentTitle title="Progress Note" />
+              <ContentSubtitle content={encounter.progress_note || "N/A"} />
             </div>
-            <div className="flex flex-col gap-[6px]  ">
+            <div className="flex flex-col gap-[6px]">
               <ContentTitle title="Note" />
-              <ContentSubtitle content={support.notes || "N/A"} />
+              <ContentSubtitle content={encounter.notes || "N/A"} />
             </div>
             <ProfileButton
               icon={<Trash2 size={18} color="white" />}
-              label="Delete social support"
+              label="Delete encounter"
               className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(support.id)}
+              onClick={() => handleDeleteClick(encounter.id)}
             />
           </div>
         ))
       )}
-
       <MedicalDialog
         open={isOpen}
         onClose={closeDialog}
-        title="Add Social Support"
-        formComponent={<SocialSupportForm />}
+        title="Add Encounter"
+        formComponent={<RiskAssessmentForm />}
       />
 
       {/* Verification Modal */}
@@ -120,7 +131,7 @@ const SocialSupport = () => {
             <VerificationCard
               onYes={handleConfirmDelete}
               onNo={handleCancelDelete}
-              title="Are you sure you want to delete this social support?"
+              title="Are you sure you want to delete this encounter?"
               loading={isDeleting}
             />
           }
@@ -135,8 +146,8 @@ const SocialSupport = () => {
             onClose={handleSuccessClose}
             formComponent={
               <Success
-                title="Social Support Deleted"
-                subtitle="The social support was successfully deleted from your records."
+                title="Encounter Deleted"
+                subtitle="The encounter was successfully deleted from your records."
                 label="Close"
                 onButtonClick={handleSuccessClose}
                 className="bg-transparent w-[500px] rounded-xl h-fit"
@@ -148,10 +159,9 @@ const SocialSupport = () => {
 
       <ToastContainer
         toastStyle={{ backgroundColor: "crimson", color: "white" }}
-        className="text-white"
       />
     </div>
   );
 };
 
-export default SocialSupport;
+export default RiskAssessment;

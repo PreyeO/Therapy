@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { BusinessPeriod } from "@/types/formSchema";
 import {
   isSameDay,
   getHours,
@@ -82,6 +83,9 @@ export const formatDate = (dateString: string) => {
 export const mapToAppointmentTableFormat = (requests: AppointmentInfo[]) => {
   return requests.map((request) => ({
     id: request.id,
+
+    clientProfileId: request.client.client_profile?.id || undefined,
+
     client: `${request.client.first_name} ${request.client.last_name}`,
     appointmentTime: formatTimeRanges(request.start_time, request.end_time),
     appointmentDate: formatDate(request.start_time),
@@ -161,8 +165,6 @@ export const isSlotBlocked = (
 
 // Utility function to map business hours from API response
 // utils.ts
-
-import { BusinessPeriod } from "@/types/formSchema";
 
 // Utility function to map business hours from API response
 export const mapBusinessHours = (businessPeriods: BusinessPeriod[] = []) => {

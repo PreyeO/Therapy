@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 import { useDialogState } from "@/store";
 import AddressUpdateForm from "./AddressUpdateForm";
-import MedicalDialog from "../../medical_screen/ui/MedicalDialog";
+import MedicalDialog from "../../../../components/medicals/MedicalDialog";
 
 const AddressForm = () => {
   const { profileLoading, clientProfileData } = useBusinessPeriodsStore();

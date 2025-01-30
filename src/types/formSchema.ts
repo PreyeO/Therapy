@@ -257,10 +257,18 @@ export type AppointmentAddress = {
 export type AppointmentInfo = {
   id: string;
   client: {
+    id?: string;
     first_name: string;
     last_name: string;
     email: string;
+    client_profile?: {
+      // ✅ Add this inside `client`
+      id: string;
+    };
   };
+  // client_profile?: {
+  //   id: string; // ✅ Ensure this is an object with an 'id' property
+  // };
   service: Service;
   start_time: string;
   end_time: string;
@@ -295,6 +303,7 @@ export type Appointment = {
   email?: string;
   service?: string;
   clinician?: string;
+  clientProfileId?: string;
 };
 export type AppointmentFilters = {
   status?: string | null;
@@ -460,8 +469,23 @@ export const clientProfileFormSchema = z.object({
 });
 
 export type ClientProfileSetup = z.infer<typeof clientProfileFormSchema>;
+export type FullClientProfile = ClientSetup & ClientProfileSetup;
 
-export type ClientProfileData = {
+// export type ClientProfileData = {
+//   first_name: string;
+//   last_name: string;
+//   date_of_birth: string;
+//   email: string;
+//   gender: string;
+//   phone_number: string;
+//   address: {
+//     street_address: string;
+//     city: string;
+//     state: string;
+//     postal_code: string;
+//   };
+// };
+export type fullClientProfileData = {
   first_name: string;
   last_name: string;
   date_of_birth: string;

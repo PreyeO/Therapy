@@ -1,10 +1,10 @@
 import { Plus, Trash2 } from "lucide-react";
-import ProfileHeader from "./ui/ProfileHeader";
-import ContentTitle from "./ui/ContentTitle";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ProfileButton from "./ui/ProfileButton";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ProfileButton from "../../../components/medicals/ProfileButton";
 import SubstanceUseForm from "./forms/SubstanceUseForm";
-import MedicalDialog from "./ui/MedicalDialog";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import { useEffect } from "react";
@@ -14,8 +14,17 @@ import { deleteSubstanceUse } from "@/services/api/clients/account_setup";
 import VerificationCard from "../../../components/VerificationCard";
 import Success from "@/components/ui/notifications/Success";
 import { ToastContainer } from "react-toastify";
+import { SubstanceUse } from "@/types/formSchema";
 
-const SubstanceUse = () => {
+interface SubstanceUseProps {
+  data?: SubstanceUse[];
+  readOnly?: boolean;
+}
+
+const SubstanceUses: React.FC<SubstanceUseProps> = ({
+  data,
+  readOnly = false,
+}) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
 
   const {
@@ -46,11 +55,14 @@ const SubstanceUse = () => {
     clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
   );
 
+  // If in readOnly mode, use externally provided `data`
+  const substanceUseList = readOnly ? data || [] : substanceUses;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-  }, [clientProfileId, fetchProfileMedicals]);
+  }, [clientProfileId, fetchProfileMedicals, readOnly]);
 
   const handleOpenDialog = () => {
     setDialogContent(<SubstanceUseForm />);
@@ -58,19 +70,23 @@ const SubstanceUse = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add substance use"
-        title="Substance Use"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add substance use"
+          title="Substance Use"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
 
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : substanceUseList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
-        substanceUses.map((substance, index) => (
+        substanceUseList.map((substance, index) => (
           <div className="flex flex-col gap-[28px]" key={substance.id || index}>
             <div className="flex gap-[114px]">
               <div className="flex flex-col gap-[6px]">
@@ -82,12 +98,14 @@ const SubstanceUse = () => {
                 <ContentSubtitle content={substance.frequency || "N/A"} />
               </div>
             </div>
-            <ProfileButton
-              icon={<Trash2 size={18} color="white" />}
-              label="Delete substance use"
-              className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(substance.id)}
-            />
+            {!readOnly && (
+              <ProfileButton
+                icon={<Trash2 size={18} color="white" />}
+                label="Delete substance use"
+                className="bg-[#FF2626]"
+                onClick={() => handleDeleteClick(substance.id)}
+              />
+            )}
           </div>
         ))
       )}
@@ -144,4 +162,4 @@ const SubstanceUse = () => {
   );
 };
 
-export default SubstanceUse;
+export default SubstanceUses;

@@ -1,9 +1,9 @@
 import { Plus, Trash2 } from "lucide-react";
-import ProfileHeader from "./ui/ProfileHeader";
-import ContentTitle from "./ui/ContentTitle";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ProfileButton from "./ui/ProfileButton";
-import MedicalDialog from "./ui/MedicalDialog";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ProfileButton from "../../../components/medicals/ProfileButton";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import EncountersForm from "./forms/EncountersForm";
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
@@ -15,8 +15,14 @@ import { deleteEncounter } from "@/services/api/clients/account_setup";
 import { ToastContainer } from "react-toastify";
 import Success from "@/components/ui/notifications/Success";
 import VerificationCard from "../../../components/VerificationCard";
+import { Encounter } from "@/types/formSchema";
 
-const Encounter = () => {
+interface EncountersProps {
+  data?: Encounter[];
+  readOnly?: boolean;
+}
+
+const Encounters: React.FC<EncountersProps> = ({ data, readOnly = false }) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
   const {
     encounters = [],
@@ -47,12 +53,15 @@ const Encounter = () => {
     clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
   );
 
+  // If in readOnly mode, use externally provided `data`
+  const encounterList = readOnly ? data || [] : encounters;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
     fetchClinicianList();
-  }, [clientProfileId, fetchProfileMedicals, fetchClinicianList]);
+  }, [clientProfileId, fetchProfileMedicals, fetchClinicianList, readOnly]);
 
   const handleOpenDialog = () => {
     setDialogContent(<EncountersForm />);
@@ -69,19 +78,23 @@ const Encounter = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add encounter"
-        title="Encounter"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add encounter"
+          title="Encounter"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
 
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : encounterList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
-        encounters.map((encounter, index) => (
+        encounterList.map((encounter, index) => (
           <div className="flex flex-col gap-[28px]" key={index}>
             <div className="flex gap-[114px]">
               <div className="flex flex-col gap-[6px]">
@@ -103,12 +116,14 @@ const Encounter = () => {
               <ContentTitle title="Note" />
               <ContentSubtitle content={encounter.notes || "N/A"} />
             </div>
-            <ProfileButton
-              icon={<Trash2 size={18} color="white" />}
-              label="Delete encounter"
-              className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(encounter.id)}
-            />
+            {!readOnly && (
+              <ProfileButton
+                icon={<Trash2 size={18} color="white" />}
+                label="Delete encounter"
+                className="bg-[#FF2626]"
+                onClick={() => handleDeleteClick(encounter.id)}
+              />
+            )}
           </div>
         ))
       )}
@@ -163,4 +178,4 @@ const Encounter = () => {
   );
 };
 
-export default Encounter;
+export default Encounters;

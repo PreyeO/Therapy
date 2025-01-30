@@ -1,9 +1,9 @@
 import { Plus, Trash2 } from "lucide-react";
-import ProfileHeader from "./ui/ProfileHeader";
-import ContentTitle from "./ui/ContentTitle";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ProfileButton from "./ui/ProfileButton";
-import MedicalDialog from "./ui/MedicalDialog";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ProfileButton from "../../../components/medicals/ProfileButton";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import ProtectiveForm from "./forms/ProtectiveForm";
 import { useDialogState } from "@/store";
 import { useEffect } from "react";
@@ -14,8 +14,17 @@ import { deleteProtectiveFactor } from "@/services/api/clients/account_setup";
 import VerificationCard from "../../../components/VerificationCard";
 import Success from "@/components/ui/notifications/Success";
 import { ToastContainer } from "react-toastify";
+import { ProtectiveFactor } from "@/types/formSchema";
 
-const ProtectiveFactor = () => {
+interface ProtectiveFactorsProps {
+  data?: ProtectiveFactor[];
+  readOnly?: boolean;
+}
+
+const ProtectiveFactors: React.FC<ProtectiveFactorsProps> = ({
+  data,
+  readOnly = false,
+}) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
 
   const {
@@ -46,11 +55,14 @@ const ProtectiveFactor = () => {
     clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
   );
 
+  // If in readOnly mode, use externally provided `data`
+  const protectiveFactorList = readOnly ? data || [] : protectiveFactors;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-  }, [clientProfileId, fetchProfileMedicals]);
+  }, [clientProfileId, fetchProfileMedicals, readOnly]);
 
   const handleOpenDialog = () => {
     setDialogContent(<ProtectiveForm />);
@@ -58,19 +70,23 @@ const ProtectiveFactor = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add protective factor"
-        title="Protective Factor"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add protective factor"
+          title="Protective Factor"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
 
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : protectiveFactorList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
-        protectiveFactors.map((factor, index) => (
+        protectiveFactorList.map((factor, index) => (
           <div className="flex flex-col gap-[28px]" key={factor.id || index}>
             <div className="flex flex-col gap-[6px]">
               <ContentTitle title="Factor" />
@@ -85,12 +101,14 @@ const ProtectiveFactor = () => {
               <ContentTitle title="Note" />
               <ContentSubtitle content={factor.notes || "N/A"} />
             </div>
-            <ProfileButton
-              icon={<Trash2 size={18} color="white" />}
-              label="Delete protective factor"
-              className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(factor.id)}
-            />
+            {!readOnly && (
+              <ProfileButton
+                icon={<Trash2 size={18} color="white" />}
+                label="Delete protective factor"
+                className="bg-[#FF2626]"
+                onClick={() => handleDeleteClick(factor.id)}
+              />
+            )}
           </div>
         ))
       )}
@@ -147,4 +165,4 @@ const ProtectiveFactor = () => {
   );
 };
 
-export default ProtectiveFactor;
+export default ProtectiveFactors;

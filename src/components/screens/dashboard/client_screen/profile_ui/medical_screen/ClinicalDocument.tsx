@@ -1,7 +1,7 @@
 import { Plus, Trash } from "lucide-react";
 import { useEffect } from "react";
-import ProfileHeader from "./ui/ProfileHeader";
-import MedicalDialog from "./ui/MedicalDialog";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import ClinicalDocumentForm from "./forms/ClinicalDocumentForm";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
 import VerificationCard from "../../../components/VerificationCard";

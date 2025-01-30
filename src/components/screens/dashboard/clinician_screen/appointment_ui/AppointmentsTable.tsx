@@ -140,10 +140,29 @@ const AppointmentTable: React.FC<AppointmentTableProps> = ({
                 <>
                   <TableCell
                     className="px-4 py-3 text-left align-middle cursor-pointer"
-                    onClick={() => navigate("/dashboard/clientoverview")}
+                    onClick={() => {
+                      console.log("🛠 Table Row Clicked:", item);
+                      console.log(
+                        "🛠 Extracted clientProfileId:",
+                        item.clientProfileId
+                      );
+
+                      if (!item.clientProfileId) {
+                        console.error("❌ clientProfileId is missing!");
+                        alert(
+                          "Client Profile is missing for this appointment."
+                        );
+                        return;
+                      }
+
+                      navigate(
+                        `/clinician_dashboard/clientoverview/${item.clientProfileId}`
+                      );
+                    }}
                   >
                     {item.client}
                   </TableCell>
+
                   <TableCell className="px-4 py-3 text-left align-middle">
                     {item.appointmentTime}
                   </TableCell>

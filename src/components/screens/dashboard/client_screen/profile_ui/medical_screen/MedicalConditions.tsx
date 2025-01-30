@@ -1,10 +1,10 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect } from "react";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ContentTitle from "./ui/ContentTitle";
-import ProfileHeader from "./ui/ProfileHeader";
-import ProfileButton from "./ui/ProfileButton";
-import MedicalDialog from "./ui/MedicalDialog";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ProfileButton from "../../../components/medicals/ProfileButton";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import MedicalConditionForm from "./forms/MedicalConditionForm";
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
@@ -13,8 +13,17 @@ import { deleteMedicalCondition } from "@/services/api/clients/account_setup";
 import VerificationCard from "../../../components/VerificationCard";
 import Success from "@/components/ui/notifications/Success";
 import useDeleteItem from "@/hooks/useDeleteItem";
+import { MedicalCondition } from "@/types/formSchema";
 
-const MedicalCondition = () => {
+interface MedicationConditionsProps {
+  data?: MedicalCondition[];
+  readOnly?: boolean;
+}
+
+const MedicalConditions: React.FC<MedicationConditionsProps> = ({
+  data,
+  readOnly = false,
+}) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
   const {
     medicalConditions,
@@ -24,11 +33,14 @@ const MedicalCondition = () => {
     updateState,
   } = useBusinessPeriodsStore();
 
+  // If in readOnly mode, use externally provided `data`
+  const medicationConditionList = readOnly ? data || [] : medicalConditions;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-  }, [clientProfileId, fetchProfileMedicals]);
+  }, [clientProfileId, fetchProfileMedicals, readOnly]);
 
   const {
     isVerificationOpen,
@@ -58,19 +70,23 @@ const MedicalCondition = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add medical condition"
-        title="Medical Condition"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add medical condition"
+          title="Medical Condition"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
 
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : medicationConditionList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
-        medicalConditions.map((condition) => (
+        medicationConditionList.map((condition) => (
           <div className="flex flex-col gap-[28px]" key={condition.id}>
             <div className="flex gap-[114px]">
               <div className="flex flex-col gap-[6px]">
@@ -86,12 +102,14 @@ const MedicalCondition = () => {
               <ContentTitle title="Note" />
               <ContentSubtitle content={condition.notes || "N/A"} />
             </div>
-            <ProfileButton
-              icon={<Trash2 size={18} color="white" />}
-              label="Delete medical info"
-              className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(condition.id)}
-            />
+            {!readOnly && (
+              <ProfileButton
+                icon={<Trash2 size={18} color="white" />}
+                label="Delete medical info"
+                className="bg-[#FF2626]"
+                onClick={() => handleDeleteClick(condition.id)}
+              />
+            )}
           </div>
         ))
       )}
@@ -141,4 +159,4 @@ const MedicalCondition = () => {
   );
 };
 
-export default MedicalCondition;
+export default MedicalConditions;

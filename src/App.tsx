@@ -39,7 +39,7 @@ const Appointment = lazy(
   () => import("@/pages/DashboardPage/clinician/Appointment")
 );
 const ClientsOverview = lazy(
-  () => import("@/pages/DashboardPage/clinician/ClientsOverview")
+  () => import("@/pages/DashboardPage/clinician/clientScreens/ClientsOverview")
 );
 const AccountSetup = lazy(
   () =>
@@ -48,7 +48,9 @@ const AccountSetup = lazy(
 const ClientSetup = lazy(
   () => import("@/pages/DashboardPage/client/account_setup_page/ClientSetup")
 );
-const Clients = lazy(() => import("@/pages/DashboardPage/clinician/Clients"));
+const Clients = lazy(
+  () => import("@/pages/DashboardPage/clinician/clientScreens/Clients")
+);
 const ClientAppointments = lazy(
   () => import("@/pages/DashboardPage/client/ClientAppointments")
 );
@@ -77,7 +79,7 @@ function App() {
               <Route path="appointment" element={<Appointment />} />
               <Route path="support" element={<Support />} />
               <Route
-                path="clientoverview/:appointmentId"
+                path="clientoverview/:clientId"
                 element={<ClientsOverview />}
               />
               <Route path="empty" element={<Empty />} />

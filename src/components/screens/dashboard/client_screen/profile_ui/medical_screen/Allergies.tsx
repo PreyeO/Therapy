@@ -1,9 +1,9 @@
 import { Plus } from "lucide-react";
 import AllergyButton from "./ui/AllergyButton";
-import ProfileHeader from "./ui/ProfileHeader";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
 import { useDialogState } from "@/store";
 import AllergyForm from "./forms/AllergyForm";
-import MedicalDialog from "./ui/MedicalDialog";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
 import { useEffect } from "react";
 import SmallLoader from "@/components/ui/loader_effects/SmallLoader";
@@ -11,8 +11,14 @@ import useDeleteItem from "@/hooks/useDeleteItem";
 import { deleteAllergy } from "@/services/api/clients/account_setup";
 import VerificationCard from "../../../components/VerificationCard";
 import Success from "@/components/ui/notifications/Success";
+import { Allergy } from "@/types/formSchema";
 
-const Allergies = () => {
+interface AllergiesProps {
+  data?: Allergy[];
+  readOnly?: boolean;
+}
+
+const Allergies: React.FC<AllergiesProps> = ({ data, readOnly = false }) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
   const {
     allergies,
@@ -42,11 +48,14 @@ const Allergies = () => {
     clientProfileId ? () => fetchProfileMedicals(clientProfileId) : null
   );
 
+  // If in readOnly mode, use externally provided `data`
+  const allergyList = readOnly ? data || [] : allergies;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-  }, [clientProfileId, fetchProfileMedicals]);
+  }, [clientProfileId, fetchProfileMedicals, readOnly]);
 
   const handleOpenDialog = () => {
     setDialogContent(<AllergyForm />);
@@ -54,23 +63,28 @@ const Allergies = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add allergy"
-        title="Known Allergy"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add allergy"
+          title="Known Allergy"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : allergyList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
         <div className="flex flex-wrap gap-2">
-          {allergies.map((allergy) => (
+          {allergyList.map((allergy) => (
             <AllergyButton
               key={allergy.id}
               label={allergy.name}
               onDelete={() => handleDeleteClick(allergy.id)}
+              readOnly={readOnly}
             />
           ))}
         </div>

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import ContentSubtitle from "./ui/ContentSubtitle";
-import ContentTitle from "./ui/ContentTitle";
-import ProfileHeader from "./ui/ProfileHeader";
-import ProfileButton from "./ui/ProfileButton";
-import MedicalDialog from "./ui/MedicalDialog";
+import ContentSubtitle from "../../../components/medicals/ContentSubtitle";
+import ContentTitle from "../../../components/medicals/ContentTitle";
+import ProfileHeader from "../../../components/medicals/ProfileHeader";
+import ProfileButton from "../../../components/medicals/ProfileButton";
+import MedicalDialog from "../../../components/medicals/MedicalDialog";
 import MedicationForm from "./forms/MedicationForm";
 import { useDialogState } from "@/store";
 import { useBusinessPeriodsStore } from "@/store/useBusinessPeriodsStore";
@@ -14,8 +14,17 @@ import { ToastContainer } from "react-toastify";
 import VerificationCard from "../../../components/VerificationCard";
 import Success from "@/components/ui/notifications/Success";
 import useDeleteItem from "@/hooks/useDeleteItem";
+import { Medication } from "@/types/formSchema";
 
-const Medications = () => {
+interface MedicationsProps {
+  data?: Medication[];
+  readOnly?: boolean;
+}
+
+const Medications: React.FC<MedicationsProps> = ({
+  data,
+  readOnly = false,
+}) => {
   const { isOpen, setDialogContent, closeDialog } = useDialogState();
   const {
     medications,
@@ -47,11 +56,14 @@ const Medications = () => {
     }
   );
 
+  // If in readOnly mode, use externally provided `data`
+  const medicationList = readOnly ? data || [] : medications;
+
   useEffect(() => {
-    if (clientProfileId) {
+    if (!readOnly && clientProfileId) {
       fetchProfileMedicals(clientProfileId);
     }
-  }, [clientProfileId, fetchProfileMedicals]);
+  }, [clientProfileId, fetchProfileMedicals, readOnly]);
 
   const handleOpenDialog = () => {
     setDialogContent(<MedicationForm />);
@@ -59,19 +71,23 @@ const Medications = () => {
 
   return (
     <div className="flex flex-col gap-[67px]">
-      <ProfileHeader
-        label="Add new medication"
-        title="Meds"
-        icon={<Plus size={18} color="white" />}
-        onAdd={handleOpenDialog}
-      />
+      {!readOnly && (
+        <ProfileHeader
+          label="Add new medication"
+          title="Meds"
+          icon={<Plus size={18} color="white" />}
+          onAdd={handleOpenDialog}
+        />
+      )}
 
       {loading ? (
         <div className="relative w-full h-[200px] flex justify-center items-center">
           <SmallLoader />
         </div>
+      ) : medicationList.length === 0 ? (
+        <p>No medications listed.</p>
       ) : (
-        medications.map((med) => (
+        medicationList.map((med) => (
           <div className="flex flex-col gap-[28px]" key={med.id}>
             <div className="flex flex-wrap gap-x-[114px] gap-y-[30px]">
               <div className="flex flex-col gap-[6px]">
@@ -111,12 +127,14 @@ const Medications = () => {
               <ContentTitle title="Note" />
               <ContentSubtitle content={med.notes || "N/A"} />
             </div>
-            <ProfileButton
-              icon={<Trash2 size={18} color="white" />}
-              label="Delete medication"
-              className="bg-[#FF2626]"
-              onClick={() => handleDeleteClick(med.id)}
-            />
+            {!readOnly && (
+              <ProfileButton
+                icon={<Trash2 size={18} color="white" />}
+                label="Delete medication"
+                className="bg-[#FF2626]"
+                onClick={() => handleDeleteClick(med.id)}
+              />
+            )}
           </div>
         ))
       )}
