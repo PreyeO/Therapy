@@ -91,9 +91,14 @@ const UpdateCard = ({ period, setShowSuccess }: UpdateCardProps) => {
         <Select value={location} onValueChange={setLocation}>
           <SelectTrigger className="max-w-[144px] h-12 rounded-xl text-base font-normal text-[#444444B2] ">
             <SelectValue placeholder="Select Location">
-              {appointmentAddresses.find((addr) => addr.id === Number(location))
+              {/* {appointmentAddresses.find((addr) => addr.id === Number(location))
                 ? appointmentAddresses.find(
                     (addr) => addr.id === Number(location)
+                  )?.street_address
+                : "Select Location"} */}
+              {appointmentAddresses.find((addr) => String(addr.id) === location) // Convert addr.id to string
+                ? appointmentAddresses.find(
+                    (addr) => String(addr.id) === location // Convert addr.id to string
                   )?.street_address
                 : "Select Location"}
             </SelectValue>

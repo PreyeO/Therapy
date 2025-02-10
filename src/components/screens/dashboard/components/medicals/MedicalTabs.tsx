@@ -6,7 +6,7 @@ import Medications from "../../client_screen/profile_ui/medical_screen/Medicatio
 import ProtectiveFactors from "../../client_screen/profile_ui/medical_screen/ProtectiveFactors";
 import SubstanceUses from "../../client_screen/profile_ui/medical_screen/SubstanceUses";
 import MedicalConditions from "../../client_screen/profile_ui/medical_screen/MedicalConditions";
-import ClinicalDocument from "../../client_screen/profile_ui/medical_screen/ClinicalDocument";
+// import ClinicalDocument from "../../client_screen/profile_ui/medical_screen/ClinicalDocument";
 import { ClientProfileSetup } from "@/types/formSchema";
 import ProfileTitle from "@/components/ui/Titles/ProfileTitle";
 
@@ -48,9 +48,9 @@ const MedicalTabs: React.FC<MedicalTabProps> = ({
         {readOnly && <ProfileTitle title="Encounter" className="my-3 pb-3" />}
         <Encounters data={data.encounters} readOnly={readOnly} />
       </TabsContent>
-      <TabsContent value="clinicaldoc">
+      {/* <TabsContent value="clinicaldoc">
         <ClinicalDocument />
-      </TabsContent>
+      </TabsContent> */}
       <TabsContent value="socialsupport">
         {readOnly && (
           <ProfileTitle title="Social Support" className="my-3 pb-3" />
