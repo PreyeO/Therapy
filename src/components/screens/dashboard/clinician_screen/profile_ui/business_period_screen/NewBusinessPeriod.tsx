@@ -165,7 +165,7 @@ const NewBusinessPeriod = ({
             >
               <SelectTrigger className="max-w-[144px] h-12 rounded-xl text-base font-normal text-[#444444B2]">
                 <SelectValue placeholder="Select Location">
-                  {appointmentAddresses.find(
+                  {/* {appointmentAddresses.find(
                     (addr) =>
                       addr.id ===
                       Number(newPeriod.appointment_location_ids?.[0])
@@ -174,6 +174,17 @@ const NewBusinessPeriod = ({
                         (addr) =>
                           addr.id ===
                           Number(newPeriod.appointment_location_ids?.[0])
+                      )?.street_address
+                    : "Select Location"} */}
+                  {appointmentAddresses.find(
+                    (addr) =>
+                      String(addr.id) ===
+                      newPeriod.appointment_location_ids?.[0] // Convert addr.id to string
+                  )
+                    ? appointmentAddresses.find(
+                        (addr) =>
+                          String(addr.id) ===
+                          newPeriod.appointment_location_ids?.[0] // Convert addr.id to string
                       )?.street_address
                     : "Select Location"}
                 </SelectValue>

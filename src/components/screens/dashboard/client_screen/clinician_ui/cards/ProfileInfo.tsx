@@ -130,7 +130,8 @@ const ProfileInfo = () => {
         ) : (
           <Schedule
             onContinue={handleContinue}
-            businessPeriods={businessPeriods} // Pass the business periods here
+            businessPeriods={businessPeriods}
+            loading={loading}
           />
         )}
       </DialogCard>
