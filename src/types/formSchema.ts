@@ -548,4 +548,16 @@ export type AppointmentCalender = {
   end_date: string;
 };
 
-// Client profile structure
+// Appointment Summary API Response Structure
+export interface AppointmentSummary {
+  month: string;
+  attended: number;
+  missed: number;
+  canceled: number;
+}
+
+export interface AppointmentApiResponse {
+  total_appointments: number;
+  total_clients_attended: number;
+  summary: AppointmentSummary[];
+}

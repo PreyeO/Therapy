@@ -1,12 +1,12 @@
-import AppointmentCard from "./cards/AppointmentCard";
-import { BriefcaseMedical, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CalenderCard from "./cards/CalenderCard";
 import RequestCard from "./cards/RequestCard";
-import GraphCard from "./cards/GraphCard";
 import UpcomingCard from "./cards/UpcomingCard";
 import { Link } from "react-router-dom";
 import Advert from "../../components/Advert";
+import MultipleLineChart from "./cards/MultipleLineChart";
+import TotalAppointmentChart from "./cards/TotalAppointmentChart";
+import TotalClientAttendedChart from "./cards/TotalClientAttendedChart";
 
 const OverviewScreen = () => {
   return (
@@ -24,19 +24,12 @@ const OverviewScreen = () => {
       <div className="flex gap-5 flex-wrap lg:flex-nowrap">
         <div className="flex flex-col gap-4 w-full lg:w-2/3">
           <div className="flex lg:gap-5 gap-2">
-            <AppointmentCard
-              className="bg-[#4285F4]"
-              title="Total Appointments"
-              icon={<BriefcaseMedical size={20} color="white" className="" />}
-            />
-            <AppointmentCard
-              className=" bg-[#8BA05F]"
-              title="New client"
-              icon={<UserRound size={20} color="white" />}
-            />
+            <TotalAppointmentChart />
+
+            <TotalClientAttendedChart />
           </div>
           <div>
-            <GraphCard />
+            <MultipleLineChart />
           </div>
           <div>
             <UpcomingCard />

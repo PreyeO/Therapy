@@ -11,6 +11,7 @@ import { Calendar } from "../ui/calendar";
 interface MonthYearNavigatorProps {
   currentDate: Date;
   setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  showMonthPicker?: boolean;
 }
 
 const MonthYearNavigator: React.FC<MonthYearNavigatorProps> = ({
@@ -25,10 +26,9 @@ const MonthYearNavigator: React.FC<MonthYearNavigatorProps> = ({
     <div className="flex items-center space-x-4  rounded-xl">
       {/* Year navigation */}
 
-      {/* Popover with Calendar for quick date and month selection */}
       <Popover>
         <PopoverTrigger asChild>
-          <button className=" bg-army_green text-white px-4 py-2 rounded-lg shadow-sm">
+          <button className="bg-army_green text-white px-4 py-2 rounded-lg shadow-sm">
             Monthly
           </button>
         </PopoverTrigger>
@@ -43,6 +43,7 @@ const MonthYearNavigator: React.FC<MonthYearNavigatorProps> = ({
           />
         </PopoverContent>
       </Popover>
+
       <div className="flex items-center space-x-1 border border-army_green h-[40px] rounded-lg">
         <ChevronUp
           onClick={handlePreviousYear}

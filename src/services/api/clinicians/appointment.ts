@@ -170,3 +170,12 @@ export const getAllClientProfile = async () => {
     handleError(error);
   }
 };
+
+export const appointmentSummary = async (year: string) => {
+  try {
+    const response = await api.get(`api/appointment-summary/?year=${year}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
